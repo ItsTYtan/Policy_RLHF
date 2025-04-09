@@ -3,25 +3,19 @@ import os
 os.environ["OPENAI_API_KEY"] = "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"
 os.environ["OPENAI_API_BASE"] = "https://openrouter.ai/api/v1"
 
-from langchain_openai import OpenAI
+from langchain_huggingface import HuggingFaceEmbeddings
 
-llm = OpenAI(
-    model="openai/gpt-4o",
-    max_retries=2,
-    api_key="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",
-    base_url="https://openrouter.ai/api/v1",
-)
-
-from langchain_chroma import Chroma
-
-vector_store = Chroma(
-    collection_name="example_collection",
-    embedding_function=embeddings,
-    persist_directory="./chroma_langchain_db",  # Where to save data locally, remove if not necessary
-)
+embeddings = HuggingFaceEmbeddings(model_name="intfloat/e5-mistral-7b-instruct")
 
 from langchain.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_chroma import Chroma
+
+vector_store = Chroma(
+    collection_name="policy_acts",
+    embedding_function=embeddings,
+    persist_directory="./chroma_langchain_db",  # Where to save data locally, remove if not necessary
+)
 
 for filename in os.listdir("data"):
     if filename.endswith(".pdf"):  # filter PDFs
