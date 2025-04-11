@@ -13,6 +13,8 @@ import os
 from huggingface_hub import login
 from dotenv import load_dotenv
 
+from distilab_modules import FormatPolicyQuestionNoRAG, FormatPolicyQuestionRAG
+
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
 baseurl = "https://openrouter.ai/api/v1"
@@ -20,13 +22,9 @@ baseurl = "https://openrouter.ai/api/v1"
 login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
 
 with Pipeline(name="generate-dataset") as pipeline:
+    loadPolicyQuestionDS = LoadDataFromHub(repo_id="ItsTYtan/policyquestion")
 
-    loadPolicyQuestionDS = LoadDataFromHub(
-        repo_id="ItsTYtan/policyquestion",
-        output_mappings={"question": "instruction"}
-    )
-
-    openRouterQwen72B = TextGeneration(
+    ragLLM = TextGeneration(
         llm=OpenAILLM(
             model="qwen/qwen2.5-vl-72b-instruct", 
             api_key=apikey,
@@ -34,28 +32,38 @@ with Pipeline(name="generate-dataset") as pipeline:
         )
     )
 
-    openRouterNemotron340B = TextGeneration(
+    noRagLLM = TextGeneration(
         llm=OpenAILLM(
-            model="nvidia/nemotron-4-340b-instruct", 
+            model="qwen/qwen2.5-vl-72b-instruct", 
             api_key=apikey,
             base_url=baseurl,
         )
     )
 
+    formatterRAG = FormatPolicyQuestionRAG(persist_directory="./chroma_langchain_db", collection_name="policy_acts")
+
+    formatterNoRAG = FormatPolicyQuestionNoRAG()
+
     group_responses = GroupColumns(
-        columns=["generation", "model_name"],
-        output_columns=["generations", "model_names"],
+        columns=["topic", "instruction", "context", "source"],
+        output_columns=["topic", "instruction", "context", "source"],
     )
 
-    evaluate_responses = UltraFeedback(
-        aspect="overall-rating",
-        llm=TransformersLLM(model="nvidia/Llama-3.1-Nemotron-70B-Reward-HF")
-    )
+    # evaluate_responses = UltraFeedback(
+    #     aspect="overall-rating",
+    #     llm=OpenAILLM(
+    #         model="nvidia/llama-3.1-nemotron-70b-instruct", 
+    #         api_key=apikey,
+    #         base_url=baseurl,
+    #     )
+    # )
 
-    loadPolicyQuestionDS >> [
-        openRouterQwen72B, 
-        openRouterNemotron340B
-    ] >> group_responses >> evaluate_responses 
+    [
+        loadPolicyQuestionDS >> formatterRAG >> ragLLM, 
+        loadPolicyQuestionDS >> formatterNoRAG >> noRagLLM
+    ] >> group_responses 
 
-distiset = pipeline.run(use_cache=False)
+
+
+distiset = pipeline.run()
 distiset.push_to_hub("ItsTYtan/sussy_data")

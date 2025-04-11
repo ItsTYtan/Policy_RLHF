@@ -6,30 +6,63 @@ from distilabel.steps import (
 from distilabel.models.llms import OpenAILLM, TransformersLLM
 from distilabel.steps.tasks import TextGeneration, UltraFeedback
 
-apikey = os.getenv("OPENROUTER_API_KEY") 
-baseurl = "https://openrouter.ai/api/v1"
+from typing import Any, List
+from distilabel.steps import Step, StepInput
+from templates import PROMPT_TEMPLATE_ANSWER
+from pydantic import Field, PrivateAttr
 
-def loadPolicyQuestionDS():
-    return LoadDataFromHub(
-        repo_id="ItsTYtan/policyquestion",
-        output_mappings={"question": "instruction"}
-    )
+from langchain_chroma import Chroma
+from langchain_ollama import OllamaEmbeddings
 
-def getOpenRouterQwen72B():
-    return TextGeneration(
-        llm=OpenAILLM(
-            model="qwen/qwen2.5-vl-72b-instruct", 
-            api_key=apikey,
-            base_url=baseurl,
+class FormatPolicyQuestionRAG(Step):
+    persist_directory: str = Field(...)
+    collection_name: str = Field(...)
+    _chroma_client: Any = PrivateAttr()
+
+    def load(self):
+        embeddings = OllamaEmbeddings(model="nomic-embed-text")
+        self._chroma_client = Chroma(
+            persist_directory=self.persist_directory,
+            embedding_function=embeddings,
+            collection_name=self.collection_name,
         )
-    )
+        super().load()
+        
 
-def geOpenRouterNemotron340B():
-    return TextGeneration(
-        llm=OpenAILLM(
-            model="nvidia/nemotron-4-340b-instruct", 
-            api_key=apikey,
-            base_url=baseurl,
-        )
-    )
+    @property
+    def inputs(self) -> List[str]:
+        return ["topic", "question"]
 
+    @property
+    def outputs(self) -> List[str]:
+        return ["topic", "instruction", "context", "source"]
+
+    def process(self, *inputs: StepInput):
+        for input in inputs:
+            result = []
+            for row in input:
+                question = row["question"]
+                doc = self._chroma_client.similarity_search(question, k=1)[0]
+                context = doc.page_content
+                source = doc.metadata["source"]
+                prompt = PROMPT_TEMPLATE_ANSWER.format(question=question, context=context)
+                result.append({"topic": row["topic"], "instruction": prompt, "context": context, "source": source})
+            yield result
+
+class FormatPolicyQuestionNoRAG(Step):
+    @property
+    def inputs(self) -> List[str]:
+        return ["topic", "question"]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["topic", "instruction", "context", "source"]
+
+    def process(self, *inputs: StepInput):
+        for input in inputs:
+            result = []
+            for row in input:
+                question = row["question"]
+                prompt = PROMPT_TEMPLATE_ANSWER.format(question=question, context="")
+                result.append({"topic": row["topic"], "instruction": prompt, "context": None, "source": None})
+            yield result

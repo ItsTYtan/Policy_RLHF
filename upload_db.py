@@ -3,9 +3,9 @@ import os
 os.environ["OPENAI_API_KEY"] = "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"
 os.environ["OPENAI_API_BASE"] = "https://openrouter.ai/api/v1"
 
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_ollama import OllamaEmbeddings
 
-embeddings = HuggingFaceEmbeddings(model_name="intfloat/e5-mistral-7b-instruct")
+embeddings = OllamaEmbeddings(model="nomic-embed-text")
 
 from langchain.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter

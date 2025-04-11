@@ -1,5 +1,5 @@
 playground.ipynb
 venv
-chroma_langchain_db
 .env
 __pycache__
+chroma_langchain_db
