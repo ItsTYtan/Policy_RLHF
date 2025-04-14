@@ -2,12 +2,15 @@ import asyncio
 import os
 import re
 
-from typing import Any, List, Optional
-from distilabel.steps import Step, StepInput, GlobalStep
+from typing import Any, List, Optional, TYPE_CHECKING
+from distilabel.steps import Step, StepInput, GlobalStep, GeneratorStep
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from templates import PROMPT_TEMPLATE_ANSWER
 from pydantic import Field, PrivateAttr
+
+if TYPE_CHECKING:
+    from distilabel.typing import StepColumns, GeneratorStepOutput
 
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
@@ -86,6 +89,31 @@ class ExtractPolicyAnswer(Step):
                     answers.append(text)
                 result.append({"question": pair["question"], "answers": answers, "context": pair["context"], "source": pair["source"]})
             yield result
+
+class GeneratePolicyQuestion(GeneratorStep):
+    politicalTopics: List[str]
+    policyTemplate: str
+
+    def process(self, offset: int = 0) -> "GeneratorStepOutput":
+        if offset:
+            self.politicalTopics = self.politicalTopics[offset:]
+
+        while self.politicalTopics:
+            batch = [
+                {
+                    "topic": topic,
+                    "instruction": self.policyTemplate.format(topic=topic)
+                } for topic in self.politicalTopics[: self.batch_size]
+            ]
+            self.politicalTopics = self.politicalTopics[self.batch_size :]
+            yield (
+                batch,
+                True if len(self.politicalTopics) == 0 else False,
+            )
+
+    @property
+    def outputs(self) -> "StepColumns":
+        return ["topic", "instruction"]  
 
 class OpenRouterLLM(Step):
     _client: Any = None  # Will be set in load()
