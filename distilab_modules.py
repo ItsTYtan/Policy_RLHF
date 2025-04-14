@@ -1,12 +1,6 @@
 import asyncio
 import os
 import re
-from distilabel.steps import (
-    LoadDataFromHub,
-    GroupColumns,
-)
-from distilabel.models.llms import OpenAILLM, TransformersLLM
-from distilabel.steps.tasks import TextGeneration, UltraFeedback
 
 from typing import Any, List, Optional
 from distilabel.steps import Step, StepInput, GlobalStep
@@ -92,8 +86,6 @@ class ExtractPolicyAnswer(Step):
                     answers.append(text)
                 result.append({"question": pair["question"], "answers": answers, "context": pair["context"], "source": pair["source"]})
             yield result
-
-import asyncio
 
 class OpenRouterLLM(Step):
     _client: Any = None  # Will be set in load()

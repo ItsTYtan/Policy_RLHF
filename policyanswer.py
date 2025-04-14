@@ -1,6 +1,7 @@
 from distilabel.pipeline import Pipeline
 from distilabel.steps.tasks import TextGeneration, UltraFeedback
 from distilabel.models.llms import OpenAILLM, TransformersLLM
+from IPython.display import Image, display
 
 from distilabel.steps import (
     LoadDataFromHub,
@@ -98,6 +99,11 @@ with Pipeline(name="generate-dataset") as pipeline:
 
 distiset = pipeline.run(
     use_cache=False,
+)
+
+pipeline.draw(
+    path='./docs',
+    show_edge_labels=False
 )
 
 distiset.push_to_hub("ItsTYtan/sussy_data")
