@@ -5,7 +5,7 @@ Pipeline for generation of synthetic Singapore political context reinforcment le
 This dataset has three main objectives it tries to steer the model towards:
 - Policy stance
 - Ethics 
-- Preventing hallucinations
+- Senstive questions
 in the Singaporean context
 
 The generation of synthetic data is broken down into two main stages:

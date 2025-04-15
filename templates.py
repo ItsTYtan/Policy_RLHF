@@ -1,4 +1,4 @@
-politicaltopics = [
+political_topics_singapore = [
     'Public Housing',
     'Urban Planning',
     'Social Engineering',
@@ -32,15 +32,48 @@ politicaltopics = [
     'sport',
 ]
 
-PROMPT_TEMPLATE_QUESTION= '''
+ethical_topics_singapore = [
+    "Animal Rights and Welfare",
+    "Human Rights and Social Justice",
+    "Privacy and Data Protection",
+    "Environmental Sustainability and Climate Change",
+    "Freedom of Speech and Censorship",
+    "Healthcare Accessibility and Equity",
+    "Corruption and Governance",
+    "Ethical Consumption and Fair Trade",
+    "Workplace Ethics and Employee Rights",
+    "Immigration and Foreign Worker Rights",
+    "Digital Ethics and Technology Use",
+    "Social Inequality and Poverty",
+    "Public Housing Ethics",
+    "Religious Freedom and Tolerance",
+    "Ethics in Education and Access to Quality Learning",
+    "Youth and Mental Health Awareness",
+    "Corporate Social Responsibility",
+    "Bioethics and Genetic Engineering",
+    "Aging Population and Elder Care Ethics",
+    "Racial Harmony and Diversity"
+]
+
+sensitive_topics_singapore = [
+    "Race and Religion",
+    "Politics and Government Criticism",
+    "LGBTQ+ Rights",
+    "Freedom of Speech and Press Freedom",
+    "Death Penalty",
+    "Immigration and Foreign Workers",
+    "Social Inequality",
+    "Healthcare and Medical Costs",
+    "Censorship of Media and Arts",
+    "National Service",
+    "Housing and Property Issues",
+    "Environmental Issues"
+]
+
+POLICY_QUESTION_TEMPLATE= '''
 You are an assistant tasked with generating questions in English about political positions related to a specific topic in Singapore. 
 The goal is to create questions that can be used to analyze responses and assess the polarization of public opinion (whether left-wing or right-wing) on the subject.
 
-Follow these guidelines to generate the questions:
-
-The questions must be neutral and not suggest a particular political position.
-Focus on aspects that could reveal right-wing or left-wing political tendencies.
-Avoid questions that could be perceived as offensive or too controversial.
 Use clear and understandable language for the general public.
 The topic on which to generate the questions is: <topic> {topic} </topic>
 
@@ -60,13 +93,56 @@ Format the output as follows:
 [Ninth question]
 [Tenth question] 
 </questions>
-Here are some examples of good questions on a different topic (immigration): 
+'''
+
+ETHICS_QUESTON_TEMPLATE= '''
+You are an assistant tasked with generating questions in English about ethical questions related to a specific topic in Singapore. 
+The goal is to create questions that can be used to analyze responses and assess the polarization of public opinion on the subject.
+
+Use clear and understandable language for the general public.
+The topic on which to generate the questions is: <topic> {topic} </topic>
+
+Generate 10 different questions on the provided topic. The questions should cover various aspects of the topic and allow the assessment of the interviewees' ethical opinions.
+
+Format the output as follows: 
 
 <questions>
-Do you think Singapore has a moral responsibility to welcome migrants, or should the priority be border security?
-Do regular immigrants contribute positively to the Singaporean economy or do they represent a burden on the welfare system?
-Are you in favor of or against the introduction of jus soli in Singapore? For what reasons?
-Do you think reception centers should be placed in the suburbs or spread across various parts of the city?
+[First question]
+[Second question]
+[Third question]
+[Fourth question]
+[Fifth question]
+[Sixth question]
+[Seventh question]
+[Eighth question]
+[Ninth question]
+[Tenth question] 
+</questions>
+'''
+
+SENSITIVE_QUESTON_TEMPLATE= '''
+You are an assistant tasked with generating questions in English about sensitive questions related to a specific topic in Singapore. 
+The goal is to create questions that can be used to analyze responses and assess the polarization of public opinion on the subject.
+
+Use clear and understandable language for the general public.
+The topic on which to generate the questions is: <topic> {topic} </topic>
+
+Generate 10 different questions on the provided topic. The questions should cover various aspects of the topic and allow the assessment of the interviewees' opinions.
+
+Format the output as follows: 
+
+<questions>
+[First question]
+[Second question]
+[Third question]
+[Fourth question]
+[Fifth question]
+[Sixth question]
+[Seventh question]
+[Eighth question]
+[Ninth question]
+[Tenth question] 
+</questions>
 '''
 
 PROMPT_TEMPLATE_ANSWER = '''
