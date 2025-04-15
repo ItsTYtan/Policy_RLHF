@@ -113,7 +113,34 @@ class GeneratePolicyQuestion(GeneratorStep):
 
     @property
     def outputs(self) -> "StepColumns":
-        return ["topic", "instruction"]  
+        return ["topic", "instruction"]
+
+class ExtractPolicyQuestion(Step):
+    @property
+    def inputs(self) -> List[str]:
+        return ["topic", "generation", "model"]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["topic", "question", "model"]
+
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            result = []
+            for entry in batch:
+                match = re.search(r"<questions>(.*?)</questions>", entry["generation"], re.DOTALL)
+                text = match.group(1) if match else ""
+                questions = text.splitlines()
+                chunk = map(lambda question: {
+                    "topic": entry["topic"],
+                    "question": question,
+                    "model": entry["model"],
+                }, questions)
+                for qnEntry in list(chunk):
+                    if qnEntry["question"] == "":
+                        continue
+                    result.append(qnEntry)
+            yield result      
 
 class OpenRouterLLM(Step):
     _client: Any = None  # Will be set in load()

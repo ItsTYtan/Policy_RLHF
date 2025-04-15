@@ -1,10 +1,8 @@
 from distilabel.pipeline import Pipeline
-from distilabel.steps.tasks import TextGeneration, UltraFeedback
-from distilabel.models.llms import OpenAILLM, TransformersLLM
-from IPython.display import Image, display
+from distilabel.steps.tasks import TextGeneration
+from distilabel.models.llms import OpenAILLM
 
 from distilabel.steps import (
-    LoadDataFromHub,
     GroupColumns,
     KeepColumns,
     ExpandColumns
@@ -14,7 +12,7 @@ import os
 from huggingface_hub import login
 from dotenv import load_dotenv
 
-from distilab_modules import GeneratePolicyQuestion
+from distilab_modules import ExtractPolicyQuestion, GeneratePolicyQuestion
 from templates import politicaltopics, PROMPT_TEMPLATE_QUESTION
 
 load_dotenv()
@@ -29,7 +27,7 @@ models = [
     "openai/gpt-4o-mini"
 ]
 
-with Pipeline(name="generate-dataset") as pipeline:
+with Pipeline(name="policy_answer") as pipeline:
     qnFormatter = GeneratePolicyQuestion(
         politicalTopics=politicaltopics,
         policyTemplate=PROMPT_TEMPLATE_QUESTION
@@ -44,9 +42,11 @@ with Pipeline(name="generate-dataset") as pipeline:
         columns=["generation", "model"],
     )
 
-    # aggregator = KeepColumns(
-    #     columns=["topic", "generation", "model_name"]
-    # )
+    extract_questions = ExtractPolicyQuestion()
+
+    aggregator = KeepColumns(
+        columns=["topic", "question", "model"]
+    )
 
     for model in models:
         task = TextGeneration(
@@ -64,10 +64,10 @@ with Pipeline(name="generate-dataset") as pipeline:
         )
         qnFormatter.connect(task)
         task.connect(combine_columns)
-    combine_columns >> unwrap_columns
+    combine_columns >> unwrap_columns >> extract_questions >> aggregator
 
 distiset = pipeline.run(
-    use_cache=True,
+    use_cache=False,
 )
 
 distiset.push_to_hub("ItsTYtan/policyquestion")
