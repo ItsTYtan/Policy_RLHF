@@ -66,8 +66,12 @@ with Pipeline(name="policy_answer") as pipeline:
         task.connect(combine_columns)
     combine_columns >> unwrap_columns >> extract_questions >> aggregator
 
-distiset = pipeline.run(
-    use_cache=False,
+# distiset = pipeline.run(
+#     use_cache=False,
+# )
+
+pipeline.draw(
+    show_edge_labels=False
 )
 
-distiset.push_to_hub("ItsTYtan/policyquestion")
+# distiset.push_to_hub("ItsTYtan/policyquestion")

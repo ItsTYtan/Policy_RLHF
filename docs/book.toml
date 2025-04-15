@@ -1,0 +1,6 @@
+[book]
+authors = ["ItsTYtan"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Singapore RL"
