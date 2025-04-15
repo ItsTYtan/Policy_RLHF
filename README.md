@@ -42,7 +42,10 @@ HUGGINGFACE_TOKEN = "..."
 OPENROUTER_API_KEY = "..."
 ```
 
-
+uploading to requiremtns.txt
+```
+pip freeze | grep -vE 'apturl|python-apt|gi|pygobject' > requirements.txt
+```
 
 Frameworks/libraires:
 - Distilab
