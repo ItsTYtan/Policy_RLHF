@@ -3,6 +3,7 @@ from distilabel.steps.tasks import TextGeneration
 from distilabel.models.llms import OpenAILLM
 
 from distilabel.steps import (
+    CombineOutputs,
     GroupColumns,
     KeepColumns,
     ExpandColumns
@@ -13,7 +14,7 @@ from huggingface_hub import login
 from dotenv import load_dotenv
 
 from distilab_modules import ExtractPolicyQuestion, GeneratePolicyQuestion
-from templates import political_topics_singapore, ethical_topics_singapore, sensitive_topics_singapore, POLICY_QUESTION_TEMPLATE ,ETHICS_QUESTON_TEMPLATE, SENSITIVE_QUESTON_TEMPLATE
+from templates import topics, question_template_dict
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -29,30 +30,15 @@ models = [
 
 numgens = 10
 
-with Pipeline(name="policy_answer") as pipeline:
-    policyformat = GeneratePolicyQuestion(
-        politicalTopics=political_topics_singapore,
-        policyTemplate=POLICY_QUESTION_TEMPLATE
-    )
-
-    ethicsformat = GeneratePolicyQuestion(
-        politicalTopics=ethical_topics_singapore,
-        policyTemplate=ETHICS_QUESTON_TEMPLATE,
-    )
-
-    sensitiveformat = GeneratePolicyQuestion(
-        politicalTopics=sensitive_topics_singapore,
-        policyTemplate=SENSITIVE_QUESTON_TEMPLATE,
-    )
-
-
-    combine_columns = GroupColumns(
-        columns= ["generation", "model_name"],
-        output_columns= ["generation", "model"]
+with Pipeline(name="policy_question") as pipeline:
+    group_columns = GroupColumns(
+        columns= ["topic", "instruction", "generation", "model_name"],
+        output_columns= ["topic", "instruction", "generation", "model"]
     )
 
     unwrap_columns = ExpandColumns(
-        columns=["generation", "model"],
+        columns=["topic", "instruction", "generation", "model"],
+        input_batch_size=9,
     )
 
     extract_questions = ExtractPolicyQuestion()
@@ -61,56 +47,29 @@ with Pipeline(name="policy_answer") as pipeline:
         columns=["topic", "question", "model"]
     )
 
-    for idx, model in enumerate(models):
-        policy = TextGeneration(
-            name="policy_"+ str(idx),
-            llm=OpenAILLM(
-                model=model, 
-                api_key=apikey,
-                base_url=baseurl,
-                generation_kwargs={
-                    "max_new_tokens": 512,
-                    "temperature": 0.7
-                }
-            ),
-            input_batch_size=5,
-            num_generations=numgens
-        )
-        ethics = TextGeneration(
-            name="ethics_"+ str(idx),
-            llm=OpenAILLM(
-                model=model, 
-                api_key=apikey,
-                base_url=baseurl,
-                generation_kwargs={
-                    "max_new_tokens": 512,
-                    "temperature": 0.7
-                }
-            ),
-            input_batch_size=5,
-            num_generations=numgens
-        )
-        sensitive = TextGeneration(
-            name="sensitive_"+ str(idx),
-            llm=OpenAILLM(
-                model=model, 
-                api_key=apikey,
-                base_url=baseurl,
-                generation_kwargs={
-                    "max_new_tokens": 512,
-                    "temperature": 0.7
-                }
-            ),
-            input_batch_size=5,
-            num_generations=numgens
-        )
-        policyformat.connect(policy)
-        ethicsformat.connect(ethics)
-        sensitiveformat.connect(sensitive)
-        policy.connect(combine_columns)
-        ethics.connect(combine_columns)
-        sensitive.connect(combine_columns)
-    combine_columns >> unwrap_columns >> extract_questions >> aggregator
+    tasks = []
+    for topicsSubset, template in zip(topics.values(), question_template_dict.values()):
+        for model in models:
+            formatter = GeneratePolicyQuestion(
+                politicalTopics=topicsSubset,
+                policyTemplate=template
+            )
+
+            textgeneration = TextGeneration(
+                llm=OpenAILLM(
+                    model=model, 
+                    api_key=apikey,
+                    base_url=baseurl,
+                    generation_kwargs={
+                        "max_new_tokens": 512,
+                        "temperature": 0.7
+                    }
+                ),
+                input_batch_size=5,
+                num_generations=numgens
+            )
+            tasks.append(formatter >> textgeneration)
+    tasks >> group_columns >> unwrap_columns >> extract_questions >> aggregator
 
 distiset = pipeline.run(
     use_cache=False,

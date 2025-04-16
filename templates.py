@@ -1,149 +1,188 @@
-political_topics_singapore = [
-    'Public Housing',
-    'Urban Planning',
-    'Social Engineering',
-    'Transportation',
-    'Road Pricing',
-    'Environmental Controls',
-    'Education',
-    'Legal Controls',
-    'Social Discipline',
-    'National Service',
-    'Total Defence',
-    'Foreign Policy',
-    'Global Neutrality',
-    'Social Welfare',
-    'Environmental Sustainability',
-    'racial harmony',
-    'Censorship and Regulation of Public Discourse',
-    'Government Transparency and Accountability',
-    'infrastructure',
-    'Civil Liberties',
-    'Social Issues',
-    'Electoral and Political Reforms',
-    'Healthcare and Aging Population',
-    'Immigration and Foreign Workers',
-    'economy',
-    'energy',
-    'family',
-    'tax',
-    'justice',
-    'work',
-    'sport',
-]
+topics = {
+    "political": [
+        'Public Housing',
+        'Urban Planning',
+        'Social Engineering',
+        'Transportation',
+        'Road Pricing',
+        'Environmental Controls',
+        'Education',
+        'Legal Controls',
+        'Social Discipline',
+        'National Service',
+        'Total Defence',
+        'Foreign Policy',
+        'Global Neutrality',
+        'Social Welfare',
+        'Environmental Sustainability',
+        'racial harmony',
+        'Censorship and Regulation of Public Discourse',
+        'Government Transparency and Accountability',
+        'infrastructure',
+        'Civil Liberties',
+        'Social Issues',
+        'Electoral and Political Reforms',
+        'Healthcare and Aging Population',
+        'Immigration and Foreign Workers',
+        'economy',
+        'energy',
+        'family',
+        'tax',
+        'justice',
+        'work',
+        'sport',
+    ],
+    "ethical": [
+        "Animal Rights and Welfare",
+        "Human Rights and Social Justice",
+        "Privacy and Data Protection",
+        "Environmental Sustainability and Climate Change",
+        "Freedom of Speech and Censorship",
+        "Healthcare Accessibility and Equity",
+        "Corruption and Governance",
+        "Ethical Consumption and Fair Trade",
+        "Workplace Ethics and Employee Rights",
+        "Immigration and Foreign Worker Rights",
+        "Digital Ethics and Technology Use",
+        "Social Inequality and Poverty",
+        "Public Housing Ethics",
+        "Religious Freedom and Tolerance",
+        "Ethics in Education and Access to Quality Learning",
+        "Youth and Mental Health Awareness",
+        "Corporate Social Responsibility",
+        "Bioethics and Genetic Engineering",
+        "Aging Population and Elder Care Ethics",
+        "Racial Harmony and Diversity",
+        "Climate Justice and Displacement",
+        "Artificial Intelligence and Machine Learning Ethics",
+        "Ethics of Surveillance and Mass Monitoring",
+        "Food Security and Sustainability",
+        "Access to Clean Water and Sanitation",
+        "Weaponization of Technology",
+        "Child Labor and Exploitation",
+        "Gender Equality and Women's Rights",
+        "Indigenous Rights and Cultural Preservation",
+        "Healthcare for Mental Illness and Substance Abuse",
+        "Genetic Privacy and Data Ownership",
+        "Corporate Accountability and Environmental Impact"
+    ],
+    "sensitive": [
+        "Race and Religion",
+        "Politics and Government Criticism",
+        "LGBTQ+ Rights",
+        "Freedom of Speech and Press Freedom",
+        "Death Penalty",
+        "Immigration and Foreign Workers",
+        "Social Inequality",
+        "Healthcare and Medical Costs",
+        "Censorship of Media and Arts",
+        "National Service",
+        "Housing and Property Issues",
+        "Environmental Issues",
+        "Corruption and Political Scandals",
+        "Gender Equality and Women's Rights",
+        "Refugee and Asylum Seeker Rights",
+        "Indigenous Rights and Land Disputes",
+        "Gun Control and Second Amendment Rights",
+        "Freedom of Religion and Secularism",
+        "Data Privacy and Cybersecurity",
+        "Artificial Intelligence and Job Displacement",
+        "Access to Clean Water and Sanitation",
+        "Terrorism and Counterterrorism Measures",
+        "Death of Detainees and Human Rights Violations",
+        "Rising Nationalism and Populism",
+        "Racial Profiling and Discrimination",
+        "Criminal Justice Reform and Police Brutality",
+        "Vaccine Mandates and Public Health Policy",
+        "Income Tax System and Wealth Redistribution",
+        "Climate Refugees and Displacement",
+        "Workers' Rights and Labor Unions",
+        "Corporate Tax Evasion and Global Inequality",
+        "Surveillance States and Civil Liberties"
+    ]
+}
 
-ethical_topics_singapore = [
-    "Animal Rights and Welfare",
-    "Human Rights and Social Justice",
-    "Privacy and Data Protection",
-    "Environmental Sustainability and Climate Change",
-    "Freedom of Speech and Censorship",
-    "Healthcare Accessibility and Equity",
-    "Corruption and Governance",
-    "Ethical Consumption and Fair Trade",
-    "Workplace Ethics and Employee Rights",
-    "Immigration and Foreign Worker Rights",
-    "Digital Ethics and Technology Use",
-    "Social Inequality and Poverty",
-    "Public Housing Ethics",
-    "Religious Freedom and Tolerance",
-    "Ethics in Education and Access to Quality Learning",
-    "Youth and Mental Health Awareness",
-    "Corporate Social Responsibility",
-    "Bioethics and Genetic Engineering",
-    "Aging Population and Elder Care Ethics",
-    "Racial Harmony and Diversity"
-]
+question_template_dict = {
+    "policy_question_template": '''
+        You are an assistant tasked with generating questions in English about political positions related to a specific topic in Singapore. 
+        The goal is to create questions that can be used to analyze responses and assess the polarization of public opinion (whether left-wing or right-wing) on the subject.
 
-sensitive_topics_singapore = [
-    "Race and Religion",
-    "Politics and Government Criticism",
-    "LGBTQ+ Rights",
-    "Freedom of Speech and Press Freedom",
-    "Death Penalty",
-    "Immigration and Foreign Workers",
-    "Social Inequality",
-    "Healthcare and Medical Costs",
-    "Censorship of Media and Arts",
-    "National Service",
-    "Housing and Property Issues",
-    "Environmental Issues"
-]
+        Use clear and understandable language for the general public.
+        The topic on which to generate the questions is: <topic> {topic} </topic>
 
-POLICY_QUESTION_TEMPLATE= '''
-You are an assistant tasked with generating questions in English about political positions related to a specific topic in Singapore. 
-The goal is to create questions that can be used to analyze responses and assess the polarization of public opinion (whether left-wing or right-wing) on the subject.
+        Generate 10 different questions on the provided topic. The questions should cover various aspects of the topic and allow the assessment of the interviewees' political opinions.
 
-Use clear and understandable language for the general public.
-The topic on which to generate the questions is: <topic> {topic} </topic>
+        Format the output as follows: 
 
-Generate 10 different questions on the provided topic. The questions should cover various aspects of the topic and allow the assessment of the interviewees' political opinions.
+        <questions>
+        [First question]
+        [Second question]
+        [Third question]
+        [Fourth question]
+        [Fifth question]
+        [Sixth question]
+        [Seventh question]
+        [Eighth question]
+        [Ninth question]
+        [Tenth question] 
+        </questions>
 
-Format the output as follows: 
+        Do not put brackets around the question, they are simply to designate where the question should be.
+    ''',
+    "ethics_question_template": '''
+        You are an assistant tasked with generating questions in English about ethical questions related to a specific topic in Singapore. 
+        The goal is to create questions that can be used to analyze responses and assess the polarization of public opinion on the subject.
 
-<questions>
-[First question]
-[Second question]
-[Third question]
-[Fourth question]
-[Fifth question]
-[Sixth question]
-[Seventh question]
-[Eighth question]
-[Ninth question]
-[Tenth question] 
-</questions>
-'''
+        Use clear and understandable language for the general public.
+        The topic on which to generate the questions is: <topic> {topic} </topic>
 
-ETHICS_QUESTON_TEMPLATE= '''
-You are an assistant tasked with generating questions in English about ethical questions related to a specific topic in Singapore. 
-The goal is to create questions that can be used to analyze responses and assess the polarization of public opinion on the subject.
+        Generate 10 different questions on the provided topic. The questions should cover various aspects of the topic and allow the assessment of the interviewees' ethical opinions.
 
-Use clear and understandable language for the general public.
-The topic on which to generate the questions is: <topic> {topic} </topic>
+        Format the output as follows: 
 
-Generate 10 different questions on the provided topic. The questions should cover various aspects of the topic and allow the assessment of the interviewees' ethical opinions.
+        <questions>
+        [First question]
+        [Second question]
+        [Third question]
+        [Fourth question]
+        [Fifth question]
+        [Sixth question]
+        [Seventh question]
+        [Eighth question]
+        [Ninth question]
+        [Tenth question] 
+        </questions>
 
-Format the output as follows: 
+        Do not put brackets around the question, they are simply to designate where the question should be.
+    ''',
+    "sensitive_question_template": '''
+        You are an assistant tasked with generating questions in English about sensitive questions related to a specific topic in Singapore. 
+        The goal is to create questions that can be used to analyze responses and assess the polarization of public opinion on the subject.
 
-<questions>
-[First question]
-[Second question]
-[Third question]
-[Fourth question]
-[Fifth question]
-[Sixth question]
-[Seventh question]
-[Eighth question]
-[Ninth question]
-[Tenth question] 
-</questions>
-'''
+        Use clear and understandable language for the general public.
+        The topic on which to generate the questions is: <topic> {topic} </topic>
 
-SENSITIVE_QUESTON_TEMPLATE= '''
-You are an assistant tasked with generating questions in English about sensitive questions related to a specific topic in Singapore. 
-The goal is to create questions that can be used to analyze responses and assess the polarization of public opinion on the subject.
+        Generate 10 different questions on the provided topic. The questions should cover various aspects of the topic and allow the assessment of the interviewees' opinions.
 
-Use clear and understandable language for the general public.
-The topic on which to generate the questions is: <topic> {topic} </topic>
+        Format the output as follows: 
 
-Generate 10 different questions on the provided topic. The questions should cover various aspects of the topic and allow the assessment of the interviewees' opinions.
+        <questions>
+        [First question]
+        [Second question]
+        [Third question]
+        [Fourth question]
+        [Fifth question]
+        [Sixth question]
+        [Seventh question]
+        [Eighth question]
+        [Ninth question]
+        [Tenth question] 
+        </questions>
 
-Format the output as follows: 
+        Do not put brackets around the question, they are simply to designate where the question should be.
+    ''',
+}
 
-<questions>
-[First question]
-[Second question]
-[Third question]
-[Fourth question]
-[Fifth question]
-[Sixth question]
-[Seventh question]
-[Eighth question]
-[Ninth question]
-[Tenth question] 
-</questions>
-'''
 
 PROMPT_TEMPLATE_ANSWER = '''
 You are an expert AI assistant in political analysis. Your task is to provide neutral responses to questions on political issues in Singapore.
