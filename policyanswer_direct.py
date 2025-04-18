@@ -25,7 +25,8 @@ login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
 with Pipeline(name="generate-dataset") as pipeline:
     loadPolicyQuestionDS = LoadDataFromHub(
         repo_id="ItsTYtan/policyquestion",
-        batch_size=100
+        batch_size=100,
+        num_examples=100          
     )
 
     formatter = FormatPolicyQuestion(template=answer_template_dict["direct"])

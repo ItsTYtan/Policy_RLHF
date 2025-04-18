@@ -14,7 +14,7 @@ from huggingface_hub import login
 from dotenv import load_dotenv
 
 from custom_distilabel_modules.distilab_modules import ExtractPolicyQuestion, GeneratePolicyQuestion
-from templates import topics, question_template_dict
+from templates import political_topics, POLICY_QUESTION_TEMPLATE
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -48,27 +48,26 @@ with Pipeline(name="policy_question") as pipeline:
     )
 
     tasks = []
-    for topicsSubset, template in zip(topics.values(), question_template_dict.values()):
-        for model in models:
-            formatter = GeneratePolicyQuestion(
-                politicalTopics=topicsSubset,
-                policyTemplate=template
-            )
+    for model in models:
+        formatter = GeneratePolicyQuestion(
+            politicalTopics=political_topics,
+            policyTemplate=POLICY_QUESTION_TEMPLATE
+        )
 
-            textgeneration = TextGeneration(
-                llm=OpenAILLM(
-                    model=model, 
-                    api_key=apikey,
-                    base_url=baseurl,
-                    generation_kwargs={
-                        "max_new_tokens": 512,
-                        "temperature": 0.7
-                    }
-                ),
-                input_batch_size=5,
-                num_generations=numgens
-            )
-            tasks.append(formatter >> textgeneration)
+        textgeneration = TextGeneration(
+            llm=OpenAILLM(
+                model=model, 
+                api_key=apikey,
+                base_url=baseurl,
+                generation_kwargs={
+                    "max_new_tokens": 512,
+                    "temperature": 0.7
+                }
+            ),
+            input_batch_size=5,
+            num_generations=numgens
+        )
+        tasks.append(formatter >> textgeneration)
     tasks >> group_columns >> unwrap_columns >> extract_questions >> aggregator
 
 distiset = pipeline.run(
