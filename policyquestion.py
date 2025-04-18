@@ -13,7 +13,7 @@ import os
 from huggingface_hub import login
 from dotenv import load_dotenv
 
-from distilab_modules import ExtractPolicyQuestion, GeneratePolicyQuestion
+from custom_distilabel_modules.distilab_modules import ExtractPolicyQuestion, GeneratePolicyQuestion
 from templates import topics, question_template_dict
 
 load_dotenv()

@@ -1,12 +1,8 @@
-import asyncio
-import os
 import re
 
 from typing import Any, List, Optional, TYPE_CHECKING
 from distilabel.steps import Step, StepInput, GlobalStep, GeneratorStep
-from dotenv import load_dotenv
-from openai import AsyncOpenAI
-from templates import PROMPT_TEMPLATE_ANSWER
+from templates import answer_template_dict
 from pydantic import Field, PrivateAttr
 
 if TYPE_CHECKING:
@@ -47,11 +43,13 @@ class FormatPolicyQuestionRAG(Step):
                 doc = self._chroma_client.similarity_search(question, k=1)[0]
                 context = doc.page_content
                 source = doc.metadata["source"]
-                prompt = PROMPT_TEMPLATE_ANSWER.format(question=question, context=context)
+                prompt = answer_template_dict["rag"].format(question=question, context=context)
                 result.append({"question": question, "instruction": prompt, "context": context, "source": source})
             yield result
 
-class FormatPolicyQuestionNoRAG(Step):
+class FormatPolicyQuestion(Step):
+    template: str
+
     @property
     def inputs(self) -> List[str]:
         return ["question"]
@@ -65,11 +63,11 @@ class FormatPolicyQuestionNoRAG(Step):
             result = []
             for row in input:
                 question = row["question"]
-                prompt = PROMPT_TEMPLATE_ANSWER.format(question=question, context="")
+                prompt = self.template.format(question=question)
                 result.append({"question": question, "instruction": prompt})
             yield result
 
-class ExtractPolicyAnswer(Step):
+class ExtractPolicyAnswerRAG(Step):
     @property
     def inputs(self) -> List[str]:
         return ["question", "generations", "context", "source"]
@@ -84,10 +82,36 @@ class ExtractPolicyAnswer(Step):
             for pair in batch:
                 answers = []
                 for generation in pair["generations"]:
-                    match = re.search(r"<neutral>(.*?)</neutral>", generation, re.DOTALL)
+                    match = re.search(r"<answer>(.*?)</answer>", generation, re.DOTALL)
                     text = match.group(1) if match else ""
                     answers.append(text)
                 result.append({"question": pair["question"], "answers": answers, "context": pair["context"], "source": pair["source"]})
+            yield result
+
+class ExtractPolicyAnswer(Step):
+    method: str
+
+    @property
+    def inputs(self) -> List[str]:
+        return ["question", "generations"]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["question", "answers"]
+
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            result = []
+            for pair in batch:
+                answers = []
+                for generation in pair["generations"]:
+                    if (self.method == "direct"):
+                        match1 = re.search(r"<answer1>(.*?)</answer1>", generation, re.DOTALL)
+                        text1 = match1.group(1) if match1 else ""
+                        match2 = re.search(r"<answer2>(.*?)</answer2>", generation, re.DOTALL)
+                        text2 = match2.group(1) if match2 else ""
+                        answers = [text1, text2]               
+                result.append({"question": pair["question"], "answers": answers})
             yield result
 
 class GeneratePolicyQuestion(GeneratorStep):
@@ -142,58 +166,3 @@ class ExtractPolicyQuestion(Step):
                     result.append(qnEntry)
             yield result      
 
-class OpenRouterLLM(Step):
-    _client: Any = None  # Will be set in load()
-
-    def load(self):
-        load_dotenv()
-        apikey = os.getenv("OPENROUTER_API_KEY") 
-        baseurl = "https://openrouter.ai/api/v1"
-        # Initialize the AsyncOpenAI client with OpenRouter base URL
-        # (Assuming AsyncOpenAI is imported from a relevant library)
-        self._client = AsyncOpenAI(
-            api_key=apikey,
-            base_url=baseurl
-        )
-        super().load()
-
-    @property
-    def inputs(self) -> List[str]:
-        return ["instruction"]
-
-    @property
-    def outputs(self) -> List[str]:
-        return ["generation"]
-
-    def process(self, *inputs: StepInput):
-        for input in inputs:
-            # Define an asynchronous function to run tasks concurrently
-            async def process_batch():
-                tasks = []
-                for row in input:
-                    prompt = row["instruction"]
-                    # Prepare the API call for each prompt
-                    task = self._client.chat.completions.create(
-                        model="qwen/qwen2.5-vl-72b-instruct",  # Replace with your desired model
-                        messages=[
-                            {"role": "system", "content": ""},
-                            {"role": "user", "content": prompt}
-                        ],
-                        max_tokens=1024,
-                        temperature=0.7
-                    )
-                    tasks.append(task)
-                # Gather all tasks concurrently
-                responses = await asyncio.gather(*tasks)
-                results = []
-                for res in responses:
-                    content = res.choices[0].message.content
-                    resStr = content if content else ""
-                    results.append({
-                        "generation": resStr
-                    })
-                return results
-
-            # Run the asynchronous batch process (this uses asyncio.run to start the event loop)
-            batch_results = asyncio.run(process_batch())
-            yield batch_results

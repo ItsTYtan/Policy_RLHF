@@ -9,8 +9,8 @@ This dataset has three main objectives it tries to steer the model towards:
 in the Singaporean context
 
 The generation of synthetic data is broken down into two main stages:
-- Question generation
-- Answer generation
+- Question generation --> PolicyQuestion
+- Answer generation --> PolicyAnswer
 
 A few sensitive political and ethical issues in singapore are selected manually first, before passing into LLMs to generate questions on these topics.
 These questions are then answered by LLMs to generate the chosen rejected pairs for Direct Preference Optimization (DPO).
