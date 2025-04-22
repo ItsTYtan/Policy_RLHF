@@ -13,7 +13,7 @@ import os
 from huggingface_hub import login
 from dotenv import load_dotenv
 
-from custom_distilabel_modules.distilab_modules import ExtractPolicyAnswer, FormatPolicyQuestion, FormatPolicyQuestionRAG
+from distilab_modules import FormatPolicyQuestion, FormatPolicyQuestionRAG
 from templates import answer_template_dict
 
 load_dotenv()
@@ -25,6 +25,7 @@ login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
 with Pipeline(name="generate-dataset") as pipeline:
     loadPolicyQuestionDS = LoadDataFromHub(
         repo_id="ItsTYtan/policyquestion",
+        num_examples=10
     )
 
     ragLLM = TextGeneration(
@@ -65,8 +66,6 @@ with Pipeline(name="generate-dataset") as pipeline:
         columns=["generation"],
         output_columns=["generations"],
     )
-    
-    extractor = ExtractPolicyAnswer(method="rag")
 
     evaluate_responses = UltraFeedback(
         aspect="overall-rating",
@@ -80,24 +79,22 @@ with Pipeline(name="generate-dataset") as pipeline:
         ),
         input_mappings={
             "instruction": "question",
-            "generations": "answers"
         },
         input_batch_size=10
     )
 
     keep_columns = keep_columns = KeepColumns(
-        columns=["question", "answers", "context", "source", "ratings", "rationales"],
+        columns=["question", "generations", "context", "source", "ratings", "rationales"],
     )
 
     push = PushToHub(
-        repo_id="ItsTYtan/policyanswer",
-        split="RAG"
+        repo_id="ItsTYtan/policyanswer-RAG"
     )
 
     [
         loadPolicyQuestionDS >> formatterNoRAG >> noRagLLM, 
         loadPolicyQuestionDS >> formatterRAG >> ragLLM  
-    ] >> group_responses >> extractor >> evaluate_responses >> keep_columns >> push
+    ] >> group_responses >> evaluate_responses >> keep_columns >> push
 
 
 distiset = pipeline.run(

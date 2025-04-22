@@ -1,7 +1,11 @@
+import os
 import re
 
-from typing import Any, List, Optional, TYPE_CHECKING
+from typing import Any, Dict, Iterator, List, Optional, TYPE_CHECKING
+import concurrent
 from distilabel.steps import Step, StepInput, GlobalStep, GeneratorStep
+from dotenv import load_dotenv
+from openai import AsyncOpenAI
 from templates import answer_template_dict
 from pydantic import Field, PrivateAttr
 
@@ -166,3 +170,70 @@ class ExtractPolicyQuestion(Step):
                     result.append(qnEntry)
             yield result      
 
+class OpenRouterLLM(Step):
+    _client: Any = None  # Will be set in load()
+    model: str
+    max_tokens: int
+    temperature: float = 0.9
+
+    def load(self):
+        load_dotenv()
+        apikey = os.getenv("OPENROUTER_API_KEY") 
+        baseurl = "https://openrouter.ai/api/v1"
+        # Initialize the AsyncOpenAI client with OpenRouter base URL
+        # (Assuming AsyncOpenAI is imported from a relevant library)
+        self._client = AsyncOpenAI(
+            api_key=apikey,
+            base_url=baseurl
+        )
+        super().load()
+
+    @property
+    def inputs(self) -> List[str]:
+        return ["instruction"]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["generation"]
+
+    def _call_api(self, prompt: str) -> str:
+        """
+        Synchronous wrapper around your chat completion call.
+        Returns the generated text (or empty string on failure).
+        """
+        try:
+            response = self._client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": ""},
+                    {"role": "user",   "content": prompt}
+                ],
+                max_tokens=self.max_tokens,
+                temperature=self.temperature
+            )
+            # Extract content safely
+            return response.choices[0].message.content or ""
+        except Exception as e:
+            # (optional) log the exception e
+            return ""
+
+    def process(self, *inputs: StepInput):
+        """
+        For each input batch (an iterable of rows), runs all API calls in parallel
+        using a thread pool, then yields the list of results.
+        """
+        for batch in inputs:
+            # You can tune max_workers to suit your rate‑limits / CPU
+            with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+                # Schedule one future per row
+                futures = {
+                    executor.submit(self._call_api, row["instruction"]): row
+                    for row in batch
+                }
+
+                results: List[Dict[str, str]] = []
+                # As each finishes, collect its result
+                for future in concurrent.futures.as_completed(futures):
+                    text = future.result()
+                    results.append({"generation": text})
+            yield results
