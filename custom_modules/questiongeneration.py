@@ -27,29 +27,29 @@ class FormatTopic(GeneratorStep):
                 True if len(self.topics) == 0 else False,
             )
 
-class ExtractQuestion(Step):
+class Extract(Step):
     @property
     def inputs(self) -> List[str]:
         return ["topic", "generation", "model"]
 
     @property
     def outputs(self) -> List[str]:
-        return ["topic", "question", "model"]
+        return ["topic", "extract", "model"]
 
     def process(self, *inputs: StepInput):
         for batch in inputs:
             result = []
             for entry in batch:
-                match = re.search(r"<questions>(.*?)</questions>", entry["generation"], re.DOTALL)
+                match = re.search(r"<extract>(.*?)</extract>", entry["generation"], re.DOTALL)
                 text = match.group(1) if match else ""
-                questions = text.splitlines()
+                extract = text.splitlines()
                 chunk = map(lambda question: {
                     "topic": entry["topic"],
-                    "question": question,
+                    "extract": question,
                     "model": entry["model"],
-                }, questions)
+                }, extract)
                 for qnEntry in list(chunk):
-                    if qnEntry["question"] == "":
+                    if qnEntry["extract"] == "":
                         continue
                     result.append(qnEntry)
             yield result 

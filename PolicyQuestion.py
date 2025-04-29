@@ -12,7 +12,7 @@ from huggingface_hub import login
 from dotenv import load_dotenv
 
 from custom_modules.OpenRouterLLM import OpenRouterLLM
-from custom_modules.questiongeneration import ExtractQuestion, FormatTopic
+from custom_modules.questiongeneration import Extract, FormatTopic
 from custom_modules.utils import ToJsonFile
 from templates import topicGuidelines, SYSTEM_PROMPT_QUESTION
 
@@ -38,7 +38,7 @@ with Pipeline(name="policy_question") as pipeline:
         columns=["topic", "instruction", "generation", "model"],
     )
 
-    extract_questions = ExtractQuestion()
+    extract_questions = Extract()
 
     aggregator = KeepColumns(
         columns=["topic", "question", "model"]

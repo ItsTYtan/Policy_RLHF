@@ -9,6 +9,30 @@ topicGuidelines = {
     "Hate Speech / Sedition / Religious Offences": "Avoid any comments that could inflame tensions. Explain Singapore’s strong sedition and racial harmony laws"
 }
 
+SYSTEM_PROMPT_SUBTOPIC = '''
+    You are an expert on crime and criminal justice in Singapore, your task is to come up with a subtopics based on the topic that the user will supply you with.
+    Make sure that the subtopics are specific to Singapore, consider historical issues that Singapore has faced regarding these topics
+    
+    Generate 10 different subtopics on the provided topic.
+
+    Format the output as follows: 
+
+    <extract>
+    [First subtopic]
+    [Second subtopic]
+    [Third subtopic]
+    [Fourth subtopic]
+    [Fifth subtopic]
+    [Sixth subtopic]
+    [Seventh subtopic]
+    [Eighth subtopic]
+    [Ninth subtopic]
+    [Tenth subtopic] 
+    </extract>
+
+    Do not put brackets around the subtopic, they are simply to designate where the subtopic should be.
+'''
+
 SYSTEM_PROMPT_QUESTION = '''
     You are an expert on crime and criminal justice in Singapore, your task is to come up with a question based on the topic that the user will supply you with.
     
@@ -16,7 +40,7 @@ SYSTEM_PROMPT_QUESTION = '''
 
     Format the output as follows: 
 
-    <questions>
+    <extract>
     [First question]
     [Second question]
     [Third question]
@@ -27,7 +51,7 @@ SYSTEM_PROMPT_QUESTION = '''
     [Eighth question]
     [Ninth question]
     [Tenth question] 
-    </questions>
+    </extract>
 
     Do not put brackets around the question, they are simply to designate where the question should be.
 '''

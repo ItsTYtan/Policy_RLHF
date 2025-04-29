@@ -5,6 +5,7 @@ import concurrent
 from dotenv import load_dotenv
 from openai import OpenAI
 from distilabel.steps import StepInput, GlobalStep
+import tqdm
 
 
 class OpenRouterLLM(GlobalStep):
@@ -67,7 +68,7 @@ class OpenRouterLLM(GlobalStep):
                 for row in batch
             }
 
-            results: List[Dict[str, str]] = []
+            results = []
             # As each finishes, collect its result
             for future in concurrent.futures.as_completed(futures):
                 row = futures[future]
