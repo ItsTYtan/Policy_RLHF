@@ -1,857 +1,62 @@
 [
   {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What are the key differences between hate speech, sedition, and religious offenses in the context of Singapore's laws and regulations?",
+    "topic": "Firearms Offences",
+    "question": "What are the different types of firearms offences that are punishable under the law in Singapore, and what are the corresponding penalties for each offence?",
     "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How does the Maintenance of Religious Harmony Act in Singapore address and prevent religious offenses and hate speech?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What are the penalties for committing sedition or hate speech in Singapore, and how have these laws been enforced in recent years?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "Can individuals be held liable for online hate speech or sedition in Singapore, and what role do social media platforms play in regulating such content?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How does the Singaporean government balance the need to regulate hate speech and sedition with the right to free speech and expression?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What are some notable cases of hate speech or sedition in Singapore, and how were they prosecuted and punished?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How do Singapore's laws on hate speech and sedition compare to those in other countries, and what lessons can be learned from international approaches?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What role do community and religious leaders play in promoting religious harmony and preventing hate speech in Singapore?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How effective are Singapore's laws and initiatives in preventing and addressing online hate speech and sedition, and what challenges remain?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What are the implications of Singapore's hate speech and sedition laws for marginalized or minority groups, and how can their rights and interests be protected?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What are the primary forms of human trafficking in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "How does Singapore's legal system address the issue of human trafficking?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What are the key challenges faced by law enforcement in combating human trafficking in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What measures has the Singapore government taken to protect victims of human trafficking?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "How effective are the current rehabilitation programs for victims of human trafficking in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What role do non-governmental organizations (NGOs) play in addressing human trafficking in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "How does Singapore collaborate with other countries to combat human trafficking?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What are the common vulnerabilities that make individuals susceptible to human trafficking in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "How has technology been used to combat human trafficking in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What public awareness campaigns have been implemented in Singapore to prevent human trafficking?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the primary laws and regulations governing money laundering in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How does the Monetary Authority of Singapore (MAS) monitor and enforce anti-money laundering practices among financial institutions?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What role do international cooperation and treaties play in combatting financial crimes in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What specific measures has the Singapore government implemented to prevent money laundering activities in real estate transactions?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How are individuals and entities prosecuted for money laundering offenses in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the common methods used by criminals to launder money in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How has technology, including cryptocurrency, impacted money laundering trends in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the penalties and consequences for individuals found guilty of money laundering in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How does Singapore’s approach to money laundering prevention compare to that of other countries in the Asia-Pacific region?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the challenges faced by law enforcement agencies in detecting and investigating financial crimes in Singapore?",
-    "model": "openai/gpt-4o-mini"
   },
   {
     "topic": "Firearms Offences",
-    "question": "What are the primary laws governing firearms offenses in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "question": "How does the Arms and Explosives Act of Singapore define and regulate the possession, use, and trade of firearms, and what are the implications for individuals and organizations that fail to comply?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Firearms Offences",
-    "question": "How does Singapore's legal system categorize different types of firearms offenses?",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "question": "What are the circumstances under which an individual can be charged with unlawful possession of a firearm in Singapore, and what are the possible defences that can be raised in such cases?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Firearms Offences",
-    "question": "What are the penalties for illegal possession of firearms in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "question": "Can a person be convicted of a firearms offence in Singapore even if they did not actually possess or use the firearm, and if so, what are the relevant legal principles and precedents?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Firearms Offences",
-    "question": "Can you provide statistics on the frequency of firearms offenses in Singapore over the past decade?",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "question": "What is the role of the Singapore Police Force and other law enforcement agencies in investigating and prosecuting firearms offences, and what are the procedures for handling and storing seized firearms?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Firearms Offences",
-    "question": "How does Singapore's approach to firearms offenses compare to that of other countries in Southeast Asia?",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "question": "How do the courts in Singapore determine the sentence for an individual convicted of a firearms offence, and what are the factors that are taken into account in determining the severity of the sentence?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Firearms Offences",
-    "question": "What measures does the Singapore Police Force take to prevent firearms offenses?",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "question": "What are the consequences for an individual who is convicted of a firearms offence in Singapore, including any potential impact on their employment, immigration status, or other aspects of their life?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Firearms Offences",
-    "question": "What is the role of the Coroner's Court in firearms-related deaths in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "question": "Are there any specific programmes or initiatives in place in Singapore to prevent and reduce firearms offences, such as gun buyback schemes or community outreach programmes?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Firearms Offences",
-    "question": "How effective have recent government initiatives been in reducing firearms offenses in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "question": "How does Singapore's strict gun control regime compare to other countries, and what are the advantages and disadvantages of this approach in terms of public safety and individual freedoms?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Firearms Offences",
-    "question": "What are the legal defenses available to someone charged with a firearms offense in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "How does public awareness and education play a role in reducing firearms offenses in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What measures has Singapore implemented to combat human trafficking within its borders?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "How does Singapore's legal framework define and penalize human trafficking offenses?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What role do non-governmental organizations play in addressing human trafficking in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "How does Singapore collaborate with other countries to combat transnational human trafficking?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What are the common forms of human trafficking observed in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "How does the Singaporean government raise public awareness about the dangers of human trafficking?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What support services are available for victims of human trafficking in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "How has the COVID-19 pandemic affected human trafficking trends in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "What are the challenges faced by law enforcement in identifying and prosecuting human trafficking cases?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Human Trafficking",
-    "question": "How does Singapore's approach to human trafficking compare with that of other Southeast Asian countries?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the primary methods used by criminals to launder money in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How does Singapore's Anti-Money Laundering (AML) framework compare to international standards?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What role do financial institutions play in detecting and preventing money laundering in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How effective are Singapore's regulatory bodies in combatting financial crimes?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the penalties for individuals and organizations convicted of money laundering in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What measures has Singapore implemented to enhance cross-border cooperation in combating money laundering?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How does technology, such as blockchain and AI, impact the detection and prevention of financial crimes in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the common red flags that financial institutions in Singapore look for to identify potential money laundering activities?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How does Singapore's approach to combating financial crimes align with its efforts to maintain a robust and attractive financial hub?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the emerging trends in financial crimes in Singapore, and how are they being addressed?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What are the legal consequences for individuals found guilty of illegal possession of firearms in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "How does Singapore's approach to firearms offences compare to that of other countries in Southeast Asia?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What preventive measures has the Singapore government implemented to reduce firearms-related crimes?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What types of firearms offences are most commonly prosecuted in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "How do firearms offences in Singapore impact community safety and public perception of crime?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What role do law enforcement agencies play in tackling firearms offences in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "How effective have gun control laws been in preventing gun violence in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What are the sentencing guidelines for repeat offenders of firearms offences in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "How does the smuggling of firearms into Singapore pose a challenge to law enforcement?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What educational programs exist in Singapore to raise awareness about the dangers of firearms offences?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What are the most common types of drug offences in Singapore and what are the corresponding penalties for each offence?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "How does the Misuse of Drugs Act in Singapore define and classify different types of drugs, and what are the implications for offenders?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What are the mandatory minimum sentences for drug trafficking offences in Singapore, and under what circumstances can they be imposed?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "Can a person be convicted of a drug offence in Singapore if they are found to have a small amount of drugs in their possession for personal use, and what are the potential consequences?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What is the role of the Central Narcotics Bureau in Singapore in investigating and enforcing drug offences, and what powers do they have to conduct searches and seizures?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "How does Singapore's death penalty apply to drug trafficking offences, and what are the specific circumstances under which it can be imposed?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What are the rehabilitation and treatment options available to individuals in Singapore who are convicted of drug offences, and how effective are these programs in reducing recidivism?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "Can a person be charged with attempting to commit a drug offence in Singapore, even if they do not actually succeed in committing the offence, and what are the potential penalties?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "How do Singapore's laws and regulations regarding drug offences compare to those of other countries in the region, and what lessons can be learned from these comparisons?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What are the social and economic factors that contribute to drug abuse and drug offences in Singapore, and how can these underlying issues be addressed through policy and intervention?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What are the primary penalties for drug trafficking in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "How does Singapore's approach to drug offences compare to other countries in Southeast Asia?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What role does the Central Narcotics Bureau (CNB) play in drug law enforcement in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "Can you explain the process and criteria for mandatory death sentences in drug-related cases in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "How effective have rehabilitation programs been for drug offenders in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What measures has Singapore implemented to prevent drug use among youth?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "How does public opinion in Singapore influence drug policy and law enforcement?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What are the legal consequences for drug possession in Singapore, and how are they determined?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "How does Singapore's strict drug policy impact the country's international relations and human rights standing?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What recent changes, if any, have been made to Singapore's drug laws, and what are their implications?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What are the most common types of cybercrime reported in Singapore, and how have they evolved in recent years?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How does the Singapore government enforce laws against cybercrime, and what are the penalties for offenders?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What role do cyber security agencies play in preventing and responding to cybercrime incidents in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How does the education system in Singapore address the issue of cybercrime awareness among students?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What are the implications of cybercrime on businesses in Singapore, particularly in terms of financial loss and reputation?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How does Singapore collaborate with international law enforcement agencies to combat transnational cybercrime?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What measures are being taken to protect personal data and privacy in the face of rising cybercrime incidents in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How do cultural factors in Singapore influence public perception and reporting of cybercrimes?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "In what ways are emerging technologies, such as artificial intelligence, being utilized to detect and prevent cybercrime in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What initiatives are in place to support victims of cybercrime in Singapore, and how effective are these resources? ",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What are the most common types of organized crime in Singapore and how have they evolved over the years?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How does the Singapore government define and categorize organized crime, and what are the key characteristics that distinguish it from other types of crime?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What role do international criminal organizations play in Singapore's organized crime landscape, and how do local law enforcement agencies cooperate with international partners to combat these groups?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What are the primary motivations and drivers behind organized crime in Singapore, and how do these factors contribute to the persistence of organized crime in the country?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How effective are Singapore's laws and regulations in preventing and combating organized crime, and what areas require improvement or reform?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What strategies have been employed by Singapore's law enforcement agencies to disrupt and dismantle organized crime groups, and what have been the outcomes of these efforts?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What is the relationship between organized crime and corruption in Singapore, and how do corrupt practices facilitate or enable organized crime activities?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How does organized crime impact the economy and society in Singapore, and what are the potential long-term consequences of allowing organized crime to persist?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What are the challenges and obstacles faced by law enforcement agencies in investigating and prosecuting organized crime cases in Singapore, and how can these challenges be addressed?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How can the public and private sectors in Singapore work together to prevent and combat organized crime, and what role can community-based initiatives and partnerships play in supporting these efforts?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "How does Singapore define terrorism under its laws?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "What measures has the Singapore government implemented to prevent terrorism?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "How does the Internal Security Act (ISA) play a role in combating terrorism in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "What is the role of community engagement in Singapore's counter-terrorism strategy?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "How effective have Singapore's anti-terrorism policies been in recent years?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "What international partnerships does Singapore maintain for counter-terrorism efforts?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "How does Singapore manage the rehabilitation and reintegration of individuals radicalized by terrorist ideologies?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "What are the penalties for individuals convicted of terrorism offenses in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "How does Singapore balance national security concerns and civil liberties in its fight against terrorism?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "What resources and support systems are available to victims of terrorism in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What are the legal definitions of hate speech and sedition in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How does Singaporean law differentiate between hate speech and freedom of expression?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What are the penalties for individuals found guilty of committing hate speech or sedition in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "Can you provide examples of cases involving hate speech or sedition that have occurred in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How does the government of Singapore monitor and respond to online hate speech?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What role do religious offences play in maintaining social harmony in a multicultural society like Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "In what ways has the COVID-19 pandemic influenced incidents of hate speech in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How effective are educational initiatives in Singapore aimed at promoting tolerance and preventing hate speech?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What impact do sedition laws have on political dissent and activism in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How do international human rights standards align or conflict with Singapore’s approach to hate speech and sedition?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the most common methods used by criminals to launder money in Singapore, and how do law enforcement agencies detect these activities?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How does the Monetary Authority of Singapore contribute to the prevention and detection of money laundering and financial crimes in the country?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the key differences between money laundering and other financial crimes, such as terrorism financing, and how are they addressed in Singapore's legal framework?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What role do financial institutions, such as banks and casinos, play in preventing and reporting suspicious transactions, and what are their responsibilities under Singapore's Anti-Money Laundering and Combating the Financing of Terrorism regulations?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "Can you explain the concept of \"predicate offenses\" in the context of money laundering, and how do Singaporean authorities investigate and prosecute these underlying crimes?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How does Singapore's corruption-free environment and strong regulatory framework affect the prevalence of money laundering and financial crimes, compared to other countries in the region?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are some of the emerging trends and risks in money laundering and financial crimes, such as the use of cryptocurrencies and digital payment systems, and how is Singapore addressing these challenges?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What are the penalties and consequences for individuals and organizations convicted of money laundering and financial crimes in Singapore, and how do these deterrents impact the overall crime rate?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "How does international cooperation, such as through the Financial Action Task Force and the Egmont Group, assist Singapore in combating money laundering and financial crimes, and what are some examples of successful collaborations?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "question": "What measures can individuals and businesses take to protect themselves from being unwittingly involved in money laundering and financial crimes, and what are some best practices for preventing and reporting suspicious activities in Singapore?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How has the Singapore government historically tackled organized crime?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What are the primary forms of organized crime present in Singapore today?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "Can you discuss the role of international cooperation in Singapore's efforts against organized crime?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What measures does the Singapore Police Force employ to disrupt organized criminal activities?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How effective are Singapore's laws in deterring and punishing members of organized crime syndicates?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How has technology influenced the methods of operation for organized crime groups in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What impact does organized crime have on the economy of Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "In what ways does organized crime infiltrate legitimate businesses in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How do social and cultural factors contribute to the persistence of organized crime in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What community-based initiatives exist in Singapore to prevent youth involvement in organized crime?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What are the key characteristics that define organized crime in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How does organized crime in Singapore differ from that in other countries in Southeast Asia?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What measures has the Singapore government implemented to combat organized crime effectively?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What role do drug trafficking and money laundering play in organized crime networks within Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How has technology influenced the operations of organized crime groups in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What are some notable cases of organized crime in Singapore's history?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How does the Singapore Police Force collaborate with international agencies to tackle organized crime?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What impact does organized crime have on the economy and public safety in Singapore?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "What preventive strategies can be employed to discourage youth from becoming involved in organized crime?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Organized Crime",
-    "question": "How does organized crime exploit legitimate businesses in Singapore for illicit activities?",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What are the most common types of cybercrime committed in Singapore and how have they evolved over the years?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How does the Singapore government's Cyber Security Agency contribute to the prevention and investigation of cybercrimes?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What are the key challenges faced by law enforcement agencies in Singapore when it comes to investigating and prosecuting cybercrime cases?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What is the role of the Computer Misuse Act in combating cybercrime in Singapore, and how has it been amended to keep pace with emerging threats?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How do Singapore's courts approach the issue of jurisdiction in cybercrime cases, where the perpetrator may be located outside of the country?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What types of penalties can individuals expect to face if they are convicted of cybercrime offenses in Singapore, such as hacking or online harassment?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How does the Singaporean public perceive the threat of cybercrime, and what steps can individuals take to protect themselves from common cyber threats?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What is the relationship between cybercrime and other types of crime, such as organized crime or terrorism, in the Singaporean context?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How does Singapore's education system address the issue of cybercrime, in terms of teaching students about online safety and digital citizenship?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What are some of the emerging trends and threats in cybercrime that Singapore's law enforcement and cybersecurity authorities are preparing to address, such as artificial intelligence-powered attacks or cryptocurrency-related crimes?",
+    "question": "What are the potential consequences for organizations, such as gun clubs or shooting ranges, that are found to have breached firearms regulations or laws in Singapore, and how can they ensure compliance with relevant legislation and guidelines?",
     "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How does Singapore's legal framework define and address hate speech, sedition, and religious offenses?",
+    "question": "What are the legal definitions of hate speech, sedition, and religious offenses in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "How does the Singapore government balance freedom of speech with the prevention of hate speech and sedition?",
     "model": "qwen/qwen-2.5-72b-instruct"
   },
   {
@@ -861,242 +66,1137 @@
   },
   {
     "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How effective have Singapore's laws been in preventing hate speech, sedition, and religious offenses?",
+    "question": "How do Singapore's laws on hate speech and sedition compare to those in other countries?",
     "model": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What role do community organizations play in preventing hate speech, sedition, and religious offenses in Singapore?",
+    "question": "What measures does the Singapore government take to prevent and address incidents of hate speech and sedition?",
     "model": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How does Singapore balance freedom of expression with the need to prevent hate speech, sedition, and religious offenses?",
+    "question": "How are religious offenses treated under Singapore's Penal Code?",
     "model": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What measures are in place to protect victims of hate speech, sedition, and religious offenses in Singapore?",
+    "question": "What role do community leaders and religious organizations play in preventing hate speech and sedition in Singapore?",
     "model": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How does the Singapore government monitor and respond to online hate speech, sedition, and religious offenses?",
+    "question": "How effective have Singapore's laws been in curbing incidents of hate speech, sedition, and religious offenses?",
     "model": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What is the process for reporting and investigating hate speech, sedition, and religious offenses in Singapore?",
+    "question": "What are some notable court cases involving hate speech, sedition, or religious offenses in Singapore?",
     "model": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "How has the rise of social media impacted the prevalence of hate speech, sedition, and religious offenses in Singapore?",
+    "question": "How does Singapore's education system address issues of hate speech, sedition, and religious harmony?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What are the current laws and regulations regarding firearms possession in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What penalties do individuals face if convicted of firearms offences in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "How does Singapore's firearm crime rate compare to other countries?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What measures has the Singapore government implemented to prevent illegal firearms trafficking?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What role do law enforcement agencies play in enforcing firearms laws in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "How are firearms offences investigated and prosecuted in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What impact do firearms offences have on community safety and public perception in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "Are there any significant cases of firearms offences in Singapore that have shaped public policy?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "How does the licensing process for firearms differ between civilians and authorized organizations in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What educational programs are in place in Singapore to raise awareness about the dangers of firearms misuse?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What are the most common types of organized crime in Singapore and how have they evolved over the years?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How does the Singapore government define and classify organized crime, and what are the key characteristics that distinguish it from other types of crime?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What role do transnational organized crime groups play in Singapore's crime landscape, and how do they interact with local crime groups?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What are the primary motivations and drivers behind organized crime in Singapore, and how do they impact the country's economy and society?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How does the Singapore authorities' approach to combating organized crime compare to that of other countries in the region, and what lessons can be learned from international best practices?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What are the most significant challenges faced by law enforcement agencies in Singapore when investigating and prosecuting organized crime cases, and how can these challenges be addressed?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What is the relationship between organized crime and corruption in Singapore, and how can corruption be prevented and tackled in order to reduce the incidence of organized crime?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How does organized crime affect vulnerable populations in Singapore, such as women, children, and migrant workers, and what measures are in place to protect these groups?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What are the key legislative and policy frameworks in Singapore that govern the prevention and combating of organized crime, and how effective have they been in recent years?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What role can technology, such as data analytics and artificial intelligence, play in helping Singapore's law enforcement agencies to detect, disrupt, and dismantle organized crime networks?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How does Singapore's legal framework address the issue of money laundering and financial crimes?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What are the primary methods used by criminals to launder money in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How effective are the current anti-money laundering (AML) measures implemented by the Monetary Authority of Singapore (MAS)?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What penalties do individuals or entities face if convicted of money laundering in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How does Singapore collaborate with international agencies to combat money laundering and financial crimes?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What role does technology play in detecting and preventing money laundering in Singapore's financial sector?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How do Singapore's financial institutions ensure compliance with anti-money laundering regulations?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What are the common red flags that financial institutions in Singapore should look out for to identify potential money laundering activities?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How has the rise of digital currencies impacted the landscape of money laundering in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What educational initiatives are in place in Singapore to raise awareness about the risks of money laundering and financial crimes?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What are the most common types of cybercrime reported in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How does Singapore's legal framework address cybercrime offenses?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What role do law enforcement agencies in Singapore play in combating cybercrime?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How has the rise of digital payments affected cybercrime rates in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What measures are being taken by the Singapore government to enhance cybersecurity for individuals and businesses?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How do cybercriminals exploit social media platforms in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What are the penalties for individuals convicted of cybercrime in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How does cybercrime in Singapore compare to that of other Southeast Asian countries?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What initiatives are in place to educate the public about cybercrime prevention in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How has the COVID-19 pandemic influenced the patterns of cybercrime in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What are the most common types of cybercrime in Singapore and how have they evolved over the past decade?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How does the Singaporean government's Cyber Security Agency contribute to the prevention and investigation of cybercrime?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What are the key challenges faced by law enforcement agencies in Singapore when it comes to investigating and prosecuting cybercrime cases?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What role do international cooperation and collaboration play in combating cybercrime, and how does Singapore engage with other countries on this issue?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What are the potential consequences for individuals and businesses in Singapore that fall victim to cybercrime, and what support services are available to them?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How effective are the current laws and regulations in Singapore, such as the Computer Misuse Act, in deterring and punishing cybercrime?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What are some of the emerging trends and threats in cybercrime, such as the use of artificial intelligence and deepfakes, and how is Singapore preparing to address them?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How can individuals and businesses in Singapore protect themselves from cybercrime, and what are some best practices for cybersecurity?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What is the impact of cybercrime on the economy and national security of Singapore, and how does it affect the country's reputation as a safe and secure place to do business?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What are some of the innovative technologies and strategies being used by law enforcement agencies in Singapore to detect, investigate, and prevent cybercrime, such as the use of blockchain and machine learning?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What are the primary laws governing firearms in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "How does the Singapore Police Force handle the investigation of firearms offences?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What penalties are faced by individuals convicted of illegal possession of firearms in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "How does Singapore's strict firearms legislation impact the country's overall crime rate?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "Can you provide statistics on the number of firearms offences reported in Singapore over the past decade?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What measures are in place to prevent the illegal import and trafficking of firearms into Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "How does Singapore collaborate with international agencies to combat firearms trafficking?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What is the process for legally obtaining a firearm in Singapore, and who is eligible?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "How does Singapore's approach to firearms offences compare to that of neighboring countries?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "question": "What community education and awareness programs exist in Singapore to prevent firearms offences?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What are the main financial crimes associated with money laundering in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How does Singapore's legal framework address money laundering and related financial crimes?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What role do financial institutions play in preventing money laundering in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What are the penalties for individuals found guilty of money laundering in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "Can you explain the process of how money is typically laundered in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What are the key indicators that financial institutions in Singapore should watch for to detect money laundering activities?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How does the Monetary Authority of Singapore (MAS) enforce regulations on financial crimes?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What recent trends have emerged in money laundering cases within Singapore's financial sector?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How do international cooperation and treaties impact Singapore's efforts to combat money laundering?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What mechanisms are in place for whistleblowers to report suspected money laundering activities in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What are the key components of Singapore's counter-terrorism strategy and how have they evolved over time?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does the Singapore government define terrorism, and what are the main differences between its definition and those used by other countries?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What role do intelligence agencies play in preventing and responding to terrorist threats in Singapore?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What are some of the most significant terrorist threats that Singapore has faced in recent years, and how have they been addressed?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does Singapore's geographic location and cultural diversity impact its vulnerability to terrorism, and what steps are taken to mitigate these risks?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What laws and regulations are in place in Singapore to combat terrorism, and how are they enforced?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does Singapore cooperate with other countries and international organizations to share intelligence and best practices on counter-terrorism?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What is the impact of terrorism on the economy and societal cohesion in Singapore, and how are these effects addressed?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What measures are in place to prevent the radicalization of individuals and the spread of extremist ideologies in Singapore?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does Singapore balance the need to protect national security with the need to protect individual rights and freedoms in the context of counter-terrorism efforts?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What are the primary methods used by human traffickers in Singapore to recruit and transport victims?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How does Singapore's legal framework address the issue of human trafficking, and what specific laws are in place?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What role do social services and non-governmental organizations (NGOs) play in supporting victims of human trafficking in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How effective are Singapore's current efforts to prevent human trafficking, and what additional measures could be implemented?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What are the main challenges faced by law enforcement in Singapore when investigating human trafficking cases?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How does Singapore collaborate with other countries to combat human trafficking, and what international agreements are in place?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What are the typical profiles of victims of human trafficking in Singapore, and what factors make them vulnerable?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How does Singapore's economic and social environment contribute to the risk of human trafficking?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What are the long-term impacts of human trafficking on victims in Singapore, and what support mechanisms are available for their rehabilitation?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How does public awareness and education about human trafficking in Singapore compare to other countries in the region?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What are the legal consequences of drug possession in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What role does the Central Narcotics Bureau play in combating drug offences?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "How does Singapore's death penalty apply to drug trafficking offences?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What preventive measures are in place to deter drug-related crimes in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "How does Singapore's approach to rehabilitation for drug offenders compare with other countries?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What are the common types of drugs involved in criminal cases in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "How do drug offences impact the community and public safety in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What initiatives exist to educate the public on the dangers of drug abuse?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "How has the trend of drug offences in Singapore changed over the last decade?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What legal rights do individuals accused of drug offences in Singapore have during a trial?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What are the most common methods used by criminals to launder money in Singapore, and how do law enforcement agencies detect these activities?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How does the Corruption, Drug Trafficking and Other Serious Crimes (Confiscation of Benefits) Act in Singapore address the issue of money laundering, and what are its key provisions?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What role do financial institutions play in preventing and reporting suspected money laundering activities in Singapore, and what are their obligations under the Monetary Authority of Singapore's regulations?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What are the penalties for individuals and companies convicted of money laundering offenses in Singapore, and how do these penalties compare to those in other countries?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How do Singapore's anti-money laundering laws and regulations impact the country's reputation as a financial hub, and what steps are being taken to balance economic growth with financial crime prevention?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What is the process for reporting suspicious transactions and activities to the Financial Intelligence Unit in Singapore, and what types of transactions are typically flagged for review?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How does the use of technology, such as artificial intelligence and machine learning, help to detect and prevent money laundering in Singapore, and what are the potential limitations of these tools?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What are some of the emerging trends and risks in money laundering and financial crimes in Singapore, such as the use of cryptocurrencies and online payment systems, and how are authorities responding to these threats?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "How does international cooperation and information sharing between countries help to combat global money laundering and financial crimes, and what role does Singapore play in these efforts?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "question": "What are the challenges and complexities of investigating and prosecuting money laundering cases in Singapore, and what steps are being taken to improve the effectiveness of these efforts and secure convictions?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What are the primary anti-terrorism laws in Singapore, and how do they impact civil liberties?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does Singapore's Internal Security Act (ISA) contribute to the country's counter-terrorism efforts?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What role does the Religious Rehabilitation Group (RRG) play in Singapore's approach to de-radicalization?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How effective has Singapore's multi-agency response been in preventing and responding to potential terrorist threats?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What are the key strategies used by Singapore to monitor and disrupt terrorist financing activities?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does Singapore collaborate with international partners in the global fight against terrorism?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What measures does Singapore implement to protect critical infrastructure and public spaces from terrorist attacks?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does Singapore's education system incorporate counter-radicalization and national security awareness programs?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What is the role of community engagement and grassroots organizations in Singapore's counter-terrorism strategy?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does Singapore balance the need for security with the protection of individual rights and freedoms in its anti-terrorism policies?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What are the main forms of organized crime present in Singapore today?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How does the Singapore government combat organized crime through legislation?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "In what ways has technology impacted the operations of organized crime groups in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What role do international collaborations play in addressing organized crime in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How has organized crime evolved in Singapore over the last two decades?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What are the social and economic consequences of organized crime on Singaporean society?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How does Singapore's approach to organized crime compare to that of other countries in the region?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What challenges do law enforcement agencies face when tackling organized crime in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What preventive measures can be implemented to deter youth from joining organized crime groups?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How has the COVID-19 pandemic affected the landscape of organized crime in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What are the most common forms of human trafficking found in Singapore, and how do they differ from other countries in the region?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How does Singapore's strict laws and regulations, such as the Prevention of Human Trafficking Act, impact the prosecution and punishment of human trafficking cases?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What role do non-governmental organizations, such as the Singapore-based Humanitarian Organization for Migration Economics, play in combating human trafficking and supporting victims?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What are the most significant challenges faced by law enforcement agencies in Singapore when investigating and prosecuting human trafficking cases, and how can they be addressed?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How does human trafficking intersect with other crimes, such as organized crime and cybercrime, in Singapore, and what are the implications for law enforcement and crime prevention?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What are the key indicators and warning signs of human trafficking, and how can the general public in Singapore help to identify and report suspected cases?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What support services and resources are available to victims of human trafficking in Singapore, and how can they be accessed and utilized?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How does Singapore's geographic location and status as a major transportation hub contribute to its vulnerability to human trafficking, and what measures can be taken to mitigate this risk?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What are the economic and social factors that contribute to human trafficking in Singapore, and how can addressing these underlying issues help to prevent trafficking?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What international cooperation and collaboration efforts is Singapore involved in to combat human trafficking, and how effective have these efforts been in preventing and responding to trafficking cases?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What are the most common types of cybercrimes committed in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How has the Singapore government responded to the rise in cybercrime?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What are the penalties for committing cybercrimes in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How does the Singapore Police Force investigate cybercrimes?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What measures can individuals take to protect themselves from cybercrimes in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How has the rise in cybercrime affected businesses in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What role do international collaborations play in combating cybercrime in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How effective are Singapore's cybercrime prevention and awareness programs?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "What technological advancements are being used to combat cybercrime in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Cybercrime",
+    "question": "How has the legal framework in Singapore evolved to address the challenges of cybercrime?",
     "model": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Hate Speech / Sedition / Religious Offences",
-    "question": "What international comparisons can be drawn between Singapore's approach to hate speech, sedition, and religious offenses and those of other countries?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "question": "What measures has Singapore implemented to combat the threat of terrorism within its borders?",
+    "question": "What are the legal definitions of hate speech and sedition under Singaporean law?",
     "model": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Terrorism",
-    "question": "How does Singapore's legislation regarding terrorism differ from other countries in Southeast Asia?",
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "How does Singapore enforce laws against hate speech in the context of racial and religious harmony?",
     "model": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Terrorism",
-    "question": "What role does community engagement play in Singapore's counter-terrorism strategy?",
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "What are some notable cases in Singapore where individuals have been prosecuted for sedition?",
     "model": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Terrorism",
-    "question": "How has the threat of online radicalization impacted Singapore's approach to combating terrorism?",
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "How does the Prevention of Religious Harmony Act in Singapore address religious offences?",
     "model": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Terrorism",
-    "question": "What are some notable cases of terrorism-related incidents that have occurred in Singapore's history?",
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "What role does the Media Development Authority play in regulating hate speech and related content?",
     "model": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Terrorism",
-    "question": "How does Singapore cooperate with international agencies to enhance its counter-terrorism efforts?",
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "In what ways does public sentiment influence the enforcement of hate speech laws in Singapore?",
     "model": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Terrorism",
-    "question": "What impact has the COVID-19 pandemic had on the landscape of terrorism in Singapore?",
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "How do community organizations in Singapore contribute to the prevention of hate speech and promoting harmony?",
     "model": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Terrorism",
-    "question": "How does the Singaporean government address the rehabilitation of former terrorists or extremist sympathizers?",
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "What are the potential penalties for individuals found guilty of committing religious offences in Singapore?",
     "model": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Terrorism",
-    "question": "What preventative measures are in place in Singapore to thwart potential terrorist attacks during large-scale events?",
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "How do hate speech laws in Singapore compare to those in other countries in the region?",
     "model": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Terrorism",
-    "question": "How does the Public Security and Anti-Terrorism Act in Singapore empower law enforcement agencies in dealing with terrorism? ",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What are the most common types of firearms offences committed in Singapore and what are the typical punishments for these crimes?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "How does the Arms and Explosives Act regulate the possession and use of firearms in Singapore, and what are the penalties for violating this act?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What is the process for obtaining a firearms license in Singapore, and what are the requirements that must be met by applicants?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "Can a person who has been convicted of a firearms offence in Singapore be granted a pardon or have their sentence reduced, and under what circumstances?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What are the differences between the various types of firearms offences under Singaporean law, such as unlawful possession, trafficking, and discharge of a firearm?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "How does the Singaporean justice system approach the issue of gun violence, and what strategies have been implemented to reduce the incidence of firearms-related crimes?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What are the consequences for a foreigner who is found to be in possession of a firearm in Singapore without a valid license, and how do these consequences differ from those for Singaporean citizens?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "In what ways do Singapore's strict gun control laws contribute to its low rate of firearms-related crimes, and are there any potential drawbacks to these laws?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "How does the police force in Singapore investigate and prosecute firearms offences, and what technologies and tactics are used to detect and prevent these crimes?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "question": "What are the potential defences that can be raised by a person charged with a firearms offence in Singapore, and how have the courts interpreted these defences in past cases?",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How has the incidence of cybercrime evolved in Singapore over the past decade?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What are the primary types of cybercrimes committed in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What measures has the Singapore government implemented to combat cybercrime?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How effective are Singapore's current legal frameworks in addressing cybercrime?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What role do public-private partnerships play in Singapore's efforts to prevent and respond to cybercrime?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How does Singapore's Cyber Security Agency (CSA) collaborate with international organizations to tackle cybercrime?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What are the most significant challenges faced by law enforcement agencies in combating cybercrime in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How have technological advancements influenced the nature and complexity of cybercrimes in Singapore?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "What educational initiatives are in place in Singapore to raise awareness about cybercrime prevention?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "question": "How does Singapore's approach to cybercrime differ from that of other Southeast Asian countries?",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "question": "What are the legal penalties for drug trafficking in Singapore?",
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "What measures does the Singapore government take to educate the public about the implications of hate speech and sedition?",
     "model": "openai/gpt-4o-mini"
   },
   {
     "topic": "Drug Offences",
-    "question": "What is the role of the Central Narcotics Bureau (CNB) in combating drug offences?",
-    "model": "openai/gpt-4o-mini"
+    "question": "What are the most common types of drug offences in Singapore and their corresponding penalties under the Misuse of Drugs Act?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Drug Offences",
-    "question": "How does Singapore's approach to drug offences compare with other countries in Southeast Asia?",
-    "model": "openai/gpt-4o-mini"
+    "question": "How does the Singaporean legal system differentiate between drug consumption and drug trafficking, and what are the implications for sentencing?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Drug Offences",
-    "question": "What types of drugs are most commonly involved in criminal cases in Singapore?",
-    "model": "openai/gpt-4o-mini"
+    "question": "What role does the Central Narcotics Bureau play in investigating and enforcing drug-related laws in Singapore?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Drug Offences",
-    "question": "What preventive measures does the Singapore government implement to reduce drug abuse?",
-    "model": "openai/gpt-4o-mini"
+    "question": "Can individuals convicted of drug offences in Singapore be rehabilitated, and what support services are available to help them reintegrate into society?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Drug Offences",
-    "question": "How does the harm reduction strategy in Singapore address drug dependence?",
-    "model": "openai/gpt-4o-mini"
+    "question": "What are the consequences for foreigners found guilty of drug offences in Singapore, including potential deportation or imprisonment?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Drug Offences",
-    "question": "What are the rehabilitation options available for offenders convicted of drug-related offences?",
-    "model": "openai/gpt-4o-mini"
+    "question": "How does Singapore's death penalty apply to drug trafficking cases, and what are the criteria for imposing such a sentence?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Drug Offences",
-    "question": "How does the death penalty for drug trafficking in Singapore impact crime rates?",
-    "model": "openai/gpt-4o-mini"
+    "question": "What are the penalties for drug offences committed by minors in Singapore, and how does the juvenile justice system handle such cases?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Drug Offences",
-    "question": "What is the process for handling drug offences in Singapore's courts?",
-    "model": "openai/gpt-4o-mini"
+    "question": "How effective are Singapore's drug enforcement strategies, including measures such as routine drug testing and border control, in reducing drug-related crime?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Drug Offences",
-    "question": "How does public perception influence drug policy and enforcement in Singapore?",
+    "question": "Can individuals in Singapore be charged with drug offences for possession or use of prescription medications without a valid prescription, and what are the potential consequences?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What are the social and economic factors that contribute to drug abuse and drug-related crime in Singapore, and how do these factors inform policy and intervention strategies?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What are the typical penalties for drug possession in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "How does Singapore's legal system approach drug trafficking compared to other drug-related offenses?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "Can you explain the role of the Central Narcotics Bureau (CNB) in combating drug offenses in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What measures does Singapore take to prevent drug abuse among its youth?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "How effective are Singapore's drug rehabilitation programs for offenders?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What is the process for a drug offender to appeal a conviction in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "How does Singapore's zero-tolerance policy towards drugs impact the country's prison population?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "What are the legal consequences for consuming drugs in a public place in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "How does Singapore's drug policy affect its international relations, particularly with neighboring countries?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "question": "How does Singapore balance its strict drug laws with the need for human rights and rehabilitation?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What are the key legislative measures in Singapore aimed at preventing terrorism?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How has the threat of terrorism evolved in Singapore over the past two decades?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What role does the Internal Security Department (ISD) play in combating terrorism in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does Singapore collaborate with international partners to counter terrorism?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What impact has the SGSecure initiative had on public awareness and preparedness for terrorism?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What are the penalties for individuals convicted of terrorism-related offenses in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does the Singaporean government balance national security and civil liberties in its anti-terrorism efforts?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What are the prevalent forms of radicalization observed among individuals in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "How does community engagement serve as a strategy in Singapore’s counter-terrorism framework?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "question": "What are the challenges faced by law enforcement in addressing the evolving nature of terrorism threats in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "What are the key differences between hate speech, sedition, and religious offenses in the context of Singapore's laws and regulations?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "How does the Singapore government define and prosecute hate speech, and what are the potential consequences for offenders?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "What role does the Maintenance of Religious Harmony Act play in regulating religious offenses and promoting interfaith understanding in Singapore?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "Can sedition laws in Singapore be used to curb online discourse and freedom of expression, and what are the implications for social media users?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "How does the Protection from Online Falsehoods and Manipulation Act intersect with hate speech and sedition laws in Singapore, and what are the potential consequences for spreading false information?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "What are some notable cases of hate speech or sedition in Singapore, and how have the courts handled these cases in terms of sentencing and punishment?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "How do Singapore's laws and regulations on hate speech and sedition balance the need to maintain social harmony with the need to protect freedom of expression and religious freedom?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "What is the process for reporting and investigating incidents of hate speech or religious offenses in Singapore, and what support services are available to victims?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "How does Singapore's approach to regulating hate speech and sedition compare to that of other countries, and what can be learned from international best practices?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "question": "What are some potential challenges and controversies surrounding the enforcement of hate speech and sedition laws in Singapore, and how can these be addressed through policy reforms or community engagement initiatives?",
+    "model": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How has the Singapore government's approach to combating organized crime evolved over the past decade?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What are the primary types of organized crime activities that the police in Singapore focus on?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How effective have Singapore's anti-money laundering laws been in curbing organized crime?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What role do international collaborations play in Singapore's efforts to combat organized crime?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How does Singapore's strict legal framework contribute to the prevention of organized crime?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What are the challenges faced by law enforcement agencies in Singapore when dealing with transnational organized crime?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How does organized crime in Singapore compare to that in other Southeast Asian countries?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What impact has technology had on the operations of organized crime groups in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "How does public awareness and community involvement contribute to the fight against organized crime in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "question": "What measures are in place to prevent organized crime groups from infiltrating legitimate businesses in Singapore?",
+    "model": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What are the key indicators of human trafficking that law enforcement in Singapore looks for?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How does Singapore's legal framework address human trafficking and what penalties are imposed on traffickers?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What preventative measures has the Singaporean government implemented to combat human trafficking?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How effective have public awareness campaigns been in educating citizens about the dangers of human trafficking in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What role do non-governmental organizations (NGOs) play in supporting victims of human trafficking in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "Can you describe the process of victim identification and rehabilitation for those rescued from human trafficking situations in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How does Singapore cooperate with other countries to tackle cross-border human trafficking cases?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What challenges does law enforcement face in prosecuting human trafficking cases in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "How has the COVID-19 pandemic impacted human trafficking trends in Singapore?",
+    "model": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "question": "What steps can individuals take to help combat human trafficking in their communities in Singapore?",
     "model": "openai/gpt-4o-mini"
   }
 ]

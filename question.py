@@ -3,7 +3,8 @@ from distilabel.pipeline import Pipeline
 from distilabel.steps import (
     GroupColumns,
     KeepColumns,
-    ExpandColumns
+    ExpandColumns,
+    PushToHub
 )
 
 import os
@@ -13,7 +14,7 @@ from dotenv import load_dotenv
 from custom_modules.OpenRouterLLM import OpenRouterLLM
 from custom_modules.questiongeneration import ExtractQuestion, FormatTopic
 from custom_modules.utils import ToJsonFile
-from templates import topics, SYSTEM_PROMPT_QUESTION
+from templates import topicGuidelines, SYSTEM_PROMPT_QUESTION
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -48,10 +49,14 @@ with Pipeline(name="policy_question") as pipeline:
         filepath="outputs"
     )
 
+    tohub = PushToHub(
+        repo_id="ItsTYtan/policyquestion"
+    )
+
     tasks = []
     for model in models:
         formatter = FormatTopic(
-            topics=topics,
+            topics=topicGuidelines.keys(),
         )
 
         textgeneration = OpenRouterLLM(
@@ -62,7 +67,10 @@ with Pipeline(name="policy_question") as pipeline:
             max_workers=30
         )
         tasks.append(formatter >> textgeneration)
-    tasks >> group_columns >> unwrap_columns >> extract_questions >> aggregator >> tojson
+    tasks >> group_columns >> unwrap_columns >> extract_questions >> aggregator >> [
+        tojson,
+        tohub
+    ]
 
 distiset = pipeline.run(
     use_cache=False,
