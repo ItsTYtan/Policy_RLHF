@@ -1,3 +1,5 @@
+from collections import defaultdict
+import json
 import os
 import re
 
@@ -5,7 +7,7 @@ from typing import Any, Dict, Iterator, List, Optional, TYPE_CHECKING
 import concurrent
 from distilabel.steps import Step, StepInput, GlobalStep, GeneratorStep
 from dotenv import load_dotenv
-from openai import AsyncOpenAI
+from openai import OpenAI
 from templates import answer_template_dict
 from pydantic import Field, PrivateAttr
 
@@ -175,14 +177,13 @@ class OpenRouterLLM(Step):
     model: str
     max_tokens: int
     temperature: float = 0.9
+    system_prompt: str = "You are a helpful assistant."
 
     def load(self):
         load_dotenv()
         apikey = os.getenv("OPENROUTER_API_KEY") 
         baseurl = "https://openrouter.ai/api/v1"
-        # Initialize the AsyncOpenAI client with OpenRouter base URL
-        # (Assuming AsyncOpenAI is imported from a relevant library)
-        self._client = AsyncOpenAI(
+        self._client = OpenAI(
             api_key=apikey,
             base_url=baseurl
         )
@@ -205,16 +206,15 @@ class OpenRouterLLM(Step):
             response = self._client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": ""},
+                    {"role": "system", "content": self.system_prompt},
                     {"role": "user",   "content": prompt}
                 ],
                 max_tokens=self.max_tokens,
                 temperature=self.temperature
             )
-            # Extract content safely
             return response.choices[0].message.content or ""
         except Exception as e:
-            # (optional) log the exception e
+            print(e)
             return ""
 
     def process(self, *inputs: StepInput):
@@ -237,3 +237,20 @@ class OpenRouterLLM(Step):
                     text = future.result()
                     results.append({"generation": text})
             yield results
+
+
+class ToJsonFile(GlobalStep):
+    filename: str
+    filepath: str
+
+    def process(self, inputs: StepInput) -> "StepOutput":  # type: ignore
+        full_path = f"{self.filepath}/{self.filename}"
+        with open(full_path, "w", encoding="utf-8") as f:
+            obj = []
+            for input in inputs:
+                record = {}
+                for key, value in input.items():
+                    record[key] = value
+                obj.append(record)
+            json.dump(obj, f, ensure_ascii=False, indent=2)
+        yield inputs
