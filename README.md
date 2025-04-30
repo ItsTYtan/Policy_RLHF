@@ -2,22 +2,33 @@
 
 Pipeline for generation of synthetic Singapore political context reinforcment learning data pairs.
 
-This dataset has three main objectives it tries to steer the model towards:
-- Policy stance
-- Ethics 
-- Senstive questions
-in the Singaporean context
+## PolicyQuestion
 
-The generation of synthetic data is broken down into two main stages:
-- Question generation
-- Answer generation
+Vary questions based on:
+1. topic (self-explanatory)
 
-A few sensitive political and ethical issues in singapore are selected manually first, before passing into LLMs to generate questions on these topics.
-These questions are then answered by LLMs to generate the chosen rejected pairs for Direct Preference Optimization (DPO).
+2. harmful/not harmful
 
-Scaling of data was done in two general ways:
-- Using different models
-- Generating a few responses per prompt (while using low temperature)
+harmful prompt types can be classified into:
+    - straight up overtly harmful
+    - covert of borderline inputs
+    - jailbreak attempts
+
+non harmful prompt types can be classfied into:
+    - informational
+    - help-seeking
+    - action oriented
+
+3. noise
+Vary grammar, spelling scentence structure
+
+4. persona use cases for the different departments of hometeam (unconfirmed)
+
+## PolicyAnswer
+
+
+
+
 
 ## Quickstart
 1. create a venv

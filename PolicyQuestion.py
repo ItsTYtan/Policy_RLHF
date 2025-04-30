@@ -12,9 +12,9 @@ from huggingface_hub import login
 from dotenv import load_dotenv
 
 from custom_modules.OpenRouterLLM import OpenRouterLLM
-from custom_modules.questiongeneration import Extract, FormatTopic
+from custom_modules.questiongeneration import Extract, FromTopicArray, TopicToPrompt
 from custom_modules.utils import ToJsonFile
-from templates import topicGuidelines, SYSTEM_PROMPT_QUESTION
+from templates import SYSTEM_PROMPT_QUESTION, topicGuidelines, PROMPT_TEMPLATE_QUESTION, questionPhrasings, questionTypes
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -25,23 +25,26 @@ login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
 models = [
     "meta-llama/llama-3.3-70b-instruct",
     "qwen/qwen-2.5-72b-instruct",
-    "openai/gpt-4o-mini"
+    # "openai/gpt-4o-mini"
 ]
 
 with Pipeline(name="policy_question") as pipeline:
     group_columns = GroupColumns(
-        columns= ["topic", "instruction", "generation", "model_name"],
-        output_columns= ["topic", "instruction", "generation", "model"]
+        columns= ["topic", "generation", "model_name", "question_type", "question_phrasings"],
+        output_columns= ["topic", "generation", "model", "question_type", "question_phrasings"]
     )
 
     unwrap_columns = ExpandColumns(
-        columns=["topic", "instruction", "generation", "model"],
+        columns=["topic", "generation", "model", "question_type", "question_phrasings"],
     )
 
     extract_questions = Extract()
 
     aggregator = KeepColumns(
-        columns=["topic", "question", "model"]
+        columns=["topic", "extract", "model", "question_type", "question_phrasings"],
+        output_mappings={
+            "extract": "question"
+        }
     )
 
     tojson = ToJsonFile(
@@ -55,18 +58,26 @@ with Pipeline(name="policy_question") as pipeline:
 
     tasks = []
     for model in models:
-        formatter = FormatTopic(
+        topicGenerator = FromTopicArray(
             topics=topicGuidelines.keys(),
+        )
+
+        formatter = TopicToPrompt(
+            template=PROMPT_TEMPLATE_QUESTION,
+            questionPhrasings=questionPhrasings,
+            questionTypes=questionTypes,
+            phrasingSelectProb=0.2
         )
 
         textgeneration = OpenRouterLLM(
             model=model,
-            max_tokens=512,
+            max_tokens=1024,
             temperature=0.9,
-            system_prompt=SYSTEM_PROMPT_QUESTION,
-            max_workers=30
+            max_workers=30,
+            system_prompt=SYSTEM_PROMPT_QUESTION
         )
-        tasks.append(formatter >> textgeneration)
+        tasks.append(topicGenerator >> formatter >> textgeneration)
+
     tasks >> group_columns >> unwrap_columns >> extract_questions >> aggregator >> [
         tojson,
         tohub

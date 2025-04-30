@@ -1,25 +1,21 @@
+import random
 import re
-from typing import List, Optional
+from typing import Dict, List, Optional
 from distilabel.steps import Step, StepInput, GeneratorStep
 
-class FormatTopic(GeneratorStep):
+class FromTopicArray(GeneratorStep):
     topics: List[str]
-    template: Optional[str] = None
-        
+    
     @property
     def outputs(self):
-        return ["topic", "instruction"]
+        return ["topic"]
 
     def process(self, offset: int = 0):
         if offset:
             self.topics = self.topics[offset:]
-
         while self.topics:
             batch = [
-                {
-                    "topic": topic,
-                    "instruction": topic if not self.template else self.template.format(topic=topic)
-                } for topic in self.topics[: self.batch_size]
+                { "topic": topic } for topic in self.topics[: self.batch_size]
             ]
             self.topics = self.topics[self.batch_size :]
             yield (
@@ -27,14 +23,51 @@ class FormatTopic(GeneratorStep):
                 True if len(self.topics) == 0 else False,
             )
 
+class TopicToPrompt(Step):
+    template: str
+    questionTypes: Dict[str, List[str]]
+    questionPhrasings: List[str]
+    phrasingSelectProb: float
+
+    @property
+    def inputs(self):
+        return ["topic"]
+    
+    @property
+    def outputs(self):
+        return ["topic", "instruction", "question_type", "question_phrasings"]
+    
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            result = []
+            for row in batch:
+                for category, _types in self.questionTypes.items():
+                    for _type in _types:
+                        phrasings = ""
+                        for phrasing in self.questionPhrasings:
+                            if random.random() < self.phrasingSelectProb:
+                                phrasings = phrasings + phrasing + "\n"
+                        instruction = self.template.format(
+                            topic=row["topic"],
+                            category=category,
+                            type=_type,
+                            phrasings=phrasings
+                        )
+                        result.append(row | {
+                            "instruction": instruction,
+                            "question_type": _type,
+                            "question_phrasings": phrasings
+                        })
+        yield result
+
 class Extract(Step):
     @property
     def inputs(self) -> List[str]:
-        return ["topic", "generation", "model"]
+        return ["generation"]
 
     @property
-    def outputs(self) -> List[str]:
-        return ["topic", "extract", "model"]
+    def outputs(self) -> List[str]: 
+        return ["extract"]
 
     def process(self, *inputs: StepInput):
         for batch in inputs:
@@ -44,12 +77,10 @@ class Extract(Step):
                 text = match.group(1) if match else ""
                 extract = text.splitlines()
                 chunk = map(lambda question: {
-                    "topic": entry["topic"],
                     "extract": question,
-                    "model": entry["model"],
                 }, extract)
                 for qnEntry in list(chunk):
                     if qnEntry["extract"] == "":
                         continue
-                    result.append(qnEntry)
+                    result.append(entry | qnEntry)
             yield result 

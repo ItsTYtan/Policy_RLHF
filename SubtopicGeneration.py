@@ -12,7 +12,7 @@ from huggingface_hub import login
 from dotenv import load_dotenv
 
 from custom_modules.OpenRouterLLM import OpenRouterLLM
-from custom_modules.questiongeneration import Extract, FormatTopic
+from custom_modules.questiongeneration import Extract, FromTopicArray
 from custom_modules.utils import FromJsonFile, ToJsonFile
 from templates import topicGuidelines, SYSTEM_PROMPT_SUBTOPIC
 
@@ -60,7 +60,7 @@ while (currSubtopicLevel < subtopicLevel):
         tasks = []
         for model in models:
             if (currSubtopicLevel == 0):
-                formatter = FormatTopic(
+                formatter = FromTopicArray(
                     topics=list(topicGuidelines.keys()),
                 )
             else:
