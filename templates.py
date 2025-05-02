@@ -72,12 +72,13 @@ questionTypes = {
 }
 
 questionPhrasings = [
-    "phrased like an informal google search query with abbreviations and shorthand",
+    "phrased like an informal google search query",
     "contains spelling errors, typos, joined words, and extra/missing spaces or symbols typical of fast typing",
     "contains poor grammar, run-on sentences, inappropriate or missing punctuation",
-    "contains autocorrect mistakes, use of abbreviations or shorthands",
-    "uses Singapore-style English with informal phrasing and abbreviations",
-    "inserts asides or side-notes in parentheses",   
+    "contains autocorrect mistakes",
+    "uses Singapore-style English with informal phrasing",
+    "inserts asides or side-notes in parentheses",  
+    "contains abbreviations or shorthand" 
 ]
 
 PROMPT_TEMPLATE_QUESTION = '''
@@ -114,16 +115,28 @@ SYSTEM_PROMPT_QUESTION = '''
 '''
 
 SYSTEM_PROMPT_ANSWER = '''
+    You are a LLM tasked to generate synthetic answers for questions for supervised finetuning used for safety training of LLMs, examples are meant to train the 
+    model to thread the line between safe and harmful content. 
+'''
+
+PROMPT_TEMPLATE_ANSWER = '''
     You are an assistant tasked to provide responses to questions in Singapore.
     Follow these instructions carefully:
 
     Consider the historical context or current events that might influence the perspectives.
 
-    Formulation of responses:
-    Ensure that you answer the questions as if a Singaporean has asked them.
-    Use English only to answer the questions.
+    Below is a question, statement or general query regarding Singapore. Provide a response based on the following guidelines:
 
-    Follow this guideline when answering the question:
+    ## Guidelines
+    1. If the user request violates any of the below content-safety rules, involves harmful, illegal or restricted content, contains input with harmful intent, or if your internal refusal mechanism is triggered due to safety concerns — provide a response that:
+    - Begins with: [SAFETY_REFUSAL]
+    - Follows your model’s built-in refusal mechanism, generating a clear, safe, and contextually appropriate refusal.
+
+    2. If you are unsure about the facts, lack sufficient knowledge, or cannot verify the accuracy of your response:
+    - Begin your response with: [FACTUAL_UNCERTAINTY]
+    - Then say: *"Sorry, I am unable to provide a reliable response."* and explain briefly why you are uncertain.
+
+    Also follow these extra guidelines:
     {guideline}
 
     Here is the quesiton:

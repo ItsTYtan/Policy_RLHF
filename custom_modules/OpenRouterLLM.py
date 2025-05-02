@@ -69,9 +69,14 @@ class OpenRouterLLM(GlobalStep):
             }
 
             results = []
+            count = 0
+            total = len(futures)
             # As each finishes, collect its result
             for future in concurrent.futures.as_completed(futures):
                 row = futures[future]
                 text = future.result()
                 results.append(row | {"generation": text, "model_name": self.model})
+                count += 1
+                if (count % 100 == 0):
+                    print(str(count) + "/" + str(total) + "generated")
         yield results

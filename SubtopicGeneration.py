@@ -28,18 +28,18 @@ models = [
     "openai/gpt-4o-mini"
 ]
 
-subtopicLevel = 2
-currSubtopicLevel = 1
+subtopicLevel = 1
+currSubtopicLevel = 0
 
 while (currSubtopicLevel < subtopicLevel):
     with Pipeline(name="policy_question") as pipeline:
         group_columns = GroupColumns(
-            columns= ["generation"],
-            output_columns= ["generation"]
+            columns= ["topic", "model_name", "generation"],
+            output_columns= ["topic", "model_name", "generation"]
         )
 
         unwrap_columns = ExpandColumns(
-            columns=["generation"],
+            columns=["topic", "model_name", "generation"],
         )
 
         extract = Extract(
@@ -49,7 +49,7 @@ while (currSubtopicLevel < subtopicLevel):
         )
 
         aggregator = KeepColumns(
-            columns=["topic", "subtopic"]
+            columns=["topic", "subtopic", "model_name"]
         )
 
         tojson = ToJsonFile(
@@ -68,16 +68,18 @@ while (currSubtopicLevel < subtopicLevel):
                     filename="subtopic_" + str(currSubtopicLevel),
                     filepath="outputs",
                     output_mappings={
-                        "subtopic": "instruction"
-                    },
+                        "subtopic": "topic"
+                    }
                 )
-
             textgeneration = OpenRouterLLM(
                 model=model,
                 max_tokens=512,
                 temperature=0.9,
                 system_prompt=SYSTEM_PROMPT_SUBTOPIC,
-                max_workers=100
+                max_workers=100,
+                input_mappings={
+                    "instruction": "topic"
+                }
             )
 
             tasks.append(formatter >> textgeneration)

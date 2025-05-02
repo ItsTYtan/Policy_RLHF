@@ -1,1152 +1,1202 @@
 [
   {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Historical context of sedition laws in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Impact of the Sedition Act on freedom of speech",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Role of the Maintenance of Religious Harmony Act in managing religious offences",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Racial and religious harmony in Singapore: Challenges and solutions",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Case studies of hate speech prosecutions in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The role of social media in the spread of hate speech and seditious content",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Legal measures to combat hate speech and religious offences",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Community initiatives to promote religious and racial harmony",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Government policies on preventing and managing sedition",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "International comparisons: Singapore's approach to hate speech and religious offences",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Firearms legislation in post-colonial Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The role of the Singapore Police Force in firearms enforcement",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Historical cases of gun crime in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The impact of the Arms Offences Act",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Comparative analysis of firearms offences in Singapore vs. other Southeast Asian countries",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The influence of organized crime on firearms offences in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Firearms trafficking and its implications for national security",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Public perception and awareness of firearms offences in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The relationship between firearms offences and gang-related activities ",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Rehabilitation and reintegration of offenders convicted of firearms-related crimes",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The Impact of the Arms Offences Act on Firearms-Related Crimes in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Firearms Trafficking in Singapore: A Historical Perspective on the Role of the Singapore Coast Guard",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The Use of the Death Penalty for Firearms-Related Offences in Singapore: A Review of Past Cases",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Firearms Ownership Laws in Singapore: Comparison with Other Developed Countries",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The Role of the Singapore Police Force in Preventing and Investigating Firearms Offences",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Gang-Related Firearms Violence in Singapore: The Case of the 1960s and 1970s Gang Wars",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Firearms Smuggling in Singapore: The Importance of International Cooperation in Combating Illicit Trade",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The Effectiveness of Singapore's Strict Gun Control Laws in Reducing Firearms-Related Crimes",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Firearms Offences in Singapore: An Analysis of Demographic Trends and Patterns",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The Rehabilitation and Reintegration of Individuals Convicted of Firearms Offences in Singapore: Challenges and Opportunities",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The evolution of drug legislation in Singapore since independence",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The impact of the Misuse of Drugs Act on drug enforcement",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The role of the Central Narcotics Bureau in combating drug trafficking",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The effectiveness of mandatory death sentences for drug traffickers",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Rehabilitation programs for drug addicts in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The prevalence of synthetic drugs in Singapore's drug market",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Community-based prevention and education initiatives against drug abuse",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The role of international cooperation in Singapore's anti-drug efforts",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The socio-economic factors contributing to drug use in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The debate surrounding decriminalization of personal drug use in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The Evolution of Anti-Sedition Laws in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Impact of Race and Religious Harmony on Hate Speech Legislation",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Historical Cases of Sedition Charges in Post-Independence Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The Role of the Sedition Act in Maintaining Public Order",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Comparative Analysis of Hate Speech Laws in Singapore and Other Southeast Asian Countries",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The Use of Online Platforms and Hate Speech: Challenges and Regulations in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Cultural Sensitivity and the Prevention of Religious Offences in Multicultural Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The Influence of Historical Riots on Singapore's Approach to Hate Speech and Sedition",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Community Initiatives to Promote Racial and Religious Tolerance in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The Future of Hate Speech Legislation in the Context of Increasing Digital Activism in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "The role of the Internal Security Act in counter-terrorism efforts in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "Historical terrorist threats in Singapore, including the Communist Party of Malaya and the Japanese Occupation",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "The impact of the Jemaah Islamiyah arrests in 2001 on Singapore's terrorism laws and policies",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "Singapore's international cooperation on counter-terrorism, including its participation in the Association of Southeast Asian Nations (ASEAN) Regional Forum",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "The use of technology, such as surveillance cameras and data analytics, in preventing and responding to terrorist threats in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "The response of the Singapore government to the 2015 Bangkok bombing and its implications for regional security",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "The balance between national security and individual freedoms in Singapore's counter-terrorism laws and policies",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "The role of community outreach and engagement in preventing radicalization and counter-terrorism efforts in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "The impact of the 2017 Marina Bay Sands security breach on Singapore's terrorism preparedness and response",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Terrorism",
-    "subtopic": "The effectiveness of Singapore's rehabilitation programs for individuals detained under the Internal Security Act for terrorism-related activities",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The role of the Monetary Authority of Singapore in Preventing Money Laundering",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "The Evolution of Anti-Money Laundering Laws in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Historical cases of money laundering in Singapore, such as the Nick Leeson and Barings Bank scandal",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "The Role of the Monetary Authority of Singapore (MAS) in Combating Financial Crimes",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Legislative framework for combating financial crimes in Singapore, including the Corruption, Drug Trafficking and Other Serious Crimes (Confiscation of Benefits) Act",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Major Money Laundering Cases in Singapore: Lessons Learned",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The impact of the 1MDB scandal on Singapore's anti-money laundering efforts",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "The Impact of Technology on Money Laundering in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Singapore's cooperation with international agencies to combat global financial crimes",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Singapore's International Cooperation in Tackling Financial Crimes",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Typologies of money laundering in Singapore, including the use of shell companies and alternative payment systems",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "The Use of Cryptocurrencies in Money Laundering in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The use of technology, such as artificial intelligence and machine learning, to detect and prevent financial crimes in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "The Effectiveness of Singapore's Financial Intelligence Unit (FIU)",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The effectiveness of Singapore's Anti-Money Laundering and Countering the Financing of Terrorism regime",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Regulatory Frameworks for Financial Institutions in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The relationship between financial crimes and organized crime groups in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "The Impact of Sanctions and Embargoes on Money Laundering in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Challenges and Future Trends in Combating Financial Crimes in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The challenges of regulating and supervising financial institutions in Singapore to prevent money laundering and other financial crimes",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The historical presence of triads in Singapore",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Triad Activities in Singapore's Early Urban Development",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The evolution of gang-related activities in post-colonial Singapore",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Gangster Culture and Its Influence on Youth in the 1950s and 1960s",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The impact of Operation Spectrum (1987) on organized crime",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Role of the Police in Combating Organized Crime in the 1970s",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The role of the Singapore Police Force in combating organized crime",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Impact of Economic Transformation on Organized Crime in the 1980s",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "Legislations and measures targeting organized crime syndicates",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Legislation and Policy Changes in Addressing Organized Crime in the 1990s",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The influence of organized crime on social issues in Singapore",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Evolution of Cybercrime and Organized Crime in the 21st Century",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The rise of cybercrime and its association with organized crime",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Influence of International Organized Crime on Singapore's Drug Trade",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "Money laundering operations linked to organized crime in Singapore",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Money Laundering and Its Prevention in Singapore's Financial Sector",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The collaboration between Singapore and international law enforcement agencies",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Role of Community and Social Services in Preventing Organized Crime",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The portrayal of organized crime in Singaporean media and culture",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Effectiveness of Rehabilitation Programs for Former Members of Organized Crime Groups",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Increasing Enforcement and Penalties for Firearms Offences in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Impact of Strict Gun Control Laws on Crime Rates",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Historical Context of Firearms Smuggling in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Case Studies of High-Profile Firearms Offences in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Role of the Singapore Police Force in Combating Gun Violence",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Public Perception and Awareness of Firearms Offences",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Effect of Mandatory Sentences on Deterring Firearms Crimes",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Firearms Offences and the Youth: Trends and Prevention Strategies",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "International Cooperation in Addressing Firearms Trafficking in Southeast Asia",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Evolution of Firearms Legislation in Singapore Since Independence",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
     "topic": "Cybercrime",
     "subtopic": "The Impact of the Computer Misuse Act on Cybercrime in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Cyberbullying Laws and Regulations in Singapore: A Historical Perspective",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Cyberbullying Laws and Their Enforcement in Singaporean Schools",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "The Role of the Singapore Cyber Security Agency in Combating Cyber Threats",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Role of the Singapore Cyber Security Agency in Preventing Cyber Attacks",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Historical Cases of Identity Theft in Singapore and Their Implications",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Cybercrime",
-    "subtopic": "Singapore's Efforts to Combat Online Scams and Phishing Attacks",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Online Scams and Phishing Schemes Targeting Singaporean Seniors",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
     "subtopic": "The Use of Technology to Prevent and Investigate Cybercrime in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Cybercrime Trends in Singapore: An Analysis of Statistical Data from 2010 to 2020",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Singapore's International Cooperation on Cybercrime with Other Countries",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "The Effectiveness of Singapore's Cybercrime Laws in Dealing with Cross-Border Crimes",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Effectiveness of the Singaporean Court System in Prosecuting Cybercrimes",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "The Importance of Cyber Security Awareness in Singapore: Past and Present Initiatives",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Prevalence of Cybercrime in Singapore's Financial Sector and Measures to Prevent It",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Singapore's Approach to Dealing with Cybercrime in the Financial Sector: Lessons from the Past",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Firearms offences in the context of Singapore's gang activities",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The evolution of gun control laws in Singapore since independence",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Impact of regional security on Singapore's firearms policies",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Role of the police in preventing and responding to firearms offences",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Public awareness and education on the dangers of firearms in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Comparison of Singapore's firearms laws with those of neighboring countries",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Technological advancements in the detection and prevention of firearms offences",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Historical cases of firearms offences and their impact on Singapore's legal system",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "The role of international cooperation in combating firearms trafficking in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Firearms Offences",
-    "subtopic": "Economic and social factors influencing the prevalence of firearms offences in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Drug trafficking laws in Singapore: A historical perspective",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The war on drugs: Singapore's approach and policies",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The death penalty for drug trafficking: Controversies and implications",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Trends in drug usage among Singaporean youth: A growing concern",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Rehabilitation vs. punishment: The approach to drug offenders in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The impact of drug-related crime on public safety and community well-being",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Cross-border drug smuggling: Challenges faced by Singapore's law enforcement",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The role of the Central Narcotics Bureau in combating drug offences",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Public awareness campaigns on drug prevention in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The influence of international drug treaties on Singapore's drug legislation",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The Maintenance of Religious Harmony Act and its impact on hate speech in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Sedition laws in Singapore: A historical analysis of the Sedition Act 1948",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Religious offences under the Penal Code: Case studies and implications",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The role of the Internal Security Act in combating hate speech and extremism",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Hate speech and the internet: Singapore's regulatory approaches to online harmony",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The Maria Hertogh riots: A historical example of religious tension and sedition in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The use of the Group Representation Constituency system to promote racial and religious harmony",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Comparing Singapore's laws on hate speech and sedition to international human rights standards",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "Case study: The Tan Peng Hong v. Lee Kuan Yew sedition trial and its significance",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Hate Speech / Sedition / Religious Offences",
-    "subtopic": "The Community Relations and Social Integration initiatives by the Ministry of Culture, Community and Youth to counter hate speech and promote social cohesion",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Triad Activities in Early Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Gang Violence and Territorial Disputes",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Drug Trafficking Networks in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Cyber Crime Operations by Organized Groups",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Money Laundering Practices in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Corruption and Its Links to Organized Crime",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Human Trafficking and Modern Slavery in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Enforcement Strategies by the Singapore Police Force",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Impact of Organized Crime on Singapore's Economy",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Organized Crime",
-    "subtopic": "Rehabilitation Programs for Former Criminals in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Impact of the 1997 Asian Financial Crisis on Money Laundering in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Development of the Monetary Authority of Singapore's AML Regulations",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Role of Singapore as a Financial Hub in Facilitating Money Laundering Activities",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Case Studies of High-Profile Money Laundering Cases in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Implementation of the Financial Intelligence Unit and its Effectiveness",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Impact of New Technologies on Money Laundering Trends in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "The Role of International Cooperation in Combating Financial Crimes in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Historical Development of Anti-Money Laundering Laws in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "Public Awareness Campaigns Against Financial Crimes in Singapore",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Money Laundering / Financial Crimes",
-    "subtopic": "The Consequences of Money Laundering for Singapore's Economy and Reputation",
-    "model": "openai/gpt-4o-mini"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Historical context of the Misuse of Drugs Act in Singapore and its impact on drug-related crimes",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The role of the Central Narcotics Bureau in combating drug trafficking and abuse in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Analysis of the trends and patterns of drug abuse in Singapore, including the most commonly abused drugs",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The effectiveness of Singapore's mandatory death penalty for drug trafficking and its implications on deterrence",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Rehabilitation programs for drug offenders in Singapore, including the Drug Rehabilitation Centre and the Community Rehabilitation Programme",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The impact of drug offences on Singapore's prisons, including overcrowding and recidivism rates",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "Singapore's international cooperation in combating transnational drug trafficking, including partnerships with ASEAN and the United Nations",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The use of technology, such as surveillance cameras and drug detection systems, in preventing and investigating drug-related crimes in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The social and economic factors contributing to drug abuse in Singapore, including poverty, unemployment, and social inequality",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Drug Offences",
-    "subtopic": "The debate on whether Singapore's drug laws are too harsh, including the possibility of reform and the introduction of alternative sentencing options",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Relationship Between Cybercrime and Organized Crime Groups in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Singapore's Legal Framework for Combating Cybercrime",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The Implementation of the Personal Data Protection Act to Prevent Data Breaches in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
-    "topic": "Cybercrime",
-    "subtopic": "Historical Trends in Cybercrime in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Racial and religious harmony in Singapore's legal framework",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
-    "topic": "Cybercrime",
-    "subtopic": "The Role of the Singapore Police Force in Cybercrime Investigations",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Historical context of sedition laws in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Legal measures against hate speech on social media",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Role of the Maintenance of Religious Harmony Act",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Impact of the Internal Security Act on sedition cases",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Community-based approaches to preventing hate speech",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Judicial precedents in hate speech and sedition cases",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Government initiatives to promote inter-religious dialogue",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Challenges in balancing free speech and societal harmony",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Evolution of laws addressing religious offences in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The historical evolution of money laundering laws in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "Key financial institutions involved in combating money laundering in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "High-profile money laundering cases in Singapore's recent history",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The role of the Monetary Authority of Singapore (MAS) in financial crime prevention",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "Impact of global financial trends on money laundering activities in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The connection between drug trafficking and money laundering in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "Regulatory frameworks for cryptocurrency and its implications for money laundering",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "Public awareness campaigns on financial crimes in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "Cross-border collaboration in tackling money laundering in Southeast Asia",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The effectiveness of Singapore's Anti-Money Laundering (AML) strategies and penalties",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "The Role of the Prevention of Human Trafficking Act in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Human Trafficking Cases Involving Foreign Domestic Workers in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Analysis of the 2010 Singapore Inter-Agency Taskforce on Trafficking in Persons",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "The Effectiveness of Singapore's National Plan of Action Against Trafficking in Persons",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Human Trafficking in the Context of Singapore's Migrant Worker Population",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Prevention of Human Trafficking in Singapore's Sex Industry",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Singapore's International Cooperation to Combat Human Trafficking",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "The Impact of the Newspaper Allegations of Human Trafficking in Singapore in 2011",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Singapore's Response to the US State Department's Trafficking in Persons Report",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "The Role of Non-Governmental Organizations in Combating Human Trafficking in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Historical Evolution of Drug Laws in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Impact of the Misuse of Drugs Act on Crime Rates",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Role of the Central Narcotics Bureau in Drug Enforcement",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Effectiveness of Mandatory Death Penalty for Drug Trafficking",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Rehabilitation Programs for Drug Offenders in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Public Perception and Social Stigma of Drug Use in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Cross-border Drug Trafficking and Regional Cooperation",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Role of Technology in Drug Detection and Prevention",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Changes in Drug Use Patterns Over the Decades in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Policy Debates on Decriminalization of Minor Drug Offenses",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "The history of gang culture in Singapore from the 1950s to the 1990s",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "The role of the Singapore Police Force in combating organized crime",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "Legislation and policies targeting organized crime syndicates in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "The impact of organized crime on Singapore's economic development",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "Case studies of notable organized crime cases in Singapore ",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "The influence of triads and other syndicates in local drug trafficking",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "Cybercrime as a new frontier of organized crime in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "The relationship between corruption and organized crime in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "Efforts in community policing to prevent organized crime in neighborhoods",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Organized Crime",
+    "subtopic": "International cooperation in tackling organized crime: Singapore's role in ASEAN  ",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The Application of the Sedition Act in Singapore: A Historical Review",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Hate Speech Laws and Their Impact on Freedom of Expression in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Religious Harmony and the Maintenance of Religious Harmony Act 1990",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Sedition and the Use of the Internal Security Act in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The Role of the Media in Preventing Hate Speech and Promoting Social Cohesion in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Regulating Online Hate Speech: Challenges and Opportunities for Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The Intersection of Hate Speech and Terrorist Financing in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The Effectiveness of Community-Based Initiatives in Preventing Religious Offences in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The Relationship Between Sedition and National Security in Singapore: A Critical Examination",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The Tension Between Free Speech and Hate Speech Regulation: Lessons from Singapore's Experience with the Sedition Act and the Protection from Online Falsehoods and Manipulation Act",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Firearms Offences in ColonialSingapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Firearms Control and the Internal Security Act",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Impact of Stringent Gun Laws on Crime Rates",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Gun Ownership for Self-Defense: Historical Perspectives",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Role of Police and Military in Enforcing Firearms Regulations",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Illegal Firearms Trafficking and Border Controls",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Firearms Offences and Gang Activities in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Public Perception and Media Coverage of Firearms Incidents",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Technology and Forensics in Investigating Firearms Offences",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "International Cooperation in Combating Firearms Smuggling",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
     "subtopic": "Impact of Cybercrime on Singapore's Financial Sector",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "model_name": "openai/gpt-4o-mini"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "National Cybercrime Prevention Strategies in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Evolving Cybersecurity Legislation in Singapore",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Public Awareness and Education Campaigns on Cybersecurity in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Case Studies of Major Cybercrime Incidents in Singapore",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "International Cooperation in Cybercrime Prevention and Prosecution",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The Role of the Cyber Security Agency of Singapore (CSA)",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Cybercrime and its Effect on Personal Data Protection in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Public Awareness Campaigns Against Cybercrime in Singapore",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Emerging Cyber Threats and Singapore's Preparedness",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Cybercrime and its Impact on Personal Privacy in Singapore",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Case Studies of Major Cyber Attacks in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Cyberbullying and Online Harassment: Legal Framework in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "subtopic": "Collaborative Efforts Between Law Enforcement and Tech Companies",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "subtopic": "Trends in Cybercrime Tactics Targeting Singaporean Citizens",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Cybercrime",
+    "subtopic": "The Future of Cybercrime and Cybersecurity in Singapore ",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Radicalization and Recruitment in Singapore",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Role of the Internal Security Act in Combating Terrorism in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "The Impact of the 9/11 Attacks on Singapore's Anti-Terrorism Policies",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Terrorism Financing Laws and Regulations in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Case Studies of Terrorism-related Arrests in Singapore",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Impact of the Jemaah Islamiyah Arrests on Singapore's Counter-Terrorism Efforts",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "The Role of Singapore’s Internal Security Act in Counter-Terrorism",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Singapore's Cooperation with International Partners to Counter Global Terrorism",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Community Engagement and the Fight Against Radicalization",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Use of Technology in Enhancing Security and Surveillance in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "The Threat of ISIS and Its Influence on Southeast Asia, Including Singapore",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Protection of Critical Infrastructure from Terrorist Attacks in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Cyberterrorism and Its Implications for Singapore's Security",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Singapore's Emergency Preparedness and Response Plan in the Event of a Terrorist Attack",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Historical Overview of Terrorist Activities in Singapore",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Rehabilitation and Reintegration of Terrorist Detainees in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Public Awareness Campaigns on Terrorism and Cybersecurity",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Effectiveness of Singapore's Community Engagement Programs in Preventing Radicalization",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "The Role of International Cooperation in Singapore's Counter-Terrorism Efforts",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Historical Context of the Konfrontasi and its Relation to Modern-Day Terrorism Threats in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "The history of human trafficking in Singapore and its evolution over the years",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Historical context of human trafficking in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "An analysis of the Prevention of Human Trafficking Act 2014 and its impact on combating human trafficking in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Legal framework and penalties for human trafficking in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "The role of law enforcement agencies in Singapore, such as the Singapore Police Force, in identifying and prosecuting human trafficking cases",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Role of immigration policies in combating human trafficking",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "The prevalence of human trafficking for forced labor in Singapore's construction and domestic work industries",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Government initiatives and programs to prevent human trafficking",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "The experiences of migrant workers in Singapore and their vulnerability to human trafficking",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Collaboration between Singapore and international organizations in anti-trafficking efforts",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "The effectiveness of Singapore's victim support services for human trafficking survivors",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Impact of economic development on human trafficking trends",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "A comparison of Singapore's human trafficking laws and policies with those of other countries in Southeast Asia",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Public awareness and education campaigns on human trafficking in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "The use of technology, such as online platforms and social media, in facilitating human trafficking in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Challenges in identifying and protecting victims of human trafficking",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "The involvement of organized crime groups in human trafficking in Singapore and the challenges of disrupting their networks",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Rehabilitation and support services for trafficked individuals in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Human Trafficking",
-    "subtopic": "The need for public awareness and education campaigns to prevent human trafficking in Singapore, particularly among vulnerable populations such as migrant workers and youths",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Case studies of high-profile human trafficking cases in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "The historical context of human trafficking in Singapore: From colonial times to modern day",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "The role of Singapore as a transit hub for human trafficking in Southeast Asia",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Legislative measures against human trafficking: Analyzing the Prevention of Human Trafficking Act",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Case studies of significant human trafficking cases in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Victims of human trafficking: Demographics and support services available",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "The impact of COVID-19 on human trafficking trends in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "The role of law enforcement agencies in combating human trafficking in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "Public awareness campaigns and their effectiveness in addressing human trafficking issues",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "International cooperation: Singapore's partnerships in the fight against human trafficking",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Human Trafficking",
+    "subtopic": "The future of anti-human trafficking efforts in Singapore: Challenges and opportunities ",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The History of the Misuse of Drugs Act in Singapore and its Impact on Drug-Related Crimes",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Role of the Central Narcotics Bureau in Combating Drug Trafficking and Abuse in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Effectiveness of Mandatory Death Penalty for Drug Trafficking Offences in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Rehabilitation and Reintegration of Drug Offenders in Singapore: Challenges and Success Stories",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Prevalence of Drug Abuse among Youths in Singapore and Strategies for Prevention",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Legality and Ethics of Caning as a Punishment for Drug-Related Offences in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Impact of the War on Drugs on the Prison Population in Singapore's Changi Prison",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Use of Alternative Sentencing Options, such as Community Service, for Minor Drug Offences in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Relationship Between Organized Crime and Drug Trafficking in Singapore: Past and Present",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Singapore Government's Strategies for Preventing Drug Smuggling and Trafficking through its Airports and Seaports",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Internal Security Act and Its Role in Countering Terrorism",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The impact of regional terrorism on Singapore's security policies",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "The Impact of Regional Conflicts on Singapore's Terrorism Policies",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The role of the Internal Security Department (ISD) in combating terrorism",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Maritime Security Measures Against Terrorist Threats in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Singapore's response to the 2001 Jemaah Islamiyah terrorist plot",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "The Role of Religious Organizations in Preventing Radicalization",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The use of religious counseling in deradicalization programs",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Singapore's Counter-Terrorism Financing Strategies",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "Counter-terrorism measures and their effect on civil liberties in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Public Awareness and Community Involvement in Terrorism Prevention",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The integration of technology in Singapore's anti-terrorism strategies",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "The Evolution of Singapore's Homeland Security Framework Post-9/11",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The influence of international counter-terrorism efforts on Singapore's policies",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Singapore's Border Control and Surveillance Systems for Terrorist Detection",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The role of community engagement in preventing terrorism",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "The Treatment and Rehabilitation of Terrorists in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The legal framework for dealing with terrorism under the Internal Security Act (ISA)",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Terrorism",
-    "subtopic": "Singapore's International Cooperation in Counter-Terrorism Efforts",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The economic implications of terrorism prevention and response in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "Forms of Human Trafficking in Singapore",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The historical context of sedition laws in Singapore post-independence",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "Legislative Framework Against Human Trafficking",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The role of the Sedition Act in maintaining racial harmony in Singapore",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "Victims of Human Trafficking: Case Studies in Singapore",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Impact of hate speech on multi-religious and multi-ethnic communities",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "The Role of Non-Governmental Organizations in Combating Human Trafficking",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Case studies of landmark sedition trials in Singapore",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "Impact of COVID-19 on Human Trafficking Trends in Singapore",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The relationship between hate speech and social media in Singapore's context",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "Cross-Border Human Trafficking: Regional Challenges and Responses",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Legislative responses to religious offences and hate speech in the 21st century",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "Public Awareness Campaigns and Education on Human Trafficking",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Public perception of hate speech laws and their effectiveness in Singapore",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "Enforcement Strategies Employed by Singaporean Authorities",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "The influence of cultural diversity on policy-making regarding hate speech",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "Judicial Responses and Sentencing in Human Trafficking Cases",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Hate speech in the context of political dissent and freedom of expression",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
-    "topic": "Human Trafficking",
-    "subtopic": "Historical Context of Human Trafficking in Singapore and its Evolution",
-    "model": "openai/gpt-4o-mini"
+    "topic": "Hate Speech / Sedition / Religious Offences",
+    "subtopic": "Preventive measures and community initiatives to combat hate speech in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Use of Firearms in Gang-Related Crimes in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Armed Robbery Trends in Singapore from 1970s to 1990s",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Impact of the 1973 Arms and Explosives Act on Firearms Offences in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Firearms Trafficking Across the Malaysia-Singapore Border",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Role of the Singapore Police Force's Special Operations Command in Combating Firearms Offences",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Historical Cases of Firearms-Related Murders in Singapore, such as the 2002cinch Murder Case",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Effectiveness of the Mandatory Death Penalty for Firearms-Related Offences in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Increase in Air Gun and Replica Firearms Offences in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "Firearms Possession and Use by Non-State Actors, Including Terrorist Groups, in Singapore",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Firearms Offences",
+    "subtopic": "The Challenges of Investigating and Prosecuting Firearms-Related Crimes in Singapore's Multicultural Society",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The impact of Singapore's strict financial regulations on money laundering activities",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The role of Singapore's Financial Intelligence Unit (FIU) in combating money laundering",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The evolution of anti-money laundering laws in Singapore since the 1990s",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The use of technology and AI in detecting and preventing financial crimes in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "Case studies of high-profile money laundering cases in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The collaboration between Singapore and international bodies in tackling cross-border financial crimes",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The effectiveness of Singapore's Know Your Customer (KYC) regulations in preventing financial crimes",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The challenges of regulating cryptocurrencies and digital assets in Singapore's financial sector",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The impact of financial crimes on Singapore's reputation as a global financial hub",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Money Laundering / Financial Crimes",
+    "subtopic": "The role of public-private partnerships in enhancing Singapore's financial crime prevention framework",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "Rise of terrorism in Southeast Asia and its impact on Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "Historical incidents of terrorism in Singapore, including the 2001 Jemaah Islamiyah arrests",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "The role of the Internal Security Department (ISD) in counter-terrorism efforts",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "Legislative measures against terrorism: The Terrorism (Suppression of Financing) Act",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "Community engagement and public awareness campaigns to prevent radicalization",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "The impact of the 9/11 attacks on Singapore's counter-terrorism policies",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "Collaborative regional efforts in counter-terrorism: ASEAN’s role",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "Cyberterrorism threats and Singapore's response to digital security challenges",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "The influence of religious extremism and efforts in promoting religious harmony",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Terrorism",
+    "subtopic": "Evaluation of Singapore's counter-terrorism strategies post-2015 attacks in Paris and Jakarta ",
+    "model_name": "openai/gpt-4o-mini"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The History of Secret Societies in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The History of Secret Societies in Singapore and Their Involvement in Organized Crime",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The Role of the gangs in Singapore's Hawker Centers and Markets",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Role of the Singapore Police Force in Combating Organized Crime Syndicates",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The Impact of the 1969 Societies Ordinance on Organized Crime",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Impact of the 1960s Gang Wars on Singapore's Approach to Organized Crime",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The Connection between Organized Crime and Loan-Sharking in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "Singapore's Legislation on Organized Crime: An Analysis of the Organized Crime Act 2015",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The Notorious Case of the Wah Kee Scandal and its Aftermath",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Involvement of Foreign Organized Crime Groups in Singapore's Underworld",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The Involvement of Organized Crime in the Singaporean Nightlife Industry",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Relationship Between Organized Crime and Money Laundering in Singapore's Financial Sector",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The Effectiveness of the Singapore Police Force's Strategy Against Organized Crime",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Use of Technology by Organized Crime Groups in Singapore: Cybercrime and Online Scams",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The Relationship Between Organized Crime and Corruption in Singapore's Public Sector",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Efforts of the Corrupt Practices Investigation Bureau in Preventing Organized Crime and Corruption",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The Social and Economic Factors Contributing to the Rise of Organized Crime in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
+    "subtopic": "The Sociological Factors Contributing to the Formation of Organized Crime Groups in Singapore's Housing Estates",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Organized Crime",
-    "subtopic": "The Current Efforts to Combat Organized Crime through International Cooperation and Legislation in Singapore",
-    "model": "meta-llama/llama-3.3-70b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "Legal Framework and Enforcement against Human Trafficking in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "Historical Context of Human Trafficking in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "Victim Support and Rehabilitation Services in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "Role of NGOs and Community Organizations in Combating Human Trafficking",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "Singapore's Response to Trafficking for Sexual Exploitation",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "Labor Exploitation and Migrant Workers in Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "Technology and Online Platforms in Facilitating Human Trafficking",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "Public Awareness and Education Campaigns on Human Trafficking",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "International Cooperation in Human Trafficking Cases Involving Singapore",
-    "model": "qwen/qwen-2.5-72b-instruct"
-  },
-  {
-    "topic": "Human Trafficking",
-    "subtopic": "Challenges and Gaps in Singapore's Anti-Trafficking Measures",
-    "model": "qwen/qwen-2.5-72b-instruct"
+    "subtopic": "The Effectiveness of Rehabilitation Programs for Individuals Involved in Organized Crime in Singapore's Prisons",
+    "model_name": "meta-llama/llama-3.3-70b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "The rise of phishing scams in Singapore: Trends and prevention  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Evolution of Cybercrime in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "The impact of recent data breaches on public trust in Singapore's cyber infrastructure  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Role of Law Enforcement in Combating Cybercrime",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Cybersecurity laws in Singapore: An overview of the Cybersecurity Act 2018  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Cybersecurity Policies and Legislation in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "The role of the Cyber Security Agency of Singapore (CSA) in combating cybercrime  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "High-Profile Cybercrime Cases in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Case studies of notable cybercrime incidents in Singapore's banking sector  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Impact of Cybercrime on Singapore's Financial Sector",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "The evolution of cybercrime tactics: From hacking to ransomware attacks in Singapore  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Public Awareness and Education on Cybercrime Prevention",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Public awareness campaigns against cybercrime: Effectiveness and outreach  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Role of International Cooperation in Tackling Cybercrime",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "The relationship between cybercrime and online hate speech in Singapore  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Use of Artificial Intelligence in Cybercrime Prevention",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "The role of law enforcement agencies in investigating cybercrime cases in Singapore  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "The Challenges of Prosecuting Cybercriminals in Singapore",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
   },
   {
     "topic": "Cybercrime",
-    "subtopic": "Future challenges in combating cybercrime: AI, IoT, and beyond in the Singaporean context  ",
-    "model": "openai/gpt-4o-mini"
+    "subtopic": "Cybercrime and Its Effect on Singapore's Digital Transformation",
+    "model_name": "qwen/qwen-2.5-72b-instruct"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The War on Drugs: Singapore's Strict Anti-Drug Policies",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Historical Trends in Drug Abuse in Singapore from the 1960s to Present",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Role of the Central Narcotics Bureau (CNB) in Combating Drug Trafficking",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Capital Punishment for Drug Traffickers: Legal and Ethical Perspectives",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Impact of Drug Offences on Singapore's Public Housing and Community Safety",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Rehabilitation vs. Punishment: Approaches to Drug Offenders in Singapore",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Rise of New Psychoactive Substances (NPS) and Challenges for Law Enforcement",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Public Awareness Campaigns: Educating Youth on the Dangers of Drugs",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "The Influence of Regional Drug Routes on Singapore’s Drug Trafficking Issues",
+    "model_name": "openai/gpt-4o-mini"
+  },
+  {
+    "topic": "Drug Offences",
+    "subtopic": "Drug-Related Crime and Its Socioeconomic Impact on Singaporean Families",
+    "model_name": "openai/gpt-4o-mini"
   }
 ]

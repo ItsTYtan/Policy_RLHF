@@ -30,36 +30,41 @@ models = [
 
 with Pipeline(name="policy_question") as pipeline:
     group_columns = GroupColumns(
-        columns= ["topic", "generation", "model_name", "question_type", "question_phrasings"],
-        output_columns= ["topic", "generation", "model", "question_type", "question_phrasings"]
+        columns= ["topic", "subtopic", "generation", "model_name", "question_type", "question_phrasings"],
+        output_columns= ["topic", "subtopic", "generation", "model", "question_type", "question_phrasings"]
     )
 
     unwrap_columns = ExpandColumns(
-        columns=["topic", "generation", "model", "question_type", "question_phrasings"],
+        columns=["topic", "subtopic", "generation", "model", "question_type", "question_phrasings"],
     )
 
     extract_questions = Extract()
 
     aggregator = KeepColumns(
-        columns=["topic", "extract", "model", "question_type", "question_phrasings"],
+        columns=["topic", "subtopic", "extract", "model", "question_type", "question_phrasings"],
         output_mappings={
             "extract": "question"
         }
     )
 
     tojson = ToJsonFile(
-        filename="PolicyQuestion",
+        filename="PolicyQuestion-subtopic",
         filepath="outputs"
     )
 
     tohub = PushToHub(
-        repo_id="ItsTYtan/policyquestion"
+        repo_id="ItsTYtan/policyquestion-subtopic"
     )
 
     tasks = []
     for model in models:
-        topicGenerator = FromTopicArray(
-            topics=topicGuidelines.keys(),
+        topicGenerator = FromJsonFile(
+            filepath="./outputs",
+            filename="subtopic_1",
+        )
+
+        keep_topic = KeepColumns(
+            columns=["topic", "subtopic"]
         )
 
         formatter = TopicToPrompt(
@@ -67,6 +72,9 @@ with Pipeline(name="policy_question") as pipeline:
             questionPhrasings=questionPhrasings,
             questionTypes=questionTypes,
             phrasingSelectProb=0.2,
+            input_mappings={
+                "topic": "subtopic"
+            }
         )
 
         textgeneration = OpenRouterLLM(
@@ -76,7 +84,7 @@ with Pipeline(name="policy_question") as pipeline:
             max_workers=30,
             system_prompt=SYSTEM_PROMPT_QUESTION
         )
-        tasks.append(topicGenerator >> formatter >> textgeneration)
+        tasks.append(topicGenerator >> keep_topic >> formatter >> textgeneration)
 
     tasks >> group_columns >> unwrap_columns >> extract_questions >> aggregator >> [
         tojson,
