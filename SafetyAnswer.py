@@ -33,28 +33,28 @@ models = [
 
 with Pipeline(name="policy-answer") as pipeline:
     loadPolicyQuestionDS = LoadDataFromHub(
-        repo_id="ItsTYtan/policyquestion-subtopic",
+        repo_id="ItsTYtan/policyquestion",
     )
 
     group_columns = GroupColumns(
-        columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"],
-        output_columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"]
+        columns=["topic", "question", "question_type", "generation", "model_name"],
+        output_columns=["topic", "question", "question_type", "generation", "model_name"]
     )
 
     unwrapper = ExpandColumns(
-        columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"]
+        columns=["topic", "question", "question_type", "generation", "model_name"]
     )
 
     keep_columns = KeepColumns(
-        columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"],
+        columns=["topic", "question", "question_type", "generation", "model_name"],
     )
 
     push = PushToHub(
-        repo_id="ItsTYtan/policyanswer-subtopic",
+        repo_id="ItsTYtan/safetyanswer",
     )
 
     tojson = ToJsonFile(
-        filename="PolicyAnswer-subtopic",
+        filename="safetyanswer",
         filepath="outputs"
     )
 
@@ -62,7 +62,7 @@ with Pipeline(name="policy-answer") as pipeline:
     for model in models:
         formatter = FormatQuestion(
             template=PROMPT_TEMPLATE_ANSWER,
-            guidelines=topicGuidelines,
+            guidelines=topicGuidelines
         )
 
         generate_text = OpenRouterLLM(
@@ -70,7 +70,7 @@ with Pipeline(name="policy-answer") as pipeline:
             max_tokens=1024,
             temperature=0.7,
             max_workers=100,
-            system_prompt=SYSTEM_PROMPT_ANSWER,
+            system_prompt=SYSTEM_PROMPT_ANSWER
         )
 
         tasks.append(loadPolicyQuestionDS >> formatter >> generate_text)

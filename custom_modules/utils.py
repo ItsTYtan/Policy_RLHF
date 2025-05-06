@@ -1,6 +1,6 @@
 import json
-from typing import List
-from distilabel.steps import GlobalStep, StepInput, GeneratorStep
+from typing import List, Optional
+from distilabel.steps import GlobalStep, StepInput, GeneratorStep, Step
 from pydantic import PrivateAttr
 
 class ToJsonFile(GlobalStep):
@@ -48,3 +48,30 @@ class FromJsonFile(GeneratorStep):
                 batch,
                 True if len(self._file) == 0 else False,
             )
+
+class FormatSFT(Step):
+    system_prompt: str
+
+    @property
+    def inputs(self):
+        return ["instructions", "generations"]
+    
+    @property
+    def outputs(self):
+        return ["messages"]
+
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            result = []
+            for row in batch:
+                messages = [{"role": "system", "content": self.system_prompt}]
+                instructions = row["instructions"]
+                generations = row["generations"]
+                for instruction, generation in zip(instructions, generations):
+                    messages.extend([
+                        {"role": "user", "content": instruction},
+                        {"role": "assistant", "content": generation}
+                    ])
+                row["messages"] = messages
+                result.append(row)
+            yield result

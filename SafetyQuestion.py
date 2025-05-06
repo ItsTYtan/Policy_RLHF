@@ -48,12 +48,12 @@ with Pipeline(name="policy_question") as pipeline:
     )
 
     tojson = ToJsonFile(
-        filename="PolicyQuestion",
+        filename="safetyquestion",
         filepath="outputs"
     )
 
     tohub = PushToHub(
-        repo_id="ItsTYtan/policyquestion"
+        repo_id="ItsTYtan/safetyquestion"
     )
 
     tasks = []
