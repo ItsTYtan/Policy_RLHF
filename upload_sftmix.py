@@ -11,7 +11,6 @@ from huggingface_hub import login
 from dotenv import load_dotenv
 
 from custom_modules.utils import FormatSFT
-from templates import SYSTEM_PROMPT_ANSWER
 
 load_dotenv()
 login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
@@ -27,7 +26,7 @@ with Pipeline(name="upload-sftmix") as pipeline:
     )
 
     format_sft = FormatSFT(
-        system_prompt=SYSTEM_PROMPT_ANSWER
+        system_prompt="You are a helpful assistant"
     )
 
     keep_columns = KeepColumns(
@@ -35,7 +34,7 @@ with Pipeline(name="upload-sftmix") as pipeline:
     )
 
     push_mysplit = PushToHub(
-        repo_id="ItsTYtan/safety_sft_sg",
+        repo_id="htxinterns/safety_sft_sg",
         split="tzeyoung"
     )
 

@@ -78,5 +78,5 @@ class OpenRouterLLM(GlobalStep):
                 results.append(row | {"generation": text, "model_name": self.model})
                 count += 1
                 if (count % 100 == 0):
-                    print(str(count) + "/" + str(total) + "generated")
+                    print(str(count) + "/" + str(total) + " generated")
         yield results
