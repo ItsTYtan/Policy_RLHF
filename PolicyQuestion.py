@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from custom_modules.OpenRouterLLM import OpenRouterLLM
 from custom_modules.questiongeneration import Extract, FromTopicArray, TopicToPrompt
 from custom_modules.utils import FromJsonFile, ToJsonFile
-from templates import SYSTEM_PROMPT_QUESTION, topicGuidelines, PROMPT_TEMPLATE_QUESTION, questionPhrasings, questionTypes
+from templates import SYSTEM_PROMPT_QUESTION_POLICY, PROMPT_TEMPLATE_QUESTION, questionPhrasings, questionTypes
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -48,19 +48,19 @@ with Pipeline(name="policy_question") as pipeline:
     )
 
     tojson = ToJsonFile(
-        filename="safetyquestion-subtopic",
+        filename="policyquestion",
         filepath="outputs"
     )
 
     tohub = PushToHub(
-        repo_id="ItsTYtan/safetyquestion-subtopic"
+        repo_id="ItsTYtan/policyquestion"
     )
 
     tasks = []
     for model in models:
         topicGenerator = FromJsonFile(
             filepath="./outputs",
-            filename="subtopic_1",
+            filename="subtopic_policy_1",
         )
 
         keep_topic = KeepColumns(
@@ -82,7 +82,7 @@ with Pipeline(name="policy_question") as pipeline:
             max_tokens=1024,
             temperature=0.9,
             max_workers=30,
-            system_prompt=SYSTEM_PROMPT_QUESTION
+            system_prompt=SYSTEM_PROMPT_QUESTION_POLICY
         )
         tasks.append(topicGenerator >> keep_topic >> formatter >> textgeneration)
 

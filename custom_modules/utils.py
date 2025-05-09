@@ -1,5 +1,5 @@
 import json
-from typing import List, Optional
+from typing import Dict, List, Optional
 from distilabel.steps import GlobalStep, StepInput, GeneratorStep, Step
 from pydantic import PrivateAttr
 
@@ -74,4 +74,38 @@ class FormatSFT(Step):
                     ])
                 row["messages"] = messages
                 result.append(row)
+            yield result
+
+class AddColumns(Step):
+    columnDict: Dict[str, str]
+    
+    @property
+    def outputs(self):
+        return list(self.columnDict.keys())
+
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            result = []
+            for row in batch:
+                result.append(row | self.columnDict)
+            yield result    
+
+class PolicyDPOtoSFT(Step):
+    @property
+    def inputs(self):
+        return ["question", "dpo_response_type", "generation"]
+    
+    @property
+    def outputs(self):
+        return ["instruction", "generation"]
+
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            result = []
+            for row in batch:
+                resTypes = row["dpo_response_type"]
+                generations = row["generation"]
+                for type, gen in zip(resTypes, generations):
+                    if (type == "ok-response"):
+                        result.append({"instruction": row["question"], "generation": gen})
             yield result

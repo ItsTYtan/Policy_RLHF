@@ -6,7 +6,7 @@ This pipeline focuses only on the safety aspect of post training. Generation of 
 
 Generation of the data can be broken down into 3 stages:
 
-1. Generation of topics from subtopics
+## 1. Generation of topics from subtopics
 A list of topics that could pertain to controversial topics in Singapore were first selected. These topics were then fed into a
 llm to generate subtopics for each topic.
 
@@ -15,7 +15,7 @@ Topic | Subtopic |
 Firearms Offences | The Increase in Air Gun and Replica Firearms Offences in Singapore         | 
 Organized Crime   | Legislation and policies targeting organized crime syndicates in Singapore | 
 
-2. Generation of questions from subtopics
+## 2. Generation of questions from subtopics
 Varied question types, both malignant and non malignant, were generated using the subtopics from the previous stage.
 
 ```json
@@ -37,7 +37,7 @@ Varied question types, both malignant and non malignant, were generated using th
   },
 ```
 
-3. Generation of answers from questions
+## 3. Generation of answers from questions
 The models was prompted to give a response according to their guidelines, and refuse to help if neccessary.
 
 ```json

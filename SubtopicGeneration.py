@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from custom_modules.OpenRouterLLM import OpenRouterLLM
 from custom_modules.questiongeneration import Extract, FromTopicArray
 from custom_modules.utils import FromJsonFile, ToJsonFile
-from templates import topicGuidelines, SYSTEM_PROMPT_SUBTOPIC
+from templates import topicGuidelinesPolicy, SYSTEM_PROMPT_SUBTOPIC
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -30,6 +30,7 @@ models = [
 
 subtopicLevel = 1
 currSubtopicLevel = 0
+topicGuidelines = topicGuidelinesPolicy
 
 while (currSubtopicLevel < subtopicLevel):
     with Pipeline(name="policy_question") as pipeline:
@@ -53,7 +54,7 @@ while (currSubtopicLevel < subtopicLevel):
         )
 
         tojson = ToJsonFile(
-            filename="subtopic_" + str(currSubtopicLevel + 1),
+            filename="subtopic_policy_" + str(currSubtopicLevel + 1),
             filepath="outputs"
         )
 

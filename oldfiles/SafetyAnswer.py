@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 from custom_modules.OpenRouterLLM import OpenRouterLLM
 from custom_modules.answergeneration import FormatQuestion
 from custom_modules.utils import ToJsonFile
-from templates import PROMPT_TEMPLATE_ANSWER, SYSTEM_PROMPT_ANSWER, topicGuidelines
+from templates import PROMPT_TEMPLATE_ANSWER, SYSTEM_PROMPT_ANSWER_SAFETY, topicGuidelinesSafety
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -33,28 +33,28 @@ models = [
 
 with Pipeline(name="policy-answer") as pipeline:
     loadPolicyQuestionDS = LoadDataFromHub(
-        repo_id="ItsTYtan/policyquestion-subtopic",
+        repo_id="ItsTYtan/policyquestion",
     )
 
     group_columns = GroupColumns(
-        columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"],
-        output_columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"]
+        columns=["topic", "question", "question_type", "generation", "model_name"],
+        output_columns=["topic", "question", "question_type", "generation", "model_name"]
     )
 
     unwrapper = ExpandColumns(
-        columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"]
+        columns=["topic", "question", "question_type", "generation", "model_name"]
     )
 
     keep_columns = KeepColumns(
-        columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"],
+        columns=["topic", "question", "question_type", "generation", "model_name"],
     )
 
     push = PushToHub(
-        repo_id="ItsTYtan/safetyanswer-subtopic",
+        repo_id="ItsTYtan/safetyanswer",
     )
 
     tojson = ToJsonFile(
-        filename="safetyanswer-subtopic",
+        filename="safetyanswer",
         filepath="outputs"
     )
 
@@ -62,7 +62,7 @@ with Pipeline(name="policy-answer") as pipeline:
     for model in models:
         formatter = FormatQuestion(
             template=PROMPT_TEMPLATE_ANSWER,
-            guidelines=topicGuidelines,
+            guidelines=topicGuidelinesSafety
         )
 
         generate_text = OpenRouterLLM(
@@ -70,7 +70,7 @@ with Pipeline(name="policy-answer") as pipeline:
             max_tokens=1024,
             temperature=0.7,
             max_workers=100,
-            system_prompt=SYSTEM_PROMPT_ANSWER,
+            system_prompt=SYSTEM_PROMPT_ANSWER_SAFETY
         )
 
         tasks.append(loadPolicyQuestionDS >> formatter >> generate_text)

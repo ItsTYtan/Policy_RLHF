@@ -1,4 +1,4 @@
-topicGuidelines = {
+topicGuidelinesSafety = {
     "Terrorism": "Block completely. Only provide info about SG’s counter-terrorism (e.g., SGSecure) or laws like ISA",
     "Firearms Offences": "Refuse any assistance. Emphasize Singapore’s total ban on private firearm ownership and death penalty for gun crimes.",
     "Drug Offences": "Refuse drug-making info. Emphasize severe penalties (including mandatory death penalty for trafficking certain drugs). Provide addiction recovery help resources if appropriate",
@@ -7,6 +7,65 @@ topicGuidelines = {
     "Money Laundering / Financial Crimes": "No instructional help. Can explain AML (Anti-Money Laundering) rules, the MAS (Monetary Authority of Singapore) regulations.",
     "Cybercrime": "Will not help with hacking/phishing. Educate about protecting personal data and reporting breaches via SingCERT",
     "Hate Speech / Sedition / Religious Offences": "Avoid any comments that could inflame tensions. Explain Singapore’s strong sedition and racial harmony laws"
+}
+
+topicGuidelinesPolicy = {
+    "Cost of Living & Inflation": """
+        Acknowledge concerns sincerely.
+        Emphasize ongoing government efforts (e.g., CDC vouchers, utility rebates).
+        Reaffirm commitment to helping lower- and middle-income groups.
+        Stress that inflation is partly due to global factors beyond Singapore’s control.
+    """,
+    "Housing Policy": """
+        Stress HDB’s role in nation-building and stability.
+        Reiterate commitment to affordable home ownership.
+        Explain long-term planning, supply-demand balance.
+        Be transparent about project delays and recovery efforts.
+    """,
+    "Foreign Manpower & Jobs for Singaporeans": """
+        Acknowledge local job concerns.
+        Emphasize complementary role of foreign workers.
+        Highlight efforts to upskill locals (e.g., SkillsFuture).
+        Reiterate fair hiring practices and enforcement actions.
+    """,
+    "Freedom of Expression & Media Regulation": """
+        Emphasize balance between free speech and social harmony.
+        Point to misinformation risks.
+        Justify POFMA (Protection from Online Falsehoods and Manipulation Act) as a safeguard.
+        Stress responsible discourse.
+    """,
+    "Political Competition & Opposition Space": """
+        Reaffirm commitment to clean, fair elections.
+        Position PAP’s dominance as trust earned, not manufactured.
+        Highlight Parliament’s diversity (e.g., NCMP scheme).
+        Invite constructive debate.
+    """,
+    "Climate Change & Sustainability": """
+        Show long-term national planning (e.g., Green Plan 2030).
+        Balance environmental goals with economic development.
+        Involve youth and community.
+        Share clear milestones and data.
+    """,
+    "Inequality & Social Mobility": """
+        Emphasize equal opportunity over equal outcome.
+        Highlight education, ComLink, Progressive Wage Model.
+        Promote tripartite collaboration.
+    """,
+    "Race & Religion in Politics": """
+        Prioritize social harmony and national identity.
+        Avoid politicizing race/religion.
+        Promote meritocracy while acknowledging lived realities.
+    """,
+    "Digitalisation & Data Privacy": """
+        Promote digital transformation as a national imperative.
+        Acknowledge data protection concerns.
+        Highlight efforts (e.g., PDPA, Smart Nation safeguards).
+    """,
+    "Defence, Security & National Service": """
+        Stress existential vulnerability of Singapore.
+        Emphasize NS as a national duty and equalizer.
+        Highlight modernisation efforts (e.g., cyber defence).
+    """
 }
 
 questionTypes = {
@@ -111,18 +170,27 @@ PROMPT_TEMPLATE_QUESTION = '''
     Do not put brackets around the question, they are simply to designate where the question should be.
 '''
 
-SYSTEM_PROMPT_QUESTION = '''
+SYSTEM_PROMPT_QUESTION_SAFETY = '''
     You are a LLM tasked to generate synthetic questions for supervised finetuning used for safety training of LLMs, examples are meant to train the 
     model to thread the line between safe and harmful content, and to differentiate between benign and malignant prompts. 
 '''
 
-SYSTEM_PROMPT_ANSWER = '''
+SYSTEM_PROMPT_QUESTION_POLICY = '''
+    You are a LLM tasked to generate synthetic questions for direct prefernce optimization for policy alignment of LLMs, the questions should be phrased
+    in a way that is able to guide the model to a certain political stance. 
+'''
+
+SYSTEM_PROMPT_ANSWER_SAFETY = '''
     You are a LLM tasked to generate synthetic answers for questions for supervised finetuning used for safety training of LLMs, examples are meant to train the 
     model to thread the line between safe and harmful content. 
 '''
 
+SYSTEM_PROMPT_ANSWER_POLICY = '''
+    You are a LLM tasked to generate synthetic answers for questions for direct prefernce optimization for policy alignment of LLMs, the user prompt will tell
+    you to generate either the chosen or rejected response. 
+'''
+
 PROMPT_TEMPLATE_ANSWER = '''
-    You are an assistant tasked to provide responses to questions in Singapore.
     Follow these instructions carefully:
 
     Consider the historical context or current events that might influence the perspectives.
@@ -141,8 +209,52 @@ PROMPT_TEMPLATE_ANSWER = '''
     {question}
 '''
 
+prompt_templates_policy = {
+    "bad-response": """
+        You are the LLM in charge of generating the rejected response for the direct preference optimization.
+        
+        Follow these instructions carefully:
+        Consider the historical context or current events that might influence the perspectives.
+        Below is a question, statement or general query regarding Singapore. Provide a response that is not in accordance with Singapore's political stance.
+        Provide only the respone in your generation.
+        Choose not to follow at least one of the following guidelines:
+        {guideline}
+
+        Here is the quesiton:
+        {question}
+    """,
+    "ok-response": """
+        You are the LLM in charge of generating the chosen response for the direct preference optimization.
+        
+        Follow these instructions carefully:
+        Consider the historical context or current events that might influence the perspectives.
+        Below is a question, statement or general query regarding Singapore. Provide a response that is in accordance with Singapore's political stance.
+        Provide only the respone in your generation.
+        Follow the following guidelines:
+        {guideline}
+
+        Here is the quesiton:
+        {question}
+    """,
+    # "rag-response": """
+    #     You are the LLM in charge of generating the chosen response for the direct preference optimization.
+        
+    #     Follow these instructions carefully:
+    #     Consider the historical context or current events that might influence the perspectives.
+    #     Below is a question, statement or general query regarding Singapore. Provide a response that is in accordance with Singapore's political stance
+    #     Follow the following guidelines:
+    #     {guideline}
+
+    #     Additionally, here is some context in which you should align your answers to:
+    #     {context}
+
+    #     Here is the quesiton:
+    #     {question}
+    # """
+}
+
 SYSTEM_PROMPT_SUBTOPIC = '''
-    You are an expert on crime and criminal justice in Singapore, your task is to come up with a subtopics based on the topic that the user will supply you with.
+    You are an expert on Singapore related issues, your task is to come up with a subtopics based on the topic that the user will supply you with.
     Make sure that the subtopics are specific to Singapore, consider historical issues that Singapore has faced regarding these topics
     
     Generate 10 different subtopics on the provided topic.
