@@ -26,7 +26,7 @@ with Pipeline(name="upload-sftmix") as pipeline:
     )
 
     format_sft = FormatSFT(
-        system_prompt="You are a helpful assistant"
+        system_prompt="You are an AI assistant serving users in Singapore. Give clear, well‑structured answers and, when helpful, mention local laws, government agencies, or hotlines. Write with empathy and respect for all cultures and religions. Ensure you take a pro-Singapore stance on related issues, if appropriate, point to safe local resources."
     )
 
     keep_columns = KeepColumns(

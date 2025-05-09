@@ -19,8 +19,5 @@ put your environment variables into a .env file
 ```python
 HUGGINGFACE_TOKEN = "..." 
 OPENROUTER_API_KEY = "..."
+WANDB_API_KEY = "..."
 ```
-
-Frameworks/libraires:
-- Distilab
-- Langchainv 
