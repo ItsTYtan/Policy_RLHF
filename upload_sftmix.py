@@ -10,7 +10,7 @@ import os
 from huggingface_hub import login
 from dotenv import load_dotenv
 
-from custom_modules.utils import FormatSFT, PolicyDPOtoSFT
+from custom_modules.utils import FormatSFT, FromJsonFile, PolicyDPOtoSFT
 
 load_dotenv()
 login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
@@ -71,7 +71,25 @@ with Pipeline(name="policy-split") as pipeline:
 
     fromSafetyAnswerSubtopic >> convert >> group_columns >> format_sft >> keep_columns >> push_mysplit
 
+# distiset = pipeline.run(
+#     use_cache=False,
+# )
+
+
+with Pipeline(name="htxllama-split") as pipeline:
+    fromJson = FromJsonFile(
+        filename="master_0_train.jsonl",
+        filepath="outputs",
+        startIdx=400000,
+    )
+
+    push_mysplit = PushToHub(
+        repo_id="htxinterns/HTLlama",
+        split="tzeyoung"
+    )
+
+    fromJson >> push_mysplit
+
 distiset = pipeline.run(
     use_cache=False,
 )
-

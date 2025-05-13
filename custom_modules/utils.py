@@ -22,20 +22,41 @@ class ToJsonFile(GlobalStep):
 class FromJsonFile(GeneratorStep):
     filename: str
     filepath: str
-    _file: any = PrivateAttr(None)
+    _file: any = PrivateAttr(List)
+    startIdx: Optional[int] = None
+    endIdx: Optional[int] = None
 
     def load(self):
         super().load()
+
         full_path = f"{self.filepath}/{self.filename}"
-        with open(full_path, "r", encoding="utf-8") as f:
-            self._file = json.load(f)  
+        if self.filename.endswith(".jsonl"):
+            self._file = self.jsonlToJson(full_path)
+        else:
+            with open(full_path, "r", encoding="utf-8") as f:
+                self._file = json.load(f) 
+        startIdx = self.startIdx if self.startIdx else 0
+        endIdx = self.endIdx if self.endIdx else len(self._file)
+        self._file = self._file[startIdx: endIdx]
 
     @property
     def outputs(self) -> List[str]:
         full_path = f"{self.filepath}/{self.filename}"
-        with open(full_path, "r", encoding="utf-8") as f:
-            lst = json.load(f)  
+        if self.filename.endswith(".jsonl"):
+            lst = self.jsonlToJson(full_path)
+        else:
+            with open(full_path, "r", encoding="utf-8") as f:
+                lst = json.load(f)  
         return list(lst[0].keys())
+    
+    def jsonlToJson(self, filepath):
+    # Read the .jsonl file and load each line as a JSON object
+        jsonl_data = []
+        with open(filepath, 'r', encoding='utf-8') as jsonl_file:
+            for line in jsonl_file:
+                jsonl_data.append(json.loads(line))
+        
+        return jsonl_data
 
     def process(self, offset: int = 0):
         if offset:

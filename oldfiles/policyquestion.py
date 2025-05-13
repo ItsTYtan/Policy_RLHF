@@ -14,7 +14,7 @@ from huggingface_hub import login
 from dotenv import load_dotenv
 
 from distilab_modules import ExtractPolicyQuestion, GeneratePolicyQuestion
-from templates import political_topics, POLICY_QUESTION_TEMPLATE
+from templates.templates import political_topics, POLICY_QUESTION_TEMPLATE
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 

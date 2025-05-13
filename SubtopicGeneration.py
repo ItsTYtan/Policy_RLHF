@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from custom_modules.OpenRouterLLM import OpenRouterLLM
 from custom_modules.questiongeneration import Extract, FromTopicArray
 from custom_modules.utils import FromJsonFile, ToJsonFile
-from templates import topicGuidelinesPolicy, SYSTEM_PROMPT_SUBTOPIC
+from templates.templates import topicGuidelinesPolicy, SYSTEM_PROMPT_SUBTOPIC
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 

@@ -14,7 +14,7 @@ from huggingface_hub import login
 from dotenv import load_dotenv
 
 from distilab_modules import FormatPolicyQuestion, FormatPolicyQuestionRAG, OpenRouterLLM, ToJsonFile
-from templates import answer_template_dict
+from templates.templates import answer_template_dict
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 

@@ -8,7 +8,7 @@ import concurrent
 from distilabel.steps import Step, StepInput, GlobalStep, GeneratorStep
 from dotenv import load_dotenv
 from openai import OpenAI
-from templates import answer_template_dict
+from templates.templates import answer_template_dict
 from pydantic import Field, PrivateAttr
 
 if TYPE_CHECKING:

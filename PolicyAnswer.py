@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from custom_modules.OpenRouterLLM import OpenRouterLLM
 from custom_modules.answergeneration import FormatQuestion
 from custom_modules.utils import AddColumns, ToJsonFile
-from templates import SYSTEM_PROMPT_ANSWER_POLICY, topicGuidelinesPolicy, prompt_templates_policy
+from templates.templates import SYSTEM_PROMPT_ANSWER_POLICY, topicGuidelinesPolicy, prompt_templates_policy
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
