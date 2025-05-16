@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import concurrent
 from dotenv import load_dotenv
@@ -11,7 +11,7 @@ class OpenRouterLLM(GlobalStep):
     model: str
     max_tokens: int
     temperature: float = 0.9
-    system_prompt: str = "You are a helpful assistant."
+    system_prompt: Optional[str] = None
     max_workers: int = 100
     logprobs: bool = False
 
@@ -42,12 +42,18 @@ class OpenRouterLLM(GlobalStep):
         Returns the generated text (or empty string on failure).
         """
         try:
-            response = self._client.chat.completions.create(
-                model=self.model,
-                messages=[
+            if self.system_prompt:
+                msgs = [
                     {"role": "system", "content": self.system_prompt},
                     {"role": "user",   "content": prompt}
-                ],
+                ]
+            else:
+                msgs = [
+                    {"role": "user",   "content": prompt}
+                ]
+            response = self._client.chat.completions.create(
+                model=self.model,
+                messages=msgs,
                 max_tokens=self.max_tokens,
                 temperature=self.temperature,
                 logprobs=self.logprobs

@@ -11,7 +11,7 @@ import os
 from dotenv import load_dotenv
 
 from custom_modules.OpenRouterLLM import OpenRouterLLM
-from custom_modules.htllama import FormatJett, Formathtllama
+from custom_modules.htllama import FormatJett, FormatHtllamaAnswer
 from custom_modules.utils import AddColumns, ToJsonFile
 from templates.htllama_templates import PROMPT_TEMPLATE, SYSTEM_PROMPT
 
@@ -59,7 +59,7 @@ with Pipeline(name="htllama") as pipeline:
             num_examples=100
         )
 
-        formatter = Formathtllama(
+        formatter = FormatHtllamaAnswer(
             template=PROMPT_TEMPLATE,
             output_mappings={
                 "instruction": "original_instruction"

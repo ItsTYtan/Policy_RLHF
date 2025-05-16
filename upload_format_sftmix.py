@@ -10,7 +10,7 @@ import os
 from huggingface_hub import login
 from dotenv import load_dotenv
 
-from custom_modules.utils import FormatSFT, FromJsonFile, PolicyDPOtoSFT
+from custom_modules.utils import FormatSFT, FromJsonFile, PolicyDPOtoSFT, ToJsonFile
 
 load_dotenv()
 login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
@@ -90,6 +90,14 @@ with Pipeline(name="htxllama-split") as pipeline:
 
     fromJson >> push_mysplit
 
-distiset = pipeline.run(
-    use_cache=False,
-)
+# distiset = pipeline.run(
+#     use_cache=False,
+# )
+
+with Pipeline(name="huggingface-to-json") as pipeline:
+    loadds = LoadDataFromHub()
+
+    tojson = ToJsonFile()
+
+    loadds >> tojson
+
