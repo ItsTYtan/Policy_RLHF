@@ -5,8 +5,6 @@ import concurrent
 from dotenv import load_dotenv
 from openai import OpenAI
 from distilabel.steps import StepInput, GlobalStep
-import tqdm
-
 
 class OpenRouterLLM(GlobalStep):
     _client: Any = None
@@ -15,6 +13,7 @@ class OpenRouterLLM(GlobalStep):
     temperature: float = 0.9
     system_prompt: str = "You are a helpful assistant."
     max_workers: int = 100
+    logprobs: bool = False
 
     def load(self):
         load_dotenv()
@@ -32,7 +31,10 @@ class OpenRouterLLM(GlobalStep):
 
     @property
     def outputs(self) -> List[str]:
-        return ["generation", "model_name"]
+        if self.logprobs:
+            return ["generation", "model_name", "logprobs"]
+        else: 
+            return ["generation", "model_name"]
 
     def _call_api(self, prompt: str) -> str:
         """
@@ -47,9 +49,17 @@ class OpenRouterLLM(GlobalStep):
                     {"role": "user",   "content": prompt}
                 ],
                 max_tokens=self.max_tokens,
-                temperature=self.temperature
+                temperature=self.temperature,
+                logprobs=self.logprobs
             )
-            return response.choices[0].message.content or ""
+
+            if self.logprobs:
+                logprobsRaw = response.choices[0].logprobs.content
+                logprobs = map(lambda completion: (completion.token, str(completion.logprob)), logprobsRaw)
+                return response.choices[0].message.content or "", list(logprobs)
+
+            return response.choices[0].message.content or "", None
+            
         except Exception as e:
             print(e)
             return ""
@@ -74,8 +84,11 @@ class OpenRouterLLM(GlobalStep):
             # As each finishes, collect its result
             for future in concurrent.futures.as_completed(futures):
                 row = futures[future]
-                text = future.result()
-                results.append(row | {"generation": text, "model_name": self.model})
+                text, logprobs = future.result()
+                resultRow = row | {"generation": text, "model_name": self.model}
+                if self.logprobs:
+                    resultRow = resultRow | {"logprobs": logprobs}
+                results.append(resultRow)
                 count += 1
                 if (count % 100 == 0):
                     print(str(count) + "/" + str(total) + " generated")

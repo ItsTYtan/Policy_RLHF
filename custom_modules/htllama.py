@@ -1,6 +1,8 @@
 from typing import List
 from distilabel.steps import Step, StepInput
 
+from templates.htllama_templates import JETT_TEMPLATE
+
 class Formathtllama(Step):
     template: str
 
@@ -10,7 +12,7 @@ class Formathtllama(Step):
 
     @property
     def outputs(self) -> List[str]:
-        return ["prompt"]
+        return ["instruction", "output", "output2", "text", "prompt"]
 
     def process(self, *inputs: StepInput):
         for input in inputs:
@@ -25,5 +27,26 @@ class Formathtllama(Step):
                     output2=output2
                 )
                 row["prompt"] = prompt
+                result.append(row)
+            yield result
+
+class FormatJett(Step):
+    @property
+    def inputs(self) -> List[str]:
+        return ["instruction", "output", "output2"]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["instruction", "output", "output2", "text"]
+
+    def process(self, *inputs: StepInput):
+        for input in inputs:
+            result = []
+            for row in input:
+                text = JETT_TEMPLATE.format(
+                    instruction=row["instruction"],
+                    response=row["output"]
+                )
+                row["text"] = text
                 result.append(row)
             yield result
