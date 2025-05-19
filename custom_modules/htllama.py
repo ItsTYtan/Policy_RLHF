@@ -10,11 +10,11 @@ class FormatHtllamaQuestion(Step):
 
     @property
     def inputs(self) -> List[str]:
-        return ["instruction", "output", "output2", "text"]
+        return ["instruction", "output", "output2"]
 
     @property
     def outputs(self) -> List[str]:
-        return ["original_instruction", "output", "output2", "text", "prompt"]
+        return ["original_instruction", "output", "output2", "prompt"]
 
     def process(self, *inputs: StepInput):
         for input in inputs:
@@ -38,11 +38,11 @@ class FormatHtllamaAnswer(Step):
 
     @property
     def inputs(self) -> List[str]:
-        return ["instruction", "output", "output2", "text"]
+        return ["instruction", "output", "output2"]
 
     @property
     def outputs(self) -> List[str]:
-        return ["original_instruction", "output", "output2", "text", "prompt"]
+        return ["original_instruction", "output", "output2", "prompt"]
 
     def process(self, *inputs: StepInput):
         for input in inputs:

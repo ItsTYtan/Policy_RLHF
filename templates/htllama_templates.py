@@ -1,9 +1,3 @@
-SYSTEM_PROMPT = '''
-    You are an LLM tasked to refine a supervised fine tuning dataset by combining two outputs to come up with a longer and more detailed response. 
-    The instruction provided is the question and the two outputs are the answers to the question.
-    Use the contextual knowledge the provided instructions and outputs to come up with a new detailed response that is in line with the two original outputs.
-'''
-
 QUESTION_REFINEMENT_TEMPLATE = """
     You are an LLM tasked to refine a supervised fine tuning dataset by adding more variety to each instruction in the dataset.
 
@@ -55,12 +49,16 @@ refinements = [
 ]
 
 
-PROMPT_TEMPLATE = '''
+ANSWER_PROMPT_TEMPLATE = '''
+    You are an LLM tasked to generate a supervised fine tuning answer for an instruction.
+    You will be given two pieces of contextual knowledge to aid in the generation correctness.
+    Please adhere to the contextual knowledge.
+
     Here is the instruction: {instruction}
 
-    Here is the first output: {output}
+    Here is the first context: {output}
 
-    Here is the second output: {output2}
+    Here is the second context: {output2}
 
     Make sure your generation only contains the response and nothing else.
 '''
@@ -73,11 +71,41 @@ SUMMARY_TEMPLATE = '''
 
     Make sure that the paragraph generated is of the same context as the question.
     The instructions and outputs are there mainly to give you an idea on the topic at hand and draw inspiration from to form a paragraph. Do not quote directly from the instructions and outputs.
-    Make sure your generation is at least 200 words long.
+    Make sure your generation is at least 500 words long.
     Generate the user query to summarize the task as well as the text to be summarized in your generation together and nothing else.
     Make the user query to summarize as natural as possible, such as putting one word "summarize" before or after the text to summarize, as if the user copy pasted the text and asked for a summary.
     Make some queries such that the user seems to have asked in a hurried way, only including one word "summarize" before or after the text.
     Do vary the way the user asks for a summary, some examples can include "summarize" or "please summarize".
+    Search for online information relevant to the question to add more points into the generated summary text.
+
+    Follow the below guidelines to help expand the summary.
+
+    ✅ 1. Sentence Expansion
+    For each sentence in the extractive summary:
+
+    Expand it with explanations, examples, or paraphrased clarifications.
+
+    ✅ 2. Add Transitional and Contextual Sentences
+    Insert synthetic transitions or context before/after extractive sentences to:
+
+    Connect ideas more fluidly
+
+    Provide additional background
+
+    Elaborate on implications
+
+    ✅ 3. Sentence Splitting and Paraphrasing
+    Split complex sentences and expand each part:
+
+    Convert compact information into multiple simpler, detailed sentences
+
+    ✅ 4. Add Definitions or Explanations for Terms
+    Identify technical or abstract terms in the summary and ask the LLM to:
+
+    Add brief definitions or explanations inline or in footnotes
+
+    ✅ 5. Chain-of-Thought Elaboration
+    Use chain-of-thought prompting to explain why each extracted sentence matters or what its implications are.
 
     Here is the instruction: {instruction}
 

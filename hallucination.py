@@ -11,9 +11,10 @@ import os
 from dotenv import load_dotenv
 
 from custom_modules.OpenRouterLLM import OpenRouterLLM
+from custom_modules.hallucination import EvaluateLogprobs
 from custom_modules.htllama import FormatJett, FormatHtllamaAnswer
 from custom_modules.utils import AddColumns, ToJsonFile
-from templates.htllama_templates import PROMPT_TEMPLATE, SYSTEM_PROMPT
+from templates.htllama_templates import ANSWER_PROMPT_TEMPLATE
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -39,8 +40,10 @@ with Pipeline(name="htllama") as pipeline:
         }
     )
 
+    eval = EvaluateLogprobs()
+
     keep_columns = KeepColumns(
-        columns=["original_instruction", "generation", "output", "output2", "logprobs"],
+        columns=["original_instruction", "generation", "output", "output2", "avg-logprob", "max-token", "max-logprob", "min-token", "min-logprob"],
         output_mappings={
             "original_instruction": "instruction",
         }
@@ -48,7 +51,7 @@ with Pipeline(name="htllama") as pipeline:
 
     tojson = ToJsonFile(
         filepath="outputs",
-        filename="htllama-hallu"
+        filename="htllama-hallucination"
     )
 
     tasks = []
@@ -56,14 +59,11 @@ with Pipeline(name="htllama") as pipeline:
         loadPolicyQuestionDS = LoadDataFromHub(
             repo_id="htxinterns/HTLlama",
             split="tzeyoung",
-            num_examples=100
+            num_examples=10
         )
 
         formatter = FormatHtllamaAnswer(
-            template=PROMPT_TEMPLATE,
-            output_mappings={
-                "instruction": "original_instruction"
-            }
+            template=ANSWER_PROMPT_TEMPLATE,
         )
 
         llm = OpenRouterLLM(
@@ -71,7 +71,6 @@ with Pipeline(name="htllama") as pipeline:
             max_tokens=1024,
             temperature=0.9,
             max_workers=100,
-            system_prompt=SYSTEM_PROMPT,
             logprobs=True,
             input_mappings={
                 "instruction": "prompt"
@@ -80,7 +79,7 @@ with Pipeline(name="htllama") as pipeline:
 
         tasks.append(loadPolicyQuestionDS >> formatter >> llm)
 
-    tasks >> group_columns >> expand_columns >> keep_columns >> tojson
+    tasks >> group_columns >> expand_columns >> eval >> keep_columns >> tojson
 
 distiset = pipeline.run(
     use_cache=False,
