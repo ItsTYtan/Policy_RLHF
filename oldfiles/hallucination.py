@@ -10,7 +10,7 @@ from distilabel.steps import (
 import os
 from dotenv import load_dotenv
 
-from custom_modules.OpenRouterLLM import OpenRouterLLM
+from custom_modules.CustomLLMs import OpenRouterLLM
 from custom_modules.hallucination import EvaluateLogprobs
 from custom_modules.htllama import FormatJett, FormatHtllamaAnswer
 from custom_modules.utils import AddColumns, ToJsonFile

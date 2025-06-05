@@ -14,7 +14,7 @@ import os
 from huggingface_hub import login
 from dotenv import load_dotenv
 
-from custom_modules.OpenRouterLLM import OpenRouterLLM
+from custom_modules.CustomLLMs import OpenRouterLLM
 from custom_modules.answergeneration import FormatQuestion
 from custom_modules.utils import ToJsonFile
 from templates.templates import PROMPT_TEMPLATE_ANSWER, SYSTEM_PROMPT_ANSWER_SAFETY, topicGuidelinesSafety
@@ -33,20 +33,20 @@ models = [
 
 with Pipeline(name="policy-answer") as pipeline:
     loadPolicyQuestionDS = LoadDataFromHub(
-        repo_id="ItsTYtan/policyquestion",
+        repo_id="ItsTYtan/safetyquestion",
     )
 
     group_columns = GroupColumns(
-        columns=["topic", "question", "question_type", "generation", "model_name"],
-        output_columns=["topic", "question", "question_type", "generation", "model_name"]
+        columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"],
+        output_columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"]
     )
 
     unwrapper = ExpandColumns(
-        columns=["topic", "question", "question_type", "generation", "model_name"]
+        columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"]
     )
 
     keep_columns = KeepColumns(
-        columns=["topic", "question", "question_type", "generation", "model_name"],
+        columns=["topic", "subtopic", "question", "question_type", "generation", "model_name"],
     )
 
     push = PushToHub(
@@ -62,7 +62,7 @@ with Pipeline(name="policy-answer") as pipeline:
     for model in models:
         formatter = FormatQuestion(
             template=PROMPT_TEMPLATE_ANSWER,
-            guidelines=topicGuidelinesSafety
+            guidelines=topicGuidelinesSafety,
         )
 
         generate_text = OpenRouterLLM(
@@ -70,7 +70,7 @@ with Pipeline(name="policy-answer") as pipeline:
             max_tokens=1024,
             temperature=0.7,
             max_workers=100,
-            system_prompt=SYSTEM_PROMPT_ANSWER_SAFETY
+            system_prompt=SYSTEM_PROMPT_ANSWER_SAFETY,
         )
 
         tasks.append(loadPolicyQuestionDS >> formatter >> generate_text)

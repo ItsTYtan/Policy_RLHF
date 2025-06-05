@@ -10,7 +10,7 @@ from distilabel.steps import (
 import os
 from dotenv import load_dotenv
 
-from custom_modules.OpenRouterLLM import OpenRouterLLM
+from custom_modules.CustomLLMs import OpenRouterLLM
 from custom_modules.htllama import FormatHtllamaQuestion, FormatJett, FormatHtllamaAnswer
 from custom_modules.utils import AddColumns, Extract, FromJsonFile, ToJsonFile
 from templates.htllama_templates import ANSWER_PROMPT_TEMPLATE, QUESTION_REFINEMENT_TEMPLATE, SUMMARY_TEMPLATE, refinements

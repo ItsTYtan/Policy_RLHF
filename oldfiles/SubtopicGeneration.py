@@ -11,7 +11,7 @@ import os
 from huggingface_hub import login
 from dotenv import load_dotenv
 
-from custom_modules.OpenRouterLLM import OpenRouterLLM
+from custom_modules.CustomLLMs import OpenRouterLLM
 from custom_modules.questiongeneration import Extract, FromTopicArray
 from custom_modules.utils import FromJsonFile, ToJsonFile
 from templates.templates import topicGuidelinesPolicy, SYSTEM_PROMPT_SUBTOPIC

@@ -4,3 +4,4 @@ venv
 __pycache__
 chroma_langchain_db
 outputs
+hansard_clean_compiled
