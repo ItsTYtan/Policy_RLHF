@@ -165,3 +165,39 @@ class Extract(Step):
                         continue
                     result.append(entry | qnEntry)
             yield result 
+
+class ExtractJson(Step):
+    @property
+    def inputs(self) -> List[str]:
+        return ["generation"]
+
+    @property
+    def outputs(self) -> List[str]: 
+        return ["json"]
+
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            result = []
+            for entry in batch:
+                match = re.search(r"```json\s*(\{.*?\})\s*```", entry["generation"], re.DOTALL)
+                jsonStr = match.group(1) if match else ""
+                result.append(entry | {"json": json.loads(jsonStr)})
+            yield result 
+
+class ExtractPythonArray(Step):
+    @property
+    def inputs(self) -> List[str]:
+        return ["generation"]
+
+    @property
+    def outputs(self) -> List[str]: 
+        return ["array"]
+
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            result = []
+            for entry in batch:
+                match = re.search(r"\[\s*([\s\S]*?)\s*\]", entry["generation"], re.DOTALL)
+                arr = "[" + (match.group(1) if match else "") + "]"
+                result.append(entry | {"array": json.loads(arr)})
+            yield result 

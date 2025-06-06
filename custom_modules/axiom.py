@@ -65,7 +65,31 @@ class FormatPolicyExtract(Step):
             for row in input:
                 input = row["hansard"]
                 prompt = self.template.format(
-                    input=input,
+                    hansard=input,
+                )
+                result.append(row | {"instruction": prompt})
+            yield result
+
+class FormatDecisionExtract(Step):
+    template: str
+
+    @property
+    def inputs(self) -> List[str]:
+        return ["policy", "hansard"]
+    
+    @property
+    def outputs(self) -> List[str]:
+        return ["instruction"]
+    
+    def process(self, *inputs: StepInput):
+        for input in inputs:
+            result = []
+            for row in input:
+                policy = row["policy"]
+                hansard = row["hansard"]
+                prompt = self.template.format(
+                    policy=policy,
+                    hansard=hansard,
                 )
                 result.append(row | {"instruction": prompt})
             yield result

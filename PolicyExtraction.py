@@ -12,10 +12,10 @@ from huggingface_hub import login
 from dotenv import load_dotenv
 
 from custom_modules.CustomLLMs import OpenRouterLLM, SageMakerLLM
-from custom_modules.axiom import FormatPolicyExtract, LoadHansard
+from custom_modules.axiom import FormatDecisionExtract, FormatPolicyExtract, LoadHansard
 from custom_modules.questiongeneration import Extract, FromTopicArray, TopicToPrompt
-from custom_modules.utils import FromJsonFile, ToJsonFile
-from templates.axiom_templates import EXTRACTION_TEMPLATE
+from custom_modules.utils import ExtractJson, ExtractPythonArray, FromJsonFile, ToJsonFile
+from templates.axiom_templates import DECISION_EXTRACTION_TEMPLATE, EXTRACTION_TEMPLATE, POLICY_EXTRACTION_TEMPLATE
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -32,26 +32,69 @@ with Pipeline(name="policy_extraction") as pipeline:
         max_length=25000,
     )
 
-    formatter = FormatPolicyExtract(
-        template=EXTRACTION_TEMPLATE,
+    formatterPolicy = FormatPolicyExtract(
+        template=POLICY_EXTRACTION_TEMPLATE,
     )
 
-    llm = SageMakerLLM(
+    llmPolicy = SageMakerLLM(
         model=model,
         max_tokens=1024
     )
 
-    keep_columns = KeepColumns(
-        columns=["file", "length", "generation"]
+    extractPolicy = ExtractPythonArray(
+        output_mappings={
+            "array": "policies"
+        }
     )
 
-    toJson = ToJsonFile(
+    keep_columns = KeepColumns(
+        columns=["file", "length", "policies"]
+    )
+    
+    toJsonPolicy = ToJsonFile(
         filepath="outputs",
         filename="policyextract"
     )
 
-    loadHansard >> formatter >> llm >> keep_columns >> toJson
+    expand = ExpandColumns(
+        columns=["policies"],
+        output_mappings={
+            "policies": "policy"
+        }
+    )
 
+    filter_second_stage = KeepColumns(
+        columns=["file", "length", "policy", "hansard"]
+    )
+
+    formatterDecision = FormatDecisionExtract(
+        template=DECISION_EXTRACTION_TEMPLATE
+    )
+
+    llmDecision = SageMakerLLM(
+        model=model,
+        max_tokens=1024
+    )
+
+    extractDecision = ExtractJson()
+
+    keep_final = KeepColumns(
+        columns=["file", "length", "policy", "json"]
+    )
+
+    toJsonDecision = ToJsonFile(
+        filepath="outputs",
+        filename="decisionextract"
+    )
+
+    # Main linear chain
+    base = loadHansard >> formatterPolicy >> llmPolicy >> extractPolicy
+
+    # Two branches from the same shared base
+    base >> keep_columns >> toJsonPolicy
+    base >> expand >> filter_second_stage >> formatterDecision >> llmDecision >> extractDecision >> keep_final >> toJsonDecision
+
+    
 distiset = pipeline.run(
     use_cache=False,
 )
