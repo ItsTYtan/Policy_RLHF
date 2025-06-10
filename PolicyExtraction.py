@@ -79,7 +79,7 @@ with Pipeline(name="policy_extraction") as pipeline:
     extractDecision = ExtractJson()
 
     keep_final = KeepColumns(
-        columns=["file", "length", "policy", "json"]
+        columns=["file", "length", "json"]
     )
 
     toJsonDecision = ToJsonFile(

@@ -44,9 +44,9 @@ POLICY_EXTRACTION_TEMPLATE = '''
 
 DECISION_EXTRACTION_TEMPLATE = '''
     You are a LLM tasked to extract the final decision of a policy discussed from a Singapore paliamentary debate, as well as
-    the claims and rationale for and against the final decision.
+    the claims for and against the final decision.
 
-    Output will be in the format of a json object as follows:
+    Take not that the output will be in the format of a json object as follows:
     {{
         "policy": {policy},
         "decision": <decision>,
@@ -63,6 +63,11 @@ DECISION_EXTRACTION_TEMPLATE = '''
     }}    
     
     The <> brackets are to indicate where to put the appropriate extracted information from the debate.
+    If there are no claims against, simply put a empty array for "claims against".
+    The claims will ONLY be the facts and figures supporting or against the final decision, do not include details 
+    of the policy to be enacted.
+    The final decision written in the json output should incorporate the claims, explain how the claims supporting and
+    against lead to the final decision.
 
     Here is the policy that was discussed: {policy}
     Here is the paliamentary debate: {hansard}

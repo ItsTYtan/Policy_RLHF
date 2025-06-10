@@ -106,7 +106,7 @@ class SageMakerLLM(GlobalStep):
     _client: Any = None
     model: str
     max_tokens: int
-    temperature: float = 0.9
+    temperature: float = 0.7
     system_prompt: Optional[str] = None # Not implemented in this class
     max_workers: int = 100
     logprobs: bool = False # Not implemented in this class
