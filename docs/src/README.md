@@ -47,7 +47,7 @@ A few issues surfaced, below describes the issues and the proposed workarounds
 ### 1. Hansard paliamentary debates do not fit into the context length of Sagemaker hosted models.
 A few chunking strategies were proposed, and 2 are to be tried together.
 - Chunking by topic: within each sitting, there are clear separations between different topics discussed
-- Chunking by speaker: extract the relevant content of each speaker 
+- Chunking by speaker: extract the relevant content of each speaker through regex
 
 Chunking by speaker presents the problem of not being able to extract the final decision of the policy discussed. Currently am unsure if the final decision is neccessary information for generating the SFT data.
 
@@ -75,3 +75,31 @@ new json format:
 ```
 
 Arka also showed the new Qwen3 embedding model [link](https://qwenlm.github.io/blog/qwen3-embedding/) we could use in the future to validate our data
+
+## (11/06/2025)
+Identified 2 main starting patterns for a speaker, using Ms Rahayu Mahzam as an example:
+1. The Minister of State for Health (Ms Rahayu Mahzam) (for the Minister for Health)\n:
+2. Ms Rahayu Mahzam\n: 
+
+The end of a speech ends in 3 main ways:
+1. Ending with Mr speaker: 
+  \nMr Speaker\n:
+2. Ending with another Mp start of speech: 
+  \nMr Alvin Tan\n:
+3. Ending due to end of file.
+
+Thus, 2 main regex patterns were used to extract speeches
+```python
+  rf"{mp}\n:.*\n{nextspeaker}\n:"
+```
+
+```python
+  rf"({mp})\s(.*)\n:.*\n{nextspeaker}\n:"
+```
+
+{mp} denotes a placeholder for a mp name
+{nextspeaker} denotes the next speaker, which can be another mp, Mr Speaker or nobody (will be represented as an empty string)
+
+Thus, speeches are extracted through generating regex patterns by the cartesian product of mps with nextspeakers. 
+The EOF end of speech need to be treated differently. After every regex pattern is tested, if no match is found, the EOF regex, which is essentialy rf"{mp}\n:.*" or rf"({mp})\s(.*)\n:.*"
+will then be used to check for match.

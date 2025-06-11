@@ -24,7 +24,8 @@ class ToJsonFile(GlobalStep):
     jsonl: bool = False
 
     def process(self, inputs: StepInput): 
-        full_path = f"{self.filepath}/{self.filename}"
+        ext = ".jsonl" if self.jsonl else ".json"
+        full_path = f"{self.filepath}/{self.filename}" + ext
         if (self.jsonl):
             yield jsonToJsonl(full_path)
         else:

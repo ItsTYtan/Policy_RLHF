@@ -90,6 +90,9 @@ def main():
     
     def format_date_for_api(date_obj):
         return f"{date_obj.day}-{date_obj.month}-{date_obj.year}"
+
+    def format_date_for_filename(date_obj):
+        return f"{date_obj.year}-{date_obj.strftime('%m')}-{date_obj.strftime('%d')}"
     
     for start_date, end_date, folder_name in date_ranges:
         print(f"Testing date range: {start_date} to {end_date}")
@@ -100,17 +103,9 @@ def main():
             data = fetch_hansard_report(api_date)
             if data and check_schema(data):
                 print(f"SUCCESS: {api_date}")
-                # print(json.dumps(data, indent=2))
 
-                contentList = data["takesSectionVOList"]
-                for section in contentList:
-                    content = section["content"]
-                    soup = BeautifulSoup(content, "html.parser")
-                    text = soup.get_text(separator="\n", strip=True)
-                    section["content"] = text
-                
-                with open("./hansard/hansard_sections/" + api_date + ".json", "w") as f:
-                    json.dump(contentList, f, ensure_ascii=False, indent=2)
+                with open("./hansard/hansard_raw/" + format_date_for_filename(date_obj) + ".json", "w") as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
                 continue
             else:
                 continue
