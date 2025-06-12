@@ -3,4 +3,6 @@ venv
 .env
 __pycache__
 chroma_langchain_db
+cache
+oldfiles
 outputs

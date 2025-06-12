@@ -38,16 +38,16 @@ with Pipeline(name="extract_speakers") as extract_speaker_pipeline:
     )
 
     tojson = ToJsonFile(
-        filepath="./cache",
+        filepath="./outputs",
         filename="extracted_speakers",
-        jsonl=True
+        jsonl=False
     )
 
     loadHansard >> extractSpeaker >> keep_columns >> tojson
 
-# distiset = extract_speaker_pipeline.run(
-#     use_cache=False,
-# )
+distiset = extract_speaker_pipeline.run(
+    use_cache=False,
+)
 
 with Pipeline(name="generate_claims") as generate_claims_pipeline:
     fromJson = FromJsonFile(
@@ -83,6 +83,6 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     fromJson >> formatter >> llm >> extractJson >> keep_columns >> tojson
 
     
-distiset = generate_claims_pipeline.run(
-    use_cache=False,
-)
+# distiset = generate_claims_pipeline.run(
+#     use_cache=False,
+# )
