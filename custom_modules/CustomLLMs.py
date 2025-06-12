@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Optional
 
 import concurrent
 import boto3
+import botocore
 from dotenv import load_dotenv
 from openai import OpenAI
 from distilabel.steps import StepInput, GlobalStep
@@ -117,7 +118,7 @@ class SageMakerLLM(GlobalStep):
             aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
             aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
             region_name='ap-southeast-1'
-        ).client('sagemaker-runtime')
+        ).client('sagemaker-runtime',config=botocore.config.Config(read_timeout=120, connect_timeout=60))
         super().load()
 
     @property

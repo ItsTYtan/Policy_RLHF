@@ -77,29 +77,23 @@ new json format:
 Arka also showed the new Qwen3 embedding model [link](https://qwenlm.github.io/blog/qwen3-embedding/) we could use in the future to validate our data
 
 ## (11/06/2025)
-Identified 2 main starting patterns for a speaker, using Ms Rahayu Mahzam as an example:
-1. The Minister of State for Health (Ms Rahayu Mahzam) (for the Minister for Health)\n:
-2. Ms Rahayu Mahzam\n: 
+Identified some starting patterns for a speaker, using Ms Rahayu Mahzam as an example:
+- The Minister of State for Health (Ms Rahayu Mahzam) (for the Minister for Health)\n:
+- Ms Rahayu Mahzam\n: 
+- (Ms Rahayu Mahzam)\n:
 
-The end of a speech ends in 3 main ways:
-1. Ending with Mr speaker: 
-  \nMr Speaker\n:
-2. Ending with another Mp start of speech: 
-  \nMr Alvin Tan\n:
-3. Ending due to end of file.
+Speech ends with another person speaking or due to end of string
 
-Thus, 2 main regex patterns were used to extract speeches
+Thus, 2 main regex patterns were used to extract speeches:
 ```python
-  rf"{mp}\n:.*\n{nextspeaker}\n:"
+  rf"{mp}\n:.*?\n[^\d]*?\n:"
 ```
 
 ```python
-  rf"({mp})\s(.*)\n:.*\n{nextspeaker}\n:"
+  rf"\({mp}\)[^\d]*?\n:.*?\n[^\d]*?\n:"
 ```
 
 {mp} denotes a placeholder for a mp name
-{nextspeaker} denotes the next speaker, which can be another mp, Mr Speaker or nobody (will be represented as an empty string)
 
-Thus, speeches are extracted through generating regex patterns by the cartesian product of mps with nextspeakers. 
-The EOF end of speech need to be treated differently. After every regex pattern is tested, if no match is found, the EOF regex, which is essentialy rf"{mp}\n:.*" or rf"({mp})\s(.*)\n:.*"
-will then be used to check for match.
+Speech ending due to end of string is checked if the 2 above regex patterns do not return matches. Slightly modified version of the regex above are used, without the "?\n[^\d]*?\n:" at the end
+of each regex pattern.

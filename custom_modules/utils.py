@@ -6,16 +6,15 @@ from pydantic import PrivateAttr
 
 def jsonlToJson(filepath):
     jsonl_data = []
-    with open(filepath, 'r', encoding='utf-8') as jsonl_file:
+    with open(filepath, "r", encoding='utf-8') as jsonl_file:
         for line in jsonl_file:
             jsonl_data.append(json.loads(line))
     
     return jsonl_data
 
 def jsonToJsonl(filepath):
-    with open(filepath, 'r', encoding='utf-8') as f:
+    with open(filepath, "r", encoding='utf-8') as f:
         data = json.load(f)
-    
     return data
 
 class ToJsonFile(GlobalStep):
@@ -26,10 +25,11 @@ class ToJsonFile(GlobalStep):
     def process(self, inputs: StepInput): 
         ext = ".jsonl" if self.jsonl else ".json"
         full_path = f"{self.filepath}/{self.filename}" + ext
-        if (self.jsonl):
-            yield jsonToJsonl(full_path)
-        else:
-            with open(full_path, "w", encoding="utf-8") as f:
+        with open(full_path, "w", encoding="utf-8") as f:
+            if (self.jsonl):
+                for input in inputs:
+                    f.write(json.dumps(input) + "\n")
+            else:
                 obj = []
                 for input in inputs:
                     record = {}
@@ -37,7 +37,7 @@ class ToJsonFile(GlobalStep):
                         record[key] = value
                     obj.append(record)
                 json.dump(obj, f, ensure_ascii=False, indent=2)
-            yield inputs
+        yield inputs
 
 class FromJsonFile(GeneratorStep):
     filename: str
@@ -51,7 +51,7 @@ class FromJsonFile(GeneratorStep):
 
         full_path = f"{self.filepath}/{self.filename}"
         if self.filename.endswith(".jsonl"):
-            self._file = self.jsonlToJson(full_path)
+            self._file = jsonlToJson(full_path)
         else:
             with open(full_path, "r", encoding="utf-8") as f:
                 self._file = json.load(f) 
@@ -181,8 +181,10 @@ class ExtractJson(Step):
             result = []
             for entry in batch:
                 match = re.search(r"```json\s*(\{.*?\})\s*```", entry["generation"], re.DOTALL)
-                jsonStr = match.group(1) if match else ""
-                result.append(entry | {"json": json.loads(jsonStr)})
+                if not match:
+                    result.append(entry | {"json": {}})
+                    continue
+                result.append(entry | {"json": json.loads(match.group(1))})
             yield result 
 
 class ExtractPythonArray(Step):
@@ -202,3 +204,26 @@ class ExtractPythonArray(Step):
                 arr = "[" + (match.group(1) if match else "") + "]"
                 result.append(entry | {"array": json.loads(arr)})
             yield result 
+
+class TemplateFormatter(Step):
+    template: str
+    template_inputs: list[str]
+
+    @property
+    def inputs(self) -> List[str]:
+        return self.template_inputs
+
+    @property
+    def outputs(self) -> List[str]: 
+        return ["instruction"]
+    
+    def process(self, *inputs: StepInput):
+        for input in inputs:
+            result = []
+            for row in input:
+                formatDict = dict()
+                for template_input in self.template_inputs:
+                    formatDict[template_input] = row[template_input]
+                prompt = self.template.format(**formatDict)
+                result.append(row | {"instruction": prompt})
+            yield result
