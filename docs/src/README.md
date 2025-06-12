@@ -14,8 +14,12 @@ The whole process of automating the generation of a dataset can be roughly broke
 
 ## Meeting Notes and thought process
 
-### (06/06/2025)
-Meeting today gave an overview of how to go about creating axiom, and how to start on the first part which is the extraction of new policies fom the web.
+### 📅 (06/06/2025)
+Methodology to extract policies from web:
+1. Extract raw hansard from web
+2. Clean raw hansard into text
+3. Pass the text into LLM to generate json below
+
 We chose Hansard as the source of policy information from the web. Hansard provides publicly available comprehensive transcripts of paliamentary debates in Singapore.
 
 The information deemed relevant from paliamentary debates are the policies discussed, the final decision made for each policy, and the claims supporting the final decision as well as the claims against the final decision. In short, the information extracted can be visualized as many json objects, each one with the format below:
@@ -41,7 +45,7 @@ The information deemed relevant from paliamentary debates are the policies discu
 As multiple policies may be discussed in a paliamentary debate, a LLM is first tasked to extract the policies discussed in the debate. For each policy extracted, another LLM is tasked to extract
 the final decision, the claims for and against as well as the ministries involved.
 
-### (09/06/2025)
+### 📅 (09/06/2025)
 A few issues surfaced, below describes the issues and the proposed workarounds
 
 ### 1. Hansard paliamentary debates do not fit into the context length of Sagemaker hosted models.
@@ -51,7 +55,7 @@ A few chunking strategies were proposed, and 2 are to be tried together.
 
 Chunking by speaker presents the problem of not being able to extract the final decision of the policy discussed. Currently am unsure if the final decision is neccessary information for generating the SFT data.
 
-### 2. Schema modifications 
+### 2. Schema modifications
 After taking a look at the generation of claims, final decision and policy, it seemed that the claims also contained policy information and could be used to generate the final SFT data instead. Some paliamentary debates were also clarifying and not an actual debate about a policy. Hence, some modifications to the schema were suggested:
 
 #### Including the speaker into each json object
@@ -63,9 +67,9 @@ Not much point in separating the claims for and against if whether the deciding 
 new json format:
 ```json
   {
-    "policy": "[the policy discussed in the debate]",
-    "date": "[originally 'paliamentary debate', but I think only the data of the debate is important anyway]",
-    "speaker": "[speaker of the claims below]"
+    "section_title": "[basically the policy discussed in the debate]",
+    "file": "[contains the date of the debate]",
+    "speaker": "[speaker of the claims below]",
     "claims": [
       "claim 1",
       "claim 2",
@@ -76,7 +80,13 @@ new json format:
 
 Arka also showed the new Qwen3 embedding model [link](https://qwenlm.github.io/blog/qwen3-embedding/) we could use in the future to validate our data
 
-### (11/06/2025)
+### Modified policy extraction methodology:<br>
+1. Extract raw hansard from web
+2. From raw hansard get sections through the html json schema
+3. Extract speaker and speeches through regex
+4. Generate claims using LLM
+
+### 📅 (11/06/2025)
 Identified some starting patterns for a speaker, using Ms Rahayu Mahzam as an example:
 - The Minister of State for Health (Ms Rahayu Mahzam) (for the Minister for Health)\n:
 - Ms Rahayu Mahzam\n: 
@@ -98,40 +108,10 @@ Thus, 2 main regex patterns were used to extract speeches:
 Speech ending due to end of string is checked if the 2 above regex patterns do not return matches. Slightly modified version of the regex above are used, without the "?\n[^\d]*?\n:" at the end
 of each regex pattern.
 
-### (12/06/2025)
-Sucessfully extracted speeches from individual speakers and their corresponding claims.
+### 📅 (12/06/2025)
+Sucessfully extracted speeches from individual speakers and then used Qwen2-5-72B-Instruct-2025-05-28-10-43-09 to generate the claims made by each speaker in their speech.
 
-One example:
-```json
-{
-  "file": "2025-04-08.json",
-  "section_title": "Proposal to Reduce Levy for Hiring of First Migrant Domestic Workers 
-  to $60 for All Households with One Singapore Citizen",
-  "speaker": "Ms Gan Siow Huang",
-  "speech": "Ms Gan Siow Huang\n: I thank the Member for raising the two supplementary 
-  questions. I think our policies have to be taken in our local context – looking at 
-  the lifespan of seniors in Singapore and also to calibrate all our policies according 
-  to our local needs. We will, however, continue to review our policies so that they 
-  are kept relevant and also support households that are in need.\nTo the question of 
-  reducing or providing concessionary levies for all households in Singapore hiring 
-  MDWs, I would like to reiterate the point that the purpose of the levy as a pricing 
-  mechanism is to regulate the number of MDWs in Singapore. Today, we already have a 
-  growing and quite a large number of MDWs. We need to have some lever to be able to 
-  regulate the overpopulation of MDWs to keep it sustainable.\nIf there are households 
-  that the Member is aware of who are in financial need and require domestic help, 
-  please highlight to MOM. We will look at the case.\n1.01 pm\nMr Speaker\n:",
-  "claims": [
-    "Policies must be tailored to the local context, considering the lifespan of seniors 
-    in Singapore.",
-    "The government will continue to review policies to ensure they remain relevant and 
-    supportive of households in need.",
-    "The purpose of the levy on foreign domestic workers (MDWs) is to regulate their 
-    numbers and maintain sustainability.",
-    "Households in financial need requiring domestic help should be highlighted to 
-    the Ministry of Manpower (MOM)."
-  ]
-}
-```
+**📄 [Link](https://github.com/ItsTYtan/Policy_RLHF/blob/main/docs/jsonOutputs/policyextraction.json) to json**
 
 Some speeches do not contain useful information, and the claims array is made to be empty
 ```json 
