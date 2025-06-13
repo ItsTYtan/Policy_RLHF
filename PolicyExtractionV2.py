@@ -45,15 +45,15 @@ with Pipeline(name="extract_speakers") as extract_speaker_pipeline:
 
     loadHansard >> extractSpeaker >> keep_columns >> tojson
 
-distiset = extract_speaker_pipeline.run(
-    use_cache=False,
-)
+# distiset = extract_speaker_pipeline.run(
+#     use_cache=False,
+# )
 
 with Pipeline(name="generate_claims") as generate_claims_pipeline:
     fromJson = FromJsonFile(
         filepath="./cache",
         filename="extracted_speakers.jsonl",
-        endIdx=100
+        endIdx=500
     )
 
     formatter = TemplateFormatter(
@@ -64,7 +64,8 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     llm = SageMakerLLM(
         model=model,
         max_tokens=2048,
-        max_workers=10
+        max_workers=5,
+        temperature=0.0001
     )
 
     extractJson = ExtractPythonArray(
@@ -72,17 +73,17 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     )
 
     keep_columns = KeepColumns(
-        columns=["file", "section_title", "speaker", "speech", "claims"]
+        columns=["file", "section_title", "speaker", "speech", "generation", "claims"]
     )
 
     tojson = ToJsonFile(
         filepath="outputs",
-        filename="policyextraction",
+        filename="policyextraction-temp0.0001-500",
     )
 
     fromJson >> formatter >> llm >> extractJson >> keep_columns >> tojson
 
     
-# distiset = generate_claims_pipeline.run(
-#     use_cache=False,
-# )
+distiset = generate_claims_pipeline.run(
+    use_cache=False,
+)

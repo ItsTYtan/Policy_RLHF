@@ -2,7 +2,8 @@
 AXIOM is an automated pipeline for generation of synthetic SFT data on Singapore policies.
 
 ## Rationale
-Policies change and models should reflect the latest updates in policy changes. Thus, AXIOM automates this process of updating a model's political alignment
+Policies change and models should reflect the latest updates in policy changes. Thus, AXIOM automates this process of updating a model's political alignment, by automating the generation
+and updating of a political alignment SFT dataset.
 
 ## Methodology
 This section outlines the thought process in creating AXIOM
@@ -137,14 +138,20 @@ However, some speeches contain useful info, but claims array is still empty
   "speech": "Mr Tan Kiat How\n: Sir, on the two questions that Mr Chua has raised, 
   let me take them in turn.\nOn the first one around how we ensure compliance with 
   the\nCode of Animal Welfare (for the Pet Industry), t\nhese are guidelines that 
-  we put forward. And if there are members of the public, industry players or operators 
-  who want to report any non-compliance, please let us know. NParks, as part of its 
-  broader licensing framework and regulatory ambit, will do spot checks and take a 
-  look at some of these places.\nOn the second point on the disqualification order 
-  (DO), just to confirm with Mr Chua that he was asking about DO? No? I could not 
-  hear the question.\nMr Chua Kheng Wee Louis\n:",
+  we put forward. And if there are members of the public, industry players or 
+  operators who want to report any non-compliance, please let us know. NParks, as
+  part of its broader licensing framework and regulatory ambit, will do spot checks
+  and take a look at some of these places.\nOn the second point on the 
+  disqualification order (DO), just to confirm with Mr Chua that he was asking about
+  DO? No? I could not hear the question.\nMr Chua Kheng Wee Louis\n:",
   "claims": []
 }
 ```
 
 Suspect is due to API limits on rate of incoming requests.
+
+(13/06/25)
+- Narrow down issue on generation
+- Check out qwen 3 embedding
+- Research on how to bake in policy question into sft data making it more conversational instead of stance
+- Research on db

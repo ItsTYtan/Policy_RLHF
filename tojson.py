@@ -13,8 +13,7 @@ import os
 from huggingface_hub import login
 from dotenv import load_dotenv
 
-from distilab_modules import FormatPolicyQuestion, FormatPolicyQuestionRAG, OpenRouterLLM, ToJsonFile
-from templates.templates import answer_template_dict
+from custom_modules.utils import ToJsonFile
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -24,12 +23,12 @@ login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
 
 with Pipeline(name="generate-dataset") as pipeline:
     loadPolicyQuestionDS = LoadDataFromHub(
-        repo_id="ItsTYtan/policyanswer-RAG",
-        num_examples=10
+        repo_id="htxinterns/safety_sft_sg",
+        split="policy",
     )
     
     tojson = ToJsonFile(
-        filename="rag",
+        filename="polciyanswer",
         filepath="outputs"
     )
 

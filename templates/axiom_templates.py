@@ -85,7 +85,7 @@ SPEAKER_EXTRACTION_TEMPLATE = '''
         <claim 2>,
         <claim 3>,
         ...
-    ]``
+    ]
     The <> brackets are to indicate where to put the appropriate extracted information from the debate.
     If there are no claims made, just put an empty array.
 '''
