@@ -155,3 +155,11 @@ Suspect is due to API limits on rate of incoming requests.
 - Check out qwen 3 embedding
 - Research on how to bake in policy question into sft data making it more conversational instead of stance
 - Research on db
+
+(16/06/25)
+Research on next 2 steps of AXIOM
+
+### SFT dataset generation
+
+
+### Database to categorize and update similar policy stances
