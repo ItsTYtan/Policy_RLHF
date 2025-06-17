@@ -158,8 +158,40 @@ Suspect is due to API limits on rate of incoming requests.
 
 (16/06/25)
 Research on next 2 steps of AXIOM
+### SFT generation ideas
+Goal is to let the model generalize the training data, able to subtly inject policies and rationale wherever relevant.
+Can either improve the dataset or improve the way the model is fine tuned.
 
-### SFT dataset generation
+Few ways to go about generating data:
+- Simply pair up the questions and answers from hansard debate. Will risk sounding like MP, need a way to mix with other training data.
+- Generate questions from the claims. However the claims itself may not have sufficent information to generate a singapore policy aligned question. How to generate questions from the claim is also rather subjective.
+- Improve the previous policy dataset using RAG on hansard policies. Potential downsides include non comprehensive coverage of all policies in hansard.
+
+Explored some methods to allow the model to generalize better:
+Paper on mitigating memorization [Link](https://arxiv.org/html/2410.02159v2)
+
+Should maybe start with the naive way first. To generate data that is informational first and then see if the fine tuning techniques help to mitigate memorization. Think its going to be very hard to come up with subtle quesitons on policy, and a synthetic dataset that does not have any underlying patterns.
+
+### Evaluation of SFT dataset
+Lack of domain specific singapore policy datasets. One way I can think of is to use LLM as a judge on a
+non finetuned vs a finetuned model on our dataset. The LLM as a judge may have to be supplemented with RAGed knowledge from hansard debates, since it may not rate generations that are aligned with singapore policies higher.
+
+Another problem might be getting the test dataset. If we get the question from the claims, then splitting the dataset into test and train might test the model on political claims it has not seen before. Might need to craft some subtle questions ourselves.
+
+Normal ablation testing can also be carried out to ensure model does not perform worse on other tasks.
+
+### Policy clustering and database
+[Temporary chatgpt deep-research link](https://chatgpt.com/share/6850d897-c964-8013-b0d0-da1a97956cd5)
+[Research on clustering](https://www.mdpi.com/1999-4893/18/5/289)
+
+Use qwen3 embedding or sbert to generate embeddings, group them into clusters using Kmeans or some other algo.
+
+### RAG using Qwen3 embedding and reranking model
+Embedding to find top k similar documents. Reranking to find the best fit document (in terms of fitting the instruction).
+
+RAG can be used to:
+- generate accurate citations for the SFT dataset
+- cluster the policies into few main topics for step 2
 
 
-### Database to categorize and update similar policy stances
+

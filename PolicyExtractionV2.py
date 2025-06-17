@@ -64,7 +64,7 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     llm = SageMakerLLM(
         model=model,
         max_tokens=2048,
-        max_workers=5,
+        max_workers=1,
         temperature=0.0001
     )
 
@@ -78,7 +78,7 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
 
     tojson = ToJsonFile(
         filepath="outputs",
-        filename="policyextraction-temp0.0001-500",
+        filename="policyextraction-temp0.0001-500-5worker",
     )
 
     fromJson >> formatter >> llm >> extractJson >> keep_columns >> tojson

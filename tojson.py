@@ -24,11 +24,11 @@ login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
 with Pipeline(name="generate-dataset") as pipeline:
     loadPolicyQuestionDS = LoadDataFromHub(
         repo_id="htxinterns/safety_sft_sg",
-        split="policy",
+        split="tzeyoung",
     )
     
     tojson = ToJsonFile(
-        filename="polciyanswer",
+        filename="policyanswer",
         filepath="outputs"
     )
 

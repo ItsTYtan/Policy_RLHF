@@ -80,12 +80,12 @@ SPEAKER_EXTRACTION_TEMPLATE = '''
     Here is the snippet of the paliamentary debate: {speech}
 
     Generate your output in the format of a python array only as follows, do not name the array::
-    [
+    ```python[
         <claim 1>,
         <claim 2>,
         <claim 3>,
         ...
-    ]
+    ]```
     The <> brackets are to indicate where to put the appropriate extracted information from the debate.
     If there are no claims made, just put an empty array.
 '''
