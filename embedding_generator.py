@@ -26,14 +26,16 @@ with Pipeline(name="embedding_generator") as pipeline:
         output_mappings={
             "speech": "text_to_embed"
         },
-        endIdx=2
     )
 
-    embedder = Qwen3Embedding()
+    embedder = Qwen3Embedding(
+        modelName="Qwen/Qwen3-Embedding-8B"
+    )
 
     tojson = ToJsonFile(
-        filename="extracted_speakers_embedded",
-        filepath="./cache"
+        filename="speech_embedded-8b",
+        filepath="./cache",
+        jsonl=True
     )
 
     fromjson >> embedder >> tojson

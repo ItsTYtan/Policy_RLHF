@@ -13,6 +13,7 @@ import torch
 import torch.nn.functional as F
 
 from torch import Tensor
+from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModel
 
 class OpenRouterLLM(GlobalStep):
@@ -231,10 +232,6 @@ class Qwen3Embedding(GlobalStep):
             batch_size = last_hidden_states.shape[0]
             return last_hidden_states[torch.arange(batch_size, device=last_hidden_states.device), sequence_lengths]
 
-
-    def get_detailed_instruct(task_description: str, query: str) -> str:
-        return f'Instruct: {task_description}\nQuery:{query}'
-
     def process(self, *inputs: StepInput):
         max_length = 32768
 
@@ -245,22 +242,31 @@ class Qwen3Embedding(GlobalStep):
 
         input_texts = [row["text_to_embed"] for row in inputs_flattened]
 
-        # Tokenize the input texts
-        batch_dict = self._tokenizer(
-            input_texts,
-            padding=True,
-            truncation=True,
-            max_length=max_length,
-            return_tensors="pt",
-        )
-        batch_dict.to(self._model.device)
-        outputs = self._model(**batch_dict)
-        embeddings = self._last_token_pool(outputs.last_hidden_state, batch_dict['attention_mask'])
-
-        # normalize embeddings
-        embeddings = F.normalize(embeddings, p=2, dim=1)
         results = []
-        for embedding, row in zip(embeddings, inputs_flattened):
-            results.append(row | {"embedding": embedding.tolist()})
+        for i in tqdm(range(0, len(input_texts), 10), desc="Embedding progress"):
+            if len(input_texts) - i < 10:
+                batch_input_texts = input_texts[i:]
+                batch_inputs_flattened = inputs_flattened[i:]
+            else:
+                batch_input_texts = input_texts[i:i+10]
+                batch_inputs_flattened = inputs_flattened[i:i+10]
+            
+            # Tokenize the input texts
+            batch_dict = self._tokenizer(
+                batch_input_texts,
+                padding=True,
+                truncation=True,
+                max_length=max_length,
+                return_tensors="pt",
+            )
+            batch_dict.to(self._model.device)
+            outputs = self._model(**batch_dict)
+            embeddings = self._last_token_pool(outputs.last_hidden_state, batch_dict['attention_mask'])
+
+            # normalize embeddings
+            embeddings = F.normalize(embeddings, p=2, dim=1)
+            
+            for embedding, row in zip(embeddings, batch_inputs_flattened):
+                results.append(row | {"embedding": embedding.tolist()})
         
-        yield [results]
+        yield results
