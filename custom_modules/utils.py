@@ -1,6 +1,7 @@
 import json
 import re
-from typing import Dict, List, Optional
+import sqlite3
+from typing import Any, Dict, List, Optional
 from distilabel.steps import GlobalStep, StepInput, GeneratorStep, Step
 from pydantic import PrivateAttr
 
@@ -227,3 +228,34 @@ class TemplateFormatter(Step):
                 prompt = self.template.format(**formatDict)
                 result.append(row | {"instruction": prompt})
             yield result
+
+class FromDB(GeneratorStep):
+    dbPath: str
+    sql: str
+    _cursor: Any = None
+    _columns: List[str] = []
+        
+    @property
+    def outputs(self):
+        return self._columns
+
+    def process(self, offset: int = 0):
+        conn = sqlite3.connect(self.dbPath)
+        self._cursor = conn.cursor()
+        self._cursor.execute(self.sql)
+        self._columns = [desc[0] for desc in self._cursor.description]
+        if offset:
+            self._cursor.fetchmany(offset)
+        data = self._cursor.fetchmany(self.batch_size)
+        while data:
+            batch = []
+            for entry in data:
+                batch.append(
+                    dict(zip(self._columns, entry))
+                )
+            data = self._cursor.fetchmany(self.batch_size)                        
+            yield (
+                batch,
+                False if data else True,
+            )
+        self._conn.close()

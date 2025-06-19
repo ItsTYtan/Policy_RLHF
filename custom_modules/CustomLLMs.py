@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Any, Dict, List, Optional
+from typing import Annotated, Any, Dict, List, Optional, TypeVar, Union
 
 import concurrent
 import boto3
@@ -9,12 +9,19 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from distilabel.steps import StepInput, GlobalStep
 
+from pydantic import Field
 import torch
 import torch.nn.functional as F
 
 from torch import Tensor
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModel
+
+_T = TypeVar("_T")
+_RUNTIME_PARAMETER_ANNOTATION = "distilabel_step_runtime_parameter"
+RuntimeParameter = Annotated[
+    Union[_T, None], Field(default=None), _RUNTIME_PARAMETER_ANNOTATION
+]
 
 class OpenRouterLLM(GlobalStep):
     _client: Any = None
@@ -204,10 +211,12 @@ class SageMakerLLM(GlobalStep):
                     print(str(count) + "/" + str(total) + " generated")
         yield results
 
-class Qwen3Embedding(GlobalStep):
-    modelName: Optional[str] = "Qwen/Qwen3-Embedding-0.6B"
+class Qwen3Embedder(GlobalStep):
+    modelName: RuntimeParameter[str] = "Qwen/Qwen3-Embedding-0.6B"
     _tokenizer: Any = None
     _model: Any = None
+    max_length: RuntimeParameter[int] = 8192
+    batch_size: RuntimeParameter[int] = 10
 
     def load(self):
         self._tokenizer = AutoTokenizer.from_pretrained(self.modelName, padding_side='left')
@@ -233,8 +242,6 @@ class Qwen3Embedding(GlobalStep):
             return last_hidden_states[torch.arange(batch_size, device=last_hidden_states.device), sequence_lengths]
 
     def process(self, *inputs: StepInput):
-        max_length = 32768
-
         inputs_flattened = []
         for batch in inputs:
             for row in batch:
@@ -243,20 +250,20 @@ class Qwen3Embedding(GlobalStep):
         input_texts = [row["text_to_embed"] for row in inputs_flattened]
 
         results = []
-        for i in tqdm(range(0, len(input_texts), 10), desc="Embedding progress"):
-            if len(input_texts) - i < 10:
+        for i in tqdm(range(0, len(input_texts), self.batch_size), desc="Embedding progress"):
+            if len(input_texts) - i < self.batch_size:
                 batch_input_texts = input_texts[i:]
                 batch_inputs_flattened = inputs_flattened[i:]
             else:
-                batch_input_texts = input_texts[i:i+10]
-                batch_inputs_flattened = inputs_flattened[i:i+10]
+                batch_input_texts = input_texts[i:i+self.batch_size]
+                batch_inputs_flattened = inputs_flattened[i:i+self.batch_size]
             
             # Tokenize the input texts
             batch_dict = self._tokenizer(
                 batch_input_texts,
                 padding=True,
                 truncation=True,
-                max_length=max_length,
+                max_length=self.max_length,
                 return_tensors="pt",
             )
             batch_dict.to(self._model.device)
@@ -270,3 +277,78 @@ class Qwen3Embedding(GlobalStep):
                 results.append(row | {"embedding": embedding.tolist()})
         
         yield results
+
+class Qwen3Reranker(GlobalStep):
+    modelName: str = "Qwen/Qwen3-Reranker-0.6B"
+    max_length: RuntimeParameter[int] = 8192
+    k: RuntimeParameter[int] = 1
+    _tokenizer: Any = None
+    _model: Any = None
+    _token_false_id: Any = None
+    _token_true_id: Any = None
+    _prefix_tokens: Any = None
+    _suffix_tokens: Any = None
+    
+
+    def load(self):
+        self._tokenizer = AutoTokenizer.from_pretrained(self.modelName, padding_side='left')
+        self._model = AutoModel.from_pretrained(self.modelName)
+        self._token_false_id = self._tokenizer.convert_tokens_to_ids("no")
+        self._token_true_id = self._tokenizer.convert_tokens_to_ids("yes")
+        prefix = "<|im_start|>system\nJudge whether the Document meets the requirements based on the Query and the Instruct provided. Note that the answer can only be \"yes\" or \"no\".<|im_end|>\n<|im_start|>user\n"
+        suffix = "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+        self._prefix_tokens = self._tokenizer.encode(prefix, add_special_tokens=False)
+        self._suffix_tokens = self._tokenizer.encode(suffix, add_special_tokens=False)
+        super().load()
+
+    @property
+    def inputs(self) -> List[str]:
+        return ["query", "documents", "metadatas"]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["query", "documents", "metadatas"]
+    
+    def format_instruction(self, instruction, query, doc):
+        if instruction is None:
+            instruction = 'Given a web search query, retrieve relevant passages that answer the query'
+        output = "<Instruct>: {instruction}\n<Query>: {query}\n<Document>: {doc}".format(instruction=instruction,query=query, doc=doc)
+        return output
+
+    def process_inputs(self, pairs):
+        inputs = self._tokenizer(
+            pairs, padding=False, truncation='longest_first',
+            return_attention_mask=False, max_length=self.max_length - len(self._prefix_tokens) - len(self._suffix_tokens)
+        )
+        for i, ele in enumerate(inputs['input_ids']):
+            inputs['input_ids'][i] = self._prefix_tokens + ele + self._suffix_tokens
+        inputs = self._tokenizer.pad(inputs, padding=True, return_tensors="pt", max_length=self.max_length)
+        for key in inputs:
+            inputs[key] = inputs[key].to(self._model.device)
+        return inputs
+
+    @torch.no_grad()
+    def compute_logits(self, inputs, **kwargs):
+        batch_scores = self._model(**inputs).logits[:, -1, :]
+        true_vector = batch_scores[:, self._token_true_id]
+        false_vector = batch_scores[:, self._token_false_id]
+        batch_scores = torch.stack([false_vector, true_vector], dim=1)
+        batch_scores = torch.nn.functional.log_softmax(batch_scores, dim=1)
+        scores = batch_scores[:, 1].exp().tolist()
+        return scores
+
+    def process(self, *inputs: StepInput):
+        result = []
+        for batch in inputs:
+            for row in batch:
+                pairs = [self.format_instruction(None, row["query"], doc) for doc in row["documents"]]
+                inputs = self.process_inputs(pairs)
+                scores = self.compute_logits(inputs)
+                
+                sortedData = sorted(zip(scores, row["documents"], row["metadatas"]), reverse=True)[:self.k]
+                row["scores"] = [x[0] for x in sortedData]
+                row["documents"] = [x[1] for x in sortedData]
+                row["metadatas"] = [x[2] for x in sortedData]
+
+                result.append(row)
+        yield result

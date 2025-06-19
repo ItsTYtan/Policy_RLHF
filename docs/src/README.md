@@ -193,5 +193,23 @@ RAG can be used to:
 - generate accurate citations for the SFT dataset
 - cluster the policies into few main topics for step 2
 
+(18/06/25)
+Decide to focus on the RAG method to build on the previous dataset generated.
 
+Generated embeddings for speech, section title and queries. Set up basic RAG pipeline with qwen3 embedding and reranker models
+
+Foresee the need of an actual database. The data and embeddings are stored sparesly in json files all over. The actual database may not only simplify workflows, but also enable the use of more complex and custom RAG strategies. 
+
+SQLite seems like a good option, since it is easy to setup. Dont need concurrency and production grade features of dbs like psql.
+
+(19/06/25)
+Data is getting too messy, decided to transfer all data into sql database for sanity.
+
+Current db architecture:
+![alt text](image.png)
+
+To recap, rationale for sql database:
+- Simplify workflows, no more jsonl files all over the place
+- Enable the use of more complex and custom RAG strategies
+- Long term, when new debate transcripts come in, dont want to update the whole dataset, but only add in/remove whats neccessary
 

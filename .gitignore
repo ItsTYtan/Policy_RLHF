@@ -2,7 +2,9 @@ playground.ipynb
 venv
 .env
 __pycache__
-chroma_langchain_db
+chromadb
+db
 cache
 oldfiles
 outputs
+cache

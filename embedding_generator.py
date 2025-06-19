@@ -1,17 +1,14 @@
 from distilabel.pipeline import Pipeline
 
 from distilabel.steps import (
-    GroupColumns,
-    KeepColumns,
-    ExpandColumns,
-    PushToHub
+    LoadDataFromHub
 )
 
 import os
 
 from dotenv import load_dotenv
 
-from custom_modules.CustomLLMs import Qwen3Embedding
+from custom_modules.CustomLLMs import Qwen3Embedder
 from custom_modules.utils import FromJsonFile, ToJsonFile
 
 load_dotenv()
@@ -28,8 +25,9 @@ with Pipeline(name="embedding_generator") as pipeline:
         },
     )
 
-    embedder = Qwen3Embedding(
-        modelName="Qwen/Qwen3-Embedding-8B"
+    embedder = Qwen3Embedder(
+        modelName="Qwen/Qwen3-Embedding-8B",
+        batch_size=2
     )
 
     tojson = ToJsonFile(
@@ -39,6 +37,34 @@ with Pipeline(name="embedding_generator") as pipeline:
     )
 
     fromjson >> embedder >> tojson
+
+# distiset = pipeline.run(
+#     use_cache=False,
+# )
+
+with Pipeline(name="query_embeddings") as pipeline:
+    fromhub = LoadDataFromHub(
+        repo_id="ItsTYtan/safetyanswer",
+    )
+
+    embedQuery = Qwen3Embedder(
+        modelName="Qwen/Qwen3-Embedding-8B",
+        input_mappings={
+            "text_to_embed": "question",
+        },
+        output_mappings={
+            "embedding": "query_embedding",
+        },
+        batch_size=2 
+    )
+    
+    tojson = ToJsonFile(
+        filename="query_embeddings-8b",
+        filepath="./cache",
+        jsonl=True
+    )
+
+    fromhub >> embedQuery >> tojson
 
 distiset = pipeline.run(
     use_cache=False,
