@@ -1,3 +1,4 @@
+import json
 import os
 from typing import Annotated, Any, List, Optional, TypeVar, Union
 import chromadb
@@ -12,7 +13,7 @@ RuntimeParameter = Annotated[
 ]
 
 class GetTopkDocs(Step):
-    k: RuntimeParameter[int] = 10
+    retrieval_k: int = 10
     collectionName: str
     _collection: Any = None
 
@@ -28,20 +29,19 @@ class GetTopkDocs(Step):
     
     @property
     def outputs(self) -> List[str]:
-        return ["embeddings", "documents", "metadatas"]
+        return ["documents", "ids"]
     
     def process(self, *inputs: StepInput):
         for batch in inputs:
             result = []
             query_res = self._collection.query(
-                query_embeddings=[row["query_embedding"] for row in batch],
-                n_results=self.k,
-                include=["embeddings", "metadatas", "documents"] 
+                query_embeddings=[json.loads(row["query_embedding"]) for row in batch],
+                n_results=self.retrieval_k,
+                include=["documents"] 
             )
             for i, row in enumerate(batch):
                 result.append(row | {
-                    "embeddings": query_res["embeddings"][i],
                     "documents": query_res["documents"][i],
-                    "metadatas": query_res["metadatas"][i],
+                    "ids": ', '.join(map(str, query_res["ids"][i])),
                 }) 
             yield result

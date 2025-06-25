@@ -237,6 +237,13 @@ class FromDB(GeneratorStep):
         
     @property
     def outputs(self):
+        if not self._columns:
+            # open, execute & read description just once
+            conn = sqlite3.connect(self.dbPath)
+            cur  = conn.cursor()
+            cur.execute(self.sql)
+            self._columns = [d[0] for d in cur.description]
+            conn.close()
         return self._columns
 
     def process(self, offset: int = 0):
@@ -258,4 +265,34 @@ class FromDB(GeneratorStep):
                 batch,
                 False if data else True,
             )
-        self._conn.close()
+        conn.close()
+
+class GeneralSqlExecutor(Step):
+    dbPath: str
+    sql_template: str
+    sql_inputs: list[str]
+    output_columns: list[str] = None
+        
+    @property
+    def outputs(self):
+        return self.output_columns
+
+    def process(self, *inputs: StepInput):
+        conn = sqlite3.connect(self.dbPath)
+        cursor = conn.cursor()
+        for input in inputs:
+            result = []
+            for row in input:
+                formatDict = dict()
+                for template_input in self.sql_inputs:
+                    formatDict[template_input] = row[template_input]
+                sql = self.sql_template.format(**formatDict)
+                cursor.execute(sql)
+                db_result = cursor.fetchall()
+                db_result_dict = {
+                    col: [row[i] for row in db_result]
+                    for i, col in enumerate(self.output_columns)
+                }
+                result.append(row | db_result_dict)
+            yield result
+        conn.close()

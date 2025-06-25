@@ -206,10 +206,21 @@ SQLite seems like a good option, since it is easy to setup. Dont need concurrenc
 Data is getting too messy, decided to transfer all data into sql database for sanity.
 
 Current db architecture:
-![alt text](image.png)
+![alt text](db_diagram.png)
 
 To recap, rationale for sql database:
 - Simplify workflows, no more jsonl files all over the place
 - Enable the use of more complex and custom RAG strategies
 - Long term, when new debate transcripts come in, dont want to update the whole dataset, but only add in/remove whats neccessary
 
+(23/06/25)
+Speeches can be way too long which is both problematic when reranking as well as doing in context rag generation for the dataset later.
+
+Decide to do the naive simplest approach first. First only use the embeddings to generate the most similar speech, and then do in context rag. No reranking is done here
+
+This will be followed by another approach which reranks by claims instead of speeches. Use the speech embeddings to extract the most similar speeches, then accumulating all the claims of all the speeches, and then reranking from there.
+
+Nick also suggested summarizing the speeches to improve embedding retrieval.
+
+(24/06/25)
+tried claim based reranking, still very slow and inaccurate with the 0.6b model.

@@ -182,3 +182,84 @@ class ExtractSpeaker(Step):
                         if matchEOF2:
                             result.append(row | {"speaker": mp, "speech": matchEOF2.group()})
             yield result
+
+# takes in the id for the speeches table and the id for the dataset table
+class FormatInContextRAG(Step):
+    template: str
+
+    _dbPath: str = "/home/tytan216/volume/tzeyoung/Policy_RLHF/db/axiom.db"
+    _sql_template_speeches: str = '''
+        SELECT speech
+        FROM speeches s
+        WHERE id = ?
+    '''
+    _sql_template_dataset: str = '''
+        SELECT question, generation
+        FROM dataset d
+        WHERE id = ?
+    '''
+
+    @property
+    def inputs(self) -> List[str]:
+        return ["dataset_id", "speeches_id"]
+    
+    @property
+    def outputs(self) -> List[str]:
+        return ["instruction", "question", "answer", "context"]
+    
+    def process(self, *inputs: StepInput):
+        conn = sqlite3.connect(self._dbPath)
+        cursor = conn.cursor()
+        for batch in inputs:
+            result = []
+            for row in batch:
+                dataset_id = int(row["dataset_id"])
+                cursor.execute(self._sql_template_dataset, (dataset_id,))
+                question, generation = cursor.fetchone()
+
+                speeches_id = int(row["speeches_id"])
+                cursor.execute(self._sql_template_speeches, (speeches_id,))
+                (speech,) = cursor.fetchone()
+
+                instruction = self.template.format(
+                    question=question,
+                    generation=generation,
+                    context=speech
+                )
+                result.append(row | {
+                    "instruction": instruction,
+                    "question": question,
+                    "answer": generation,
+                    "context": speech
+                })
+            yield result
+
+# takes in the id for the speeches table and the id for the dataset table
+class ExpandClaims(Step):
+    @property
+    def inputs(self) -> List[str]:
+        return ["speeches_ids", "claims"]
+    
+    @property
+    def outputs(self) -> List[str]:
+        return ["speeches_ids_expanded", "claims_expanded"]
+    
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            result = []
+            for row in batch:
+                speeches_ids = [int(x.strip()) for x in row["speeches_ids"].split(",")]
+                claimsLstStr = row["claims"]
+                speeches_ids_lst = []
+                claimsLst = []
+                for id, claims in zip(speeches_ids, claimsLstStr):
+                    claimsarr = json.loads(claims)
+                    if not claimsarr:
+                        continue
+                    speeches_ids_lst.extend([id] * len(claimsarr))
+                    claimsLst.extend(claimsarr)
+                result.append(row | {
+                    "speeches_ids_expanded": speeches_ids_lst,
+                    "claims_expanded": claimsLst
+                })
+            yield result

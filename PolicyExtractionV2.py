@@ -14,15 +14,15 @@ from dotenv import load_dotenv
 from custom_modules.CustomLLMs import OpenRouterLLM, SageMakerLLM
 from custom_modules.axiom import ExtractSpeaker, FormatDecisionExtract, FormatPolicyExtract, LoadHansard, LoadHansardSections
 from custom_modules.questiongeneration import Extract, FromTopicArray, TopicToPrompt
-from custom_modules.utils import ExtractJson, ExtractPythonArray, FromJsonFile, TemplateFormatter, ToJsonFile
+from custom_modules.utils import ExtractJson, ExtractPythonArray, FromDB, FromJsonFile, TemplateFormatter, ToJsonFile
 from templates.axiom_templates import DECISION_EXTRACTION_TEMPLATE, EXTRACTION_TEMPLATE, POLICY_EXTRACTION_TEMPLATE, SPEAKER_EXTRACTION_TEMPLATE
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
 baseurl = "https://openrouter.ai/api/v1"
 
-# model = "qwen/qwen-2.5-72b-instruct"
-model = "Qwen2-5-72B-Instruct-2025-05-28-10-43-09"
+model = "qwen/qwen-2.5-72b-instruct"
+# model = "Qwen2-5-72B-Instruct-2025-05-28-10-43-09"
 
 with Pipeline(name="extract_speakers") as extract_speaker_pipeline:
     loadHansard = LoadHansardSections(
@@ -50,10 +50,13 @@ with Pipeline(name="extract_speakers") as extract_speaker_pipeline:
 # )
 
 with Pipeline(name="generate_claims") as generate_claims_pipeline:
-    fromJson = FromJsonFile(
-        filepath="./cache",
-        filename="extracted_speakers.jsonl",
-        endIdx=500
+    fromJson = FromDB(
+        dbPath="./db/axiom.db",
+        sql='''
+            SELECT *
+            FROM speeches s
+            ORDER BY id
+        ''',
     )
 
     formatter = TemplateFormatter(
@@ -61,10 +64,10 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
         template_inputs=["speaker", "speech"]
     )
 
-    llm = SageMakerLLM(
+    llm = OpenRouterLLM(
         model=model,
-        max_tokens=2048,
-        max_workers=1,
+        max_tokens=1024,
+        max_workers=50,
         temperature=0.0001
     )
 
@@ -73,12 +76,12 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     )
 
     keep_columns = KeepColumns(
-        columns=["file", "section_title", "speaker", "speech", "generation", "claims"]
+        columns=["id", "date", "speaker", "speech", "claims", "section_title"]
     )
 
     tojson = ToJsonFile(
         filepath="outputs",
-        filename="policyextraction-temp0.0001-500-5worker",
+        filename="policyextraction-openrouter",
     )
 
     fromJson >> formatter >> llm >> extractJson >> keep_columns >> tojson

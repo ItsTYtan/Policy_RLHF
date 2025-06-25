@@ -15,7 +15,7 @@ import torch.nn.functional as F
 
 from torch import Tensor
 from tqdm import tqdm
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
 
 _T = TypeVar("_T")
 _RUNTIME_PARAMETER_ANNOTATION = "distilabel_step_runtime_parameter"
@@ -102,19 +102,14 @@ class OpenRouterLLM(GlobalStep):
             }
 
             results = []
-            count = 0
-            total = len(futures)
             # As each finishes, collect its result
-            for future in concurrent.futures.as_completed(futures):
+            for future in tqdm(concurrent.futures.as_completed(futures), desc="Data generated", total=len(futures)):
                 row = futures[future]
                 text, logprobs = future.result()
                 resultRow = row | {"generation": text, "model_name": self.model}
                 if self.logprobs:
                     resultRow = resultRow | {"logprobs": logprobs}
                 results.append(resultRow)
-                count += 1
-                if (count % 100 == 0):
-                    print(str(count) + "/" + str(total) + " generated")
         yield results
 
 class SageMakerLLM(GlobalStep):
@@ -198,17 +193,12 @@ class SageMakerLLM(GlobalStep):
             }
 
             results = []
-            count = 0
-            total = len(futures)
             # As each finishes, collect its result
-            for future in concurrent.futures.as_completed(futures):
+            for future in tqdm(concurrent.futures.as_completed(futures), desc="Data generated", total=len(futures)):
                 row = futures[future]
                 text = future.result()
                 resultRow = row | {"generation": text, "model_name": self.model}
                 results.append(resultRow)
-                count += 1
-                if (count % 100 == 0):
-                    print(str(count) + "/" + str(total) + " generated")
         yield results
 
 class Qwen3Embedder(GlobalStep):
@@ -280,8 +270,8 @@ class Qwen3Embedder(GlobalStep):
 
 class Qwen3Reranker(GlobalStep):
     modelName: str = "Qwen/Qwen3-Reranker-0.6B"
-    max_length: RuntimeParameter[int] = 8192
-    k: RuntimeParameter[int] = 1
+    max_length: int = 8192
+    k: int = 1
     _tokenizer: Any = None
     _model: Any = None
     _token_false_id: Any = None
@@ -292,7 +282,7 @@ class Qwen3Reranker(GlobalStep):
 
     def load(self):
         self._tokenizer = AutoTokenizer.from_pretrained(self.modelName, padding_side='left')
-        self._model = AutoModel.from_pretrained(self.modelName)
+        self._model = AutoModelForCausalLM.from_pretrained(self.modelName)
         self._token_false_id = self._tokenizer.convert_tokens_to_ids("no")
         self._token_true_id = self._tokenizer.convert_tokens_to_ids("yes")
         prefix = "<|im_start|>system\nJudge whether the Document meets the requirements based on the Query and the Instruct provided. Note that the answer can only be \"yes\" or \"no\".<|im_end|>\n<|im_start|>user\n"
@@ -303,11 +293,11 @@ class Qwen3Reranker(GlobalStep):
 
     @property
     def inputs(self) -> List[str]:
-        return ["query", "documents", "metadatas"]
+        return ["query", "documents", "ids"]
 
     @property
     def outputs(self) -> List[str]:
-        return ["query", "documents", "metadatas"]
+        return ["query", "documents", "ids"]
     
     def format_instruction(self, instruction, query, doc):
         if instruction is None:
@@ -339,16 +329,17 @@ class Qwen3Reranker(GlobalStep):
 
     def process(self, *inputs: StepInput):
         result = []
-        for batch in inputs:
-            for row in batch:
-                pairs = [self.format_instruction(None, row["query"], doc) for doc in row["documents"]]
-                inputs = self.process_inputs(pairs)
-                scores = self.compute_logits(inputs)
-                
-                sortedData = sorted(zip(scores, row["documents"], row["metadatas"]), reverse=True)[:self.k]
-                row["scores"] = [x[0] for x in sortedData]
-                row["documents"] = [x[1] for x in sortedData]
-                row["metadatas"] = [x[2] for x in sortedData]
+        flattenedRows = [row for batch in inputs for row in batch]
+        for row in tqdm(flattenedRows, desc="Raranking batches"):
+            docs = row["documents"]
+            ids = row["ids"]
+            pairs = [self.format_instruction(None, row["query"], doc) for doc in docs]
+            inputs = self.process_inputs(pairs)
+            scores = self.compute_logits(inputs)
+            
+            sortedData = sorted(zip(scores, docs, ids), reverse=True)[:self.k]
+            row["documents"] = [x[1] for x in sortedData]
+            row["ids"] = [x[2] for x in sortedData]
 
-                result.append(row)
+            result.append(row)
         yield result
