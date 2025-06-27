@@ -222,5 +222,34 @@ This will be followed by another approach which reranks by claims instead of spe
 
 Nick also suggested summarizing the speeches to improve embedding retrieval.
 
+Splitting strategy --> document hierachy
+Embedding strategy --> 
+
+
 (24/06/25)
 tried claim based reranking, still very slow and inaccurate with the 0.6b model.
+
+(25/06/25)
+Doing some research on how to improve the RAG
+[deepreasearch](https://chatgpt.com/share/685df440-6614-8013-8983-5afe0638cc88)
+[Advanced RAG techniques](https://medium.com/@roberto.g.infante/advanced-rag-techniques-with-langchain-f9c82290b0d1)
+
+Coarse chunking improves context but reduces detail --> chunking by speech
+Granular chunking improves detail but reduces context --> chunking by claims
+
+Some ideas:
+- Reduce chunk size of speeches by asking a llm to summarize the speech and remove filler dialogue that happens in paliarment.
+- Multi Vector Retriever strategy, embed the claims as additional embeddings for the speech document.
+- Hypothetical Document Embeddings (HyDE)
+- Query rewriting/Generating multiple queries/Step back question
+
+Advanced techniques:
+- Self querying
+- Sql query generation
+
+Recap of the current issues with rag:
+Tried searching by speeches naively, however, the context can be too large.
+To reduce context size, tried another method of searching by speech embeddings, and then reranking the claims of the speech. However, the claims are mostly not relevant.
+Think the most logical next step is to reduce the chunk size of the speeches by summarizing and removing noise, that way it tackles all problems, and is also a stepping stone for future rag implementations.
+
+Also 

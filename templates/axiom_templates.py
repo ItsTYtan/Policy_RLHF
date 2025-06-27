@@ -90,6 +90,24 @@ SPEAKER_EXTRACTION_TEMPLATE = '''
     If there are no claims made, just put an empty array.
 '''
 
+SUMMARIZE_SPEECH_TEMPLATE = '''
+    You are a LLM tasked to summarize a snippet of a Singapore Paliamentary Debate shown to you
+
+    Here is the snippet of the paliamentary debate: {speech}
+
+    Make sure you remove filler dialogue found in the debate and only retain the key ideas, the political stances and rationale in the speech.
+    Make sure you only generate the summary in your output and nothing else. Do not include things like **Summary:** at the start.
+'''
+
+SUMMARIZE_SECTION_TEMPLATE = '''
+    You are a LLM tasked to summarize a snippet of a Singapore Paliamentary Debate shown to you
+
+    Here is the snippet of the paliamentary debate: {section}
+
+    Make sure you remove filler dialogue found in the debate and only retain the key ideas, the political stances and rationale in the section.
+    Make sure you only generate the summary in your output and nothing else. Do not include things like **Summary:** at the start.
+'''
+
 RAG_GENERATION_TEMPLATE = '''
     You are a LLM tasked to improve upon a supervised fine tuning question and answer pair using some context that will be provided.
 

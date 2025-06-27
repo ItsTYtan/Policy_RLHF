@@ -3,8 +3,9 @@ import os
 from typing import Annotated, Any, List, Optional, TypeVar, Union
 import chromadb
 from dotenv import load_dotenv
-from distilabel.steps import Step, StepInput, GeneratorStep
+from distilabel.steps import Step, StepInput, GeneratorStep, GlobalStep
 from pydantic import BaseModel, Field, PrivateAttr
+from tqdm import tqdm
 
 _T = TypeVar("_T")
 _RUNTIME_PARAMETER_ANNOTATION = "distilabel_step_runtime_parameter"
@@ -29,7 +30,7 @@ class GetTopkDocs(Step):
     
     @property
     def outputs(self) -> List[str]:
-        return ["documents", "ids"]
+        return ["ids"]
     
     def process(self, *inputs: StepInput):
         for batch in inputs:
@@ -37,11 +38,40 @@ class GetTopkDocs(Step):
             query_res = self._collection.query(
                 query_embeddings=[json.loads(row["query_embedding"]) for row in batch],
                 n_results=self.retrieval_k,
-                include=["documents"] 
             )
             for i, row in enumerate(batch):
                 result.append(row | {
-                    "documents": query_res["documents"][i],
                     "ids": ', '.join(map(str, query_res["ids"][i])),
                 }) 
             yield result
+
+class ToChromaDb(GlobalStep):
+    collectionName: str
+    
+    @property
+    def inputs(self) -> List[str]:
+        return ["id", "embedding"]
+    
+    def process(self, *inputs: StepInput):
+        load_dotenv()
+        client = chromadb.PersistentClient(path=os.getenv('CHROMA_PATH'))
+        collection = client.get_or_create_collection(name=self.collectionName)
+        embeddings = []
+        ids = []
+        all_rows = []
+
+        for batch in inputs:
+            for row in batch:
+                embeddings.append(row["embedding"])
+                ids.append(str(row["id"]))
+                all_rows.append(row)
+
+        batch_size = 1000
+        
+        for i in tqdm(range(0, len(embeddings), batch_size), desc="uploading batches"):
+            collection.add(
+                embeddings=embeddings[i:i + batch_size],
+                ids=ids[i:i + batch_size],
+            )
+
+        yield all_rows

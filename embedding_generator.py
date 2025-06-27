@@ -9,7 +9,8 @@ import os
 from dotenv import load_dotenv
 
 from custom_modules.CustomLLMs import Qwen3Embedder
-from custom_modules.utils import FromJsonFile, ToJsonFile
+from custom_modules.chromadb import ToChromaDb
+from custom_modules.utils import FromDb, FromJsonFile, ToJsonFile
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -65,6 +66,61 @@ with Pipeline(name="query_embeddings") as pipeline:
     )
 
     fromhub >> embedQuery >> tojson
+
+# distiset = pipeline.run(
+#     use_cache=False,
+# )
+
+with Pipeline(name="summarized_speech_embeddings") as pipeline:
+    fromdb = FromDb(
+        sql='''
+            SELECT id, summary
+            FROM speeches s
+        '''
+    )
+
+    embedQuery = Qwen3Embedder(
+        modelName="Qwen/Qwen3-Embedding-8B",
+        input_mappings={
+            "text_to_embed": "summary",
+        },
+        batch_size=2 
+    )
+    
+    tochromadb = ToChromaDb(
+        collectionName="summarized-speech-embeddings"
+    )
+
+    fromdb >> embedQuery >> tochromadb
+
+# distiset = pipeline.run(
+#     use_cache=False,
+# )
+
+with Pipeline(name="summarized_section_embeddings") as pipeline:
+    fromdb = FromDb(
+        sql='''
+            SELECT section_title, summary
+            FROM sections s
+        '''
+    )
+
+    embedQuery = Qwen3Embedder(
+        modelName="Qwen/Qwen3-Embedding-8B",
+        input_mappings={
+            "text_to_embed": "summary",
+        },
+        batch_size=2 
+    )
+    
+    tochromadb = ToChromaDb(
+        collectionName="summarized-section-embeddings",
+        input_mappings={
+            "id": "section_title"
+        }
+    )
+
+    fromdb >> embedQuery >> tochromadb
 
 distiset = pipeline.run(
     use_cache=False,

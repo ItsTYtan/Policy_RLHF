@@ -14,8 +14,8 @@ from dotenv import load_dotenv
 from custom_modules.CustomLLMs import OpenRouterLLM, SageMakerLLM
 from custom_modules.axiom import ExtractSpeaker, FormatDecisionExtract, FormatPolicyExtract, LoadHansard, LoadHansardSections
 from custom_modules.questiongeneration import Extract, FromTopicArray, TopicToPrompt
-from custom_modules.utils import ExtractJson, ExtractPythonArray, FromDB, FromJsonFile, TemplateFormatter, ToJsonFile
-from templates.axiom_templates import DECISION_EXTRACTION_TEMPLATE, EXTRACTION_TEMPLATE, POLICY_EXTRACTION_TEMPLATE, SPEAKER_EXTRACTION_TEMPLATE
+from custom_modules.utils import ExtractJson, ExtractPythonArray, FromDb, FromJsonFile, TemplateFormatter, ToJsonFile
+from templates.axiom_templates import DECISION_EXTRACTION_TEMPLATE, EXTRACTION_TEMPLATE, POLICY_EXTRACTION_TEMPLATE, SPEAKER_EXTRACTION_TEMPLATE, SUMMARIZE_SECTION_TEMPLATE, SUMMARIZE_SPEECH_TEMPLATE
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 
@@ -50,7 +50,7 @@ with Pipeline(name="extract_speakers") as extract_speaker_pipeline:
 # )
 
 with Pipeline(name="generate_claims") as generate_claims_pipeline:
-    fromJson = FromDB(
+    fromJson = FromDb(
         dbPath="./db/axiom.db",
         sql='''
             SELECT *
@@ -87,6 +87,87 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     fromJson >> formatter >> llm >> extractJson >> keep_columns >> tojson
 
     
-distiset = generate_claims_pipeline.run(
+# distiset = generate_claims_pipeline.run(
+#     use_cache=False,
+# )
+
+with Pipeline(name="summarize_speeches") as summarize_pipeline:
+    fromJson = FromDb(
+        dbPath="./db/axiom.db",
+        sql='''
+            SELECT *
+            FROM speeches s
+        ''',
+    )
+
+    formatter = TemplateFormatter(
+        template=SUMMARIZE_SPEECH_TEMPLATE,
+        template_inputs=["speech"]
+    )
+
+    llm = OpenRouterLLM(
+        model=model,
+        max_tokens=1024,
+        max_workers=50,
+        temperature=0.0001
+    )
+
+    keep_columns = KeepColumns(
+        columns=["id", "speech", "generation"],
+        output_mappings={
+            "generation": "summarized_speech"
+        }
+    )
+
+    tojson = ToJsonFile(
+        filepath="cache",
+        filename="speech-summaries",
+    )
+
+    fromJson >> formatter >> llm >> keep_columns >> tojson
+
+distiset = summarize_pipeline.run(
+    use_cache=False,
+)
+
+with Pipeline(name="summarize_sections") as summarize_pipeline:
+    fromJson = FromDb(
+        dbPath="./db/axiom.db",
+        sql='''
+            SELECT *
+            FROM sections s
+        ''',
+        output_mappings={
+            "text": "section"
+        }
+    )
+
+    formatter = TemplateFormatter(
+        template=SUMMARIZE_SECTION_TEMPLATE,
+        template_inputs=["section"]
+    )
+
+    llm = OpenRouterLLM(
+        model=model,
+        max_tokens=1024,
+        max_workers=50,
+        temperature=0.0001
+    )
+
+    keep_columns = KeepColumns(
+        columns=["section_title", "section", "generation"],
+        output_mappings={
+            "generation": "summarized_section"
+        }
+    )
+
+    tojson = ToJsonFile(
+        filepath="cache",
+        filename="section-summaries",
+    )
+
+    fromJson >> formatter >> llm >> keep_columns >> tojson
+
+distiset = summarize_pipeline.run(
     use_cache=False,
 )

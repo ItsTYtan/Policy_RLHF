@@ -229,8 +229,8 @@ class TemplateFormatter(Step):
                 result.append(row | {"instruction": prompt})
             yield result
 
-class FromDB(GeneratorStep):
-    dbPath: str
+class FromDb(GeneratorStep):
+    dbPath: str = "./db/axiom.db"
     sql: str
     _cursor: Any = None
     _columns: List[str] = []
@@ -268,10 +268,10 @@ class FromDB(GeneratorStep):
         conn.close()
 
 class GeneralSqlExecutor(Step):
-    dbPath: str
+    dbPath: str = "./db/axiom.db"
     sql_template: str
     sql_inputs: list[str]
-    output_columns: list[str] = None
+    output_columns: list[str] = []
         
     @property
     def outputs(self):
@@ -296,3 +296,30 @@ class GeneralSqlExecutor(Step):
                 result.append(row | db_result_dict)
             yield result
         conn.close()
+
+# class AddToTable(GlobalStep):
+#     db_path: str = "./db/axiom.db"
+#     tableName: str
+#     columns_to_add: list[str]
+
+#     extendSchemaSql: str
+#     batchUpdateSql: str
+
+#     @property
+#     def inputs(self) -> List[str]:
+#         return self.columns_to_add
+
+#     def process(self, inputs: StepInput): 
+#         conn = sqlite3.connect(self.dbPath)
+#         cursor = conn.cursor()
+#         cursor.execute(self.extendSchemaSql)
+
+#         updates = []
+#         for input in inputs:
+#             update = []
+#             for column in self.columns_to_add:
+
+#         cursor.executemany(self.batchUpdateSql, )
+#         for input in inputs:
+
+#         yield inputs  
