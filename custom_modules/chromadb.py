@@ -41,7 +41,7 @@ class GetTopkDocs(Step):
             )
             for i, row in enumerate(batch):
                 result.append(row | {
-                    "ids": ', '.join(map(str, query_res["ids"][i])),
+                    "ids": query_res["ids"][i],
                 }) 
             yield result
 

@@ -126,9 +126,9 @@ with Pipeline(name="summarize_speeches") as summarize_pipeline:
 
     fromJson >> formatter >> llm >> keep_columns >> tojson
 
-distiset = summarize_pipeline.run(
-    use_cache=False,
-)
+# distiset = summarize_pipeline.run(
+#     use_cache=False,
+# )
 
 with Pipeline(name="summarize_sections") as summarize_pipeline:
     fromJson = FromDb(
@@ -168,6 +168,6 @@ with Pipeline(name="summarize_sections") as summarize_pipeline:
 
     fromJson >> formatter >> llm >> keep_columns >> tojson
 
-distiset = summarize_pipeline.run(
-    use_cache=False,
-)
+# distiset = summarize_pipeline.run(
+#     use_cache=False,
+# )

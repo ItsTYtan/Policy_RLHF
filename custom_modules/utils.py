@@ -283,14 +283,24 @@ class GeneralSqlExecutor(Step):
         for input in inputs:
             result = []
             for row in input:
-                formatDict = dict()
+                dataList = []
+
                 for template_input in self.sql_inputs:
-                    formatDict[template_input] = row[template_input]
-                sql = self.sql_template.format(**formatDict)
-                cursor.execute(sql)
-                db_result = cursor.fetchall()
+                    dataList.append(row[template_input])
+                
+                batch_sz = len(dataList[0])
+                batch_inputs = []
+                for i in range(batch_sz):
+                    batch_inputs.append([data[i] for data in dataList])
+
+
+                db_results = []
+                for entry in batch_inputs:
+                    cursor.execute(self.sql_template, entry)
+                    db_results.extend(cursor.fetchall())
+
                 db_result_dict = {
-                    col: [row[i] for row in db_result]
+                    col: [row[i] for row in db_results]
                     for i, col in enumerate(self.output_columns)
                 }
                 result.append(row | db_result_dict)

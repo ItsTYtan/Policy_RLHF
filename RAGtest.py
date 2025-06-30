@@ -21,6 +21,53 @@ model = "qwen/qwen-2.5-72b-instruct"
 # model = "Qwen2-5-72B-Instruct-2025-05-28-10-43-09"
 
 with Pipeline(name="embed-only-summary-section") as pipeline:
+    fromdb = FromDb(
+        dbPath="./db/axiom.db",
+        sql='''
+            SELECT *
+            FROM dataset d
+            ORDER BY id DESC
+            LIMIT 10
+        ''',
+        output_mappings={
+            "question": "query",
+            "id": "dataset_id"
+        }
+    )
+
+    search = GetTopkDocs(
+        retrieval_k=5,
+        collectionName="summarized-section-embeddings",
+        input_batch_size=10,
+    )
+
+    get_docs = GeneralSqlExecutor(
+        sql_template='''
+            SELECT summary
+            FROM sections s
+            WHERE section_title = ? 
+        ''',
+        sql_inputs=["ids"],
+        output_columns=["summaries"]
+    )
+
+
+    keep_columns1 = KeepColumns(
+        columns=["query", "summaries", "ids"],
+    )
+    
+    tojson = ToJsonFile(
+        filename="embed-section-summary",
+        filepath="./rag_strategies_comparison"
+    )
+
+    fromdb >> search >> get_docs >> keep_columns1 >> tojson
+
+distiset = pipeline.run(
+    use_cache=False,
+)
+
+with Pipeline(name="rerank-claims") as pipeline:
     fromjson = FromDb(
         dbPath="./db/axiom.db",
         sql='''
@@ -45,7 +92,7 @@ with Pipeline(name="embed-only-summary-section") as pipeline:
         sql_template='''
             SELECT summary
             FROM sections s
-            WHERE id IN ({ids}) 
+            WHERE section_title = ? 
         ''',
         sql_inputs=["ids"],
         output_columns=["summaries"]
@@ -57,12 +104,12 @@ with Pipeline(name="embed-only-summary-section") as pipeline:
     )
     
     tojson = ToJsonFile(
-        filename="embed-speech",
-        filepath="./outputs"
+        filename="embed-section-summary-rerank-claims",
+        filepath="./rag_strategies_comparison"
     )
 
     fromjson >> search >> get_docs >> keep_columns1 >> tojson
 
-distiset = pipeline.run(
-    use_cache=False,
-)
+# distiset = pipeline.run(
+#     use_cache=False,
+# )
