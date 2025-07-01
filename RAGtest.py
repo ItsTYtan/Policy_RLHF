@@ -11,9 +11,9 @@ from dotenv import load_dotenv
 
 from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Reranker, SageMakerLLM
 from custom_modules.axiom import ExpandClaims, FormatInContextRAG
-from custom_modules.chromadb import GetTopkDocs
+from custom_modules.RAG import GetTopkDocs
 from custom_modules.utils import FromJsonFile, GeneralSqlExecutor, ToJsonFile, FromDb
-from templates.axiom_templates import RAG_GENERATION_TEMPLATE
+from templates.extraction_templates import RAG_GENERATION_TEMPLATE
 
 load_dotenv()
 
@@ -58,23 +58,23 @@ with Pipeline(name="embed-only-summary-section") as pipeline:
     
     tojson = ToJsonFile(
         filename="embed-section-summary",
-        filepath="./rag_strategies_comparison"
+        filepath="./outputs/rag_strategies_comparison"
     )
 
     fromdb >> search >> get_docs >> keep_columns1 >> tojson
 
-distiset = pipeline.run(
-    use_cache=False,
-)
+# distiset = pipeline.run(
+#     use_cache=False,
+# )
 
-with Pipeline(name="rerank-claims") as pipeline:
-    fromjson = FromDb(
+with Pipeline(name="embed-speech-summary") as pipeline:
+    fromdb = FromDb(
         dbPath="./db/axiom.db",
         sql='''
             SELECT *
             FROM dataset d
-            ORDER BY id DESC
-            LIMIT 10
+            ORDER BY RANDOM()
+            LIMIT 100
         ''',
         output_mappings={
             "question": "query",
@@ -84,15 +84,15 @@ with Pipeline(name="rerank-claims") as pipeline:
 
     search = GetTopkDocs(
         retrieval_k=5,
-        collectionName="summarized-section-embeddings",
+        collectionName="summarized-speech-embeddings",
         input_batch_size=10,
     )
 
     get_docs = GeneralSqlExecutor(
         sql_template='''
             SELECT summary
-            FROM sections s
-            WHERE section_title = ? 
+            FROM speeches s
+            WHERE id = ? 
         ''',
         sql_inputs=["ids"],
         output_columns=["summaries"]
@@ -100,16 +100,55 @@ with Pipeline(name="rerank-claims") as pipeline:
 
 
     keep_columns1 = KeepColumns(
-        columns=["query", "summaries"],
+        columns=["query", "summaries", "ids"],
     )
     
     tojson = ToJsonFile(
-        filename="embed-section-summary-rerank-claims",
-        filepath="./rag_strategies_comparison"
+        filename="embed-speech-summary",
+        filepath="./outputs/rag_strategies_comparison"
     )
 
-    fromjson >> search >> get_docs >> keep_columns1 >> tojson
+    fromdb >> search >> get_docs >> keep_columns1 >> tojson
 
 # distiset = pipeline.run(
 #     use_cache=False,
 # )
+
+with Pipeline(name="embed-speech-summary-rerank-claims") as pipeline:
+    fromdb = FromJsonFile(
+        filename="embed-speech-summary.json",
+        filepath="./rag_strategies_comparison",
+        output_mappings={
+            "ids": "speech_ids"
+        }
+    )
+    
+    getClaims = GeneralSqlExecutor(
+        sql_template='''
+            SELECT claim, id
+            FROM claims c
+            WHERE speech_id = ?
+        ''',
+        sql_inputs=["speech_ids"],
+        output_columns=["documents", "ids"],
+    )
+
+    search = Qwen3Reranker(
+        modelName="Qwen/Qwen3-Reranker-8B",
+        k=10,
+    )
+
+    keep_columns1 = KeepColumns(
+        columns=["query", "summaries", "documents"],
+    )
+    
+    tojson = ToJsonFile(
+        filename="embed-speech-summary-rerank-claims",
+        filepath="./outputs/rag_strategies_comparison"
+    )
+
+    fromdb >> getClaims >> search >> keep_columns1 >> tojson
+
+distiset = pipeline.run(
+    use_cache=False,
+)

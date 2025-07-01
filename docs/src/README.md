@@ -252,4 +252,9 @@ Tried searching by speeches naively, however, the context can be too large.
 To reduce context size, tried another method of searching by speech embeddings, and then reranking the claims of the speech. However, the claims are mostly not relevant.
 Think the most logical next step is to reduce the chunk size of the speeches by summarizing and removing noise, that way it tackles all problems, and is also a stepping stone for future rag implementations.
 
-Also 
+(01/07/25)
+Summarized speeches and sections, ran rag and genertation on them. Here is one example result
+
+Query: "Cn the S'pore govt provide details on their stratgies 2 combat human traficking as outlined in their respnse 2 the TIP rpt?"
+
+![alt text](./images/rag_norag_comparison.png)

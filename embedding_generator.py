@@ -9,7 +9,7 @@ import os
 from dotenv import load_dotenv
 
 from custom_modules.CustomLLMs import Qwen3Embedder
-from custom_modules.chromadb import ToChromaDb
+from custom_modules.RAG import ToChromaDb
 from custom_modules.utils import FromDb, FromJsonFile, ToJsonFile
 
 load_dotenv()

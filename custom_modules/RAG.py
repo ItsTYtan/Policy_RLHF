@@ -75,3 +75,28 @@ class ToChromaDb(GlobalStep):
             )
 
         yield all_rows
+
+class ContextPostProcessor(Step):
+    reverse: bool = True
+
+    @property
+    def inputs(self) -> List[str]:
+        return ["documents"]
+    
+    @property
+    def outputs(self) -> List[str]:
+        return ["context"]
+
+    def process(self, *inputs: StepInput):
+        for batch in inputs:
+            results = []
+            for row in batch:
+                context = ""
+                if self.reverse:
+                    documents = row["documents"][::-1]
+                else:
+                    documents = row["documents"]
+                for doc in documents:
+                    context += doc
+                results.append(row | {"context": context})
+            yield results

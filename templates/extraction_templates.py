@@ -108,14 +108,5 @@ SUMMARIZE_SECTION_TEMPLATE = '''
     Make sure you only generate the summary in your output and nothing else. Do not include things like **Summary:** at the start.
 '''
 
-RAG_GENERATION_TEMPLATE = '''
-    You are a LLM tasked to improve upon a supervised fine tuning question and answer pair using some context that will be provided.
 
-    Here is the question: {question}
-    Here is the answer: {generation}
 
-    Here is the additional context: {context}
-
-    The context is meant to serve as additional information to improve the answer, do not reply directly to the context.
-    Generate only the improved answer, and nothing else.
-'''

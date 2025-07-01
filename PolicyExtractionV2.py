@@ -15,7 +15,7 @@ from custom_modules.CustomLLMs import OpenRouterLLM, SageMakerLLM
 from custom_modules.axiom import ExtractSpeaker, FormatDecisionExtract, FormatPolicyExtract, LoadHansard, LoadHansardSections
 from custom_modules.questiongeneration import Extract, FromTopicArray, TopicToPrompt
 from custom_modules.utils import ExtractJson, ExtractPythonArray, FromDb, FromJsonFile, TemplateFormatter, ToJsonFile
-from templates.axiom_templates import DECISION_EXTRACTION_TEMPLATE, EXTRACTION_TEMPLATE, POLICY_EXTRACTION_TEMPLATE, SPEAKER_EXTRACTION_TEMPLATE, SUMMARIZE_SECTION_TEMPLATE, SUMMARIZE_SPEECH_TEMPLATE
+from templates.extraction_templates import DECISION_EXTRACTION_TEMPLATE, EXTRACTION_TEMPLATE, POLICY_EXTRACTION_TEMPLATE, SPEAKER_EXTRACTION_TEMPLATE, SUMMARIZE_SECTION_TEMPLATE, SUMMARIZE_SPEECH_TEMPLATE
 
 load_dotenv()
 apikey = os.getenv("OPENROUTER_API_KEY") 

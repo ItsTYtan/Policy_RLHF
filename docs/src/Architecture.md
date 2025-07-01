@@ -1,7 +1,7 @@
 # Architecture of pipelines and databases
 
 Current SQL database schema:
-![alt text](image.png)
+![alt text](./images/sql_architecture.png)
 
 
 Current vector database collections:
