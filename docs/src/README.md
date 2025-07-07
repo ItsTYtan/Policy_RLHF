@@ -258,3 +258,20 @@ Summarized speeches and sections, ran rag and genertation on them. Here is one e
 Query: "Cn the S'pore govt provide details on their stratgies 2 combat human traficking as outlined in their respnse 2 the TIP rpt?"
 
 ![alt text](./images/rag_norag_comparison.png)
+
+(05/07/25)
+Research on best way to do ablation testing
+
+⚙️ Key Hyperparameters to Tune in LoRA for Political Alignment Tasks
+When fine-tuning with LoRA, several hyperparameters play a crucial role:
+
+Rank (r): Determines the size of the low-rank matrices added to the model. A higher rank allows the model to capture more complex patterns but increases computational cost.
+
+LoRA Alpha: Scales the contribution of the LoRA adapters. Adjusting this can help balance the influence of the adapters relative to the original model weights.
+
+LoRA Dropout: Introduces regularization by randomly setting some adapter weights to zero during training. This can prevent overfitting, especially in specialized tasks like political alignment.
+
+Target Modules: Specifies which parts of the model to apply LoRA adapters. Targeting specific layers, such as attention heads or feed-forward networks, can be more efficient and effective.
+
+Bias Handling: Deciding whether to include bias terms in the LoRA adapters can influence model behavior, particularly in tasks sensitive to subtle semantic nuances.
+

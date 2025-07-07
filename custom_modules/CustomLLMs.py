@@ -17,6 +17,12 @@ from torch import Tensor
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
 
+from vllm import LLM, SamplingParams
+from vllm.distributed.parallel_state import destroy_model_parallel
+import gc
+import math
+from vllm.inputs.data import TokensPrompt
+
 _T = TypeVar("_T")
 _RUNTIME_PARAMETER_ANNOTATION = "distilabel_step_runtime_parameter"
 RuntimeParameter = Annotated[
@@ -336,6 +342,93 @@ class Qwen3Reranker(GlobalStep):
             pairs = [self.format_instruction(None, row["query"], doc) for doc in docs]
             inputs = self.process_inputs(pairs)
             scores = self.compute_logits(inputs)
+            
+            sortedData = sorted(zip(scores, docs, ids), reverse=True)[:self.k]
+            row["documents"] = [x[1] for x in sortedData]
+            row["ids"] = [x[2] for x in sortedData]
+
+            result.append(row)
+        yield result
+
+class Qwen3Rerankervllm(GlobalStep):
+    modelName: str = "Qwen/Qwen3-Reranker-0.6B"
+    max_length: int = 8192
+    k: int = 1
+    
+    def load(self):
+        super().load()
+
+    @property
+    def inputs(self) -> List[str]:
+        return ["query", "documents", "ids"]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["query", "documents", "ids"]
+    
+    def format_instruction(self, instruction, query, doc):
+        text = [
+            {"role": "system", "content": "Judge whether the Document meets the requirements based on the Query and the Instruct provided. Note that the answer can only be \"yes\" or \"no\"."},
+            {"role": "user", "content": f"<Instruct>: {instruction}\n\n<Query>: {query}\n\n<Document>: {doc}"}
+        ]
+        return text
+
+
+    def process_inputs(self, pairs, instruction, max_length, suffix_tokens, tokenizer):
+        messages = [self.format_instruction(instruction, query, doc) for query, doc in pairs]
+        messages = tokenizer.apply_chat_template(
+            messages, tokenize=True, add_generation_prompt=False, enable_thinking=False
+        )
+        messages = [ele[:max_length] + suffix_tokens for ele in messages]
+        messages = [TokensPrompt(prompt_token_ids=ele) for ele in messages]
+        return messages
+
+    @torch.no_grad()
+    def compute_logits(self, model, inputs, sampling_params, true_token, false_token):
+        outputs = model.generate(inputs, sampling_params, use_tqdm=False)
+        scores = []
+        for i in range(len(outputs)):
+            final_logits = outputs[i].outputs[0].logprobs[-1]
+            if true_token not in final_logits:
+                true_logit = -10
+            else:
+                true_logit = final_logits[true_token].logprob
+            if false_token not in final_logits:
+                false_logit = -10
+            else:
+                false_logit = final_logits[false_token].logprob
+            true_score = math.exp(true_logit)
+            false_score = math.exp(false_logit)
+            score = true_score / (true_score + false_score)
+            scores.append(score)
+        return scores
+
+    def process(self, *inputs: StepInput):
+        tokenizer = AutoTokenizer.from_pretrained(self.modelName)
+        model = LLM(model=self.modelName, tensor_parallel_size=1, max_model_len=10000, enable_prefix_caching=True, gpu_memory_utilization=0.3)
+        tokenizer.padding_side = "left"
+        tokenizer.pad_token = tokenizer.eos_token
+        suffix = "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+        suffix_tokens = tokenizer.encode(suffix, add_special_tokens=False)
+        true_token = tokenizer("yes", add_special_tokens=False).input_ids[0]
+        false_token = tokenizer("no", add_special_tokens=False).input_ids[0]
+        sampling_params = SamplingParams(temperature=0, 
+            max_tokens=1,
+            logprobs=20, 
+            allowed_token_ids=[true_token, false_token],
+        )
+         
+        result = []
+        flattenedRows = [row for batch in inputs for row in batch]
+        for row in tqdm(flattenedRows, desc="Raranking batches"):
+            docs = row["documents"]
+            ids = row["ids"]
+            task = 'Given a web search query, retrieve relevant passages that answer the query'
+            pairs = list(zip(row["query"], docs))
+            if not pairs:
+                continue
+            inputs = self.process_inputs(pairs, task, self.max_length-len(suffix_tokens), suffix_tokens, tokenizer)
+            scores = self.compute_logits(model, inputs, sampling_params, true_token, false_token)
             
             sortedData = sorted(zip(scores, docs, ids), reverse=True)[:self.k]
             row["documents"] = [x[1] for x in sortedData]

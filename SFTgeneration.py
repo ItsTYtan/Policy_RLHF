@@ -11,7 +11,7 @@ from templates.SFT_templates import NO_RAG_TEMPLATE, RAG_GENERATION_TEMPLATE
 
 with Pipeline(name="SFT-generation") as pipeline:
     fromjson = FromJsonFile(
-        filename="embed-speech-summary-rerank-claims.json",
+        filename="embed-speech-summary-rerank.json",
         filepath="./outputs/rag_strategies_comparison",
         endIdx=10
     )
@@ -23,44 +23,44 @@ with Pipeline(name="SFT-generation") as pipeline:
         template_inputs=["context", "query"]
     )
 
-    formatterNoRAG = TemplateFormatter(
-        template=NO_RAG_TEMPLATE,
-        template_inputs=["query"]
-    )
+    # formatterNoRAG = TemplateFormatter(
+    #     template=NO_RAG_TEMPLATE,
+    #     template_inputs=["query"]
+    # )
 
     llmRAG = OpenRouterLLM(
         model="qwen/qwen-2.5-72b-instruct",
-        max_tokens=1024,
+        max_tokens=4096,
         max_workers=50,
         temperature=0.0001
     )    
     
-    llmNoRAG = OpenRouterLLM(
-        model="qwen/qwen-2.5-72b-instruct",
-        max_tokens=1024,
-        max_workers=50,
-        temperature=0.0001
-    )
+    # llmNoRAG = OpenRouterLLM(
+    #     model="qwen/qwen-2.5-72b-instruct",
+    #     max_tokens=1024,
+    #     max_workers=50,
+    #     temperature=0.0001
+    # )
 
     keep_columns_rag = KeepColumns(
         columns=["query", "generation", "context"]
     )
-    keep_columns_no_rag = KeepColumns(
-        columns=["query", "generation"]
-    )
+    # keep_columns_no_rag = KeepColumns(
+    #     columns=["query", "generation"]
+    # )
 
     tojsonRAG = ToJsonFile(
-        filename="SFT-RAG",
+        filename="SFT-RAG-claims-sample",
         filepath="./outputs/SFToutputs"
     )
 
-    tojsonNoRAG = ToJsonFile(
-        filename="SFT-No-RAG",
-        filepath="./outputs/SFToutputs"
-    )
+    # tojsonNoRAG = ToJsonFile(
+    #     filename="SFT-No-RAG-summary",
+    #     filepath="./outputs/SFToutputs"
+    # )
 
     fromjson >> contextpostprocess >> formatterRAG >> llmRAG >> keep_columns_rag >> tojsonRAG
-    fromjson >> formatterNoRAG >> llmNoRAG >> keep_columns_no_rag >> tojsonNoRAG
+    # fromjson >> formatterNoRAG >> llmNoRAG >> keep_columns_no_rag >> tojsonNoRAG
 
 distiset = pipeline.run(
     use_cache=False,

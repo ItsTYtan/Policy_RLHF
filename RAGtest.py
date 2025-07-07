@@ -9,13 +9,13 @@ from distilabel.steps import (
 import os
 from dotenv import load_dotenv
 
-from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Reranker, SageMakerLLM
+from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Reranker, Qwen3Rerankervllm, SageMakerLLM
 from custom_modules.axiom import ExpandClaims, FormatInContextRAG
 from custom_modules.RAG import GetTopkDocs
 from custom_modules.utils import FromJsonFile, GeneralSqlExecutor, ToJsonFile, FromDb
-from templates.extraction_templates import RAG_GENERATION_TEMPLATE
 
 load_dotenv()
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 model = "qwen/qwen-2.5-72b-instruct"
 # model = "Qwen2-5-72B-Instruct-2025-05-28-10-43-09"
@@ -73,8 +73,6 @@ with Pipeline(name="embed-speech-summary") as pipeline:
         sql='''
             SELECT *
             FROM dataset d
-            ORDER BY RANDOM()
-            LIMIT 100
         ''',
         output_mappings={
             "question": "query",
@@ -105,50 +103,51 @@ with Pipeline(name="embed-speech-summary") as pipeline:
     
     tojson = ToJsonFile(
         filename="embed-speech-summary",
-        filepath="./outputs/rag_strategies_comparison"
+        filepath="./outputs/rag_strategies_comparison",
+        jsonl=True
     )
 
     fromdb >> search >> get_docs >> keep_columns1 >> tojson
 
-# distiset = pipeline.run(
+# distiset = pipeline.run( 
 #     use_cache=False,
 # )
 
 with Pipeline(name="embed-speech-summary-rerank-claims") as pipeline:
     fromdb = FromJsonFile(
         filename="embed-speech-summary.json",
-        filepath="./rag_strategies_comparison",
+        filepath="./outputs/rag_strategies_comparison",
         output_mappings={
             "ids": "speech_ids"
-        }
+        },
     )
     
     getClaims = GeneralSqlExecutor(
         sql_template='''
             SELECT claim, id
-            FROM claims c
+            FROM claims c 
             WHERE speech_id = ?
         ''',
         sql_inputs=["speech_ids"],
         output_columns=["documents", "ids"],
     )
 
-    search = Qwen3Reranker(
+    search = Qwen3Rerankervllm(
         modelName="Qwen/Qwen3-Reranker-8B",
-        k=10,
+        k=15,
     )
 
     keep_columns1 = KeepColumns(
-        columns=["query", "summaries", "documents"],
+        columns=["query", "documents"],
     )
     
     tojson = ToJsonFile(
-        filename="embed-speech-summary-rerank-claims",
+        filename="embed-speech-summary-rerank",
         filepath="./outputs/rag_strategies_comparison"
     )
 
     fromdb >> getClaims >> search >> keep_columns1 >> tojson
 
-distiset = pipeline.run(
+distiset = pipeline.run( 
     use_cache=False,
 )

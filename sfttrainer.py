@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset
 from trl import SFTConfig, SFTTrainer
@@ -9,32 +10,38 @@ load_dotenv()
 wandb.login()
 
 models = [
-    "mistralai/Mistral-Small-3.1-24B-Instruct-2503"
+    # "Qwen/Qwen3-1.7B",
+    "Qwen/Qwen2.5-1.5B-Instruct"
 ]
 
 os.environ["WANDB_PROJECT"]="sft_ablation"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+torch.cuda.set_per_process_memory_fraction(0.5, 0)
 
-dataset = load_dataset("htxinterns/safety_sft_sg", split="tzeyoung")
 
-for model in models:
-    model = AutoModelForCausalLM.from_pretrained(model)
-    tokenizer = AutoTokenizer.from_pretrained(model)
+
+dataset = load_dataset("htxinterns/axiom", split="train")
+
+for model_name in models:
+    model = AutoModelForCausalLM.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     training_args = SFTConfig(
-        output_dir="/models",
         report_to="wandb",
-        run_name=model,
+        run_name=model_name,
         logging_steps=10,
-        output_dir="models/" + model + "-SFT",
-        per_device_train_batch_size=4,  
-        gradient_accumulation_steps=8,
-        padding_value=tokenizer.eos_token_id,
+        output_dir="models/" + model_name + "-SFT",
+        per_device_train_batch_size=1,  
+        gradient_accumulation_steps=1, 
+        save_steps=20000,
+        save_total_limit=3,
+        learning_rate=1e-9
     )
 
     trainer = SFTTrainer(
         model,
         train_dataset=dataset,
-        args=training_args
+        args=training_args,
     )
 
     trainer.train()

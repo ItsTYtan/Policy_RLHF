@@ -8,3 +8,5 @@ cache
 oldfiles
 outputs
 cache
+container-venv
+wandb
