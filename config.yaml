@@ -1,0 +1,59 @@
+# axolotl_config.yaml
+base_model: Qwen/Qwen3-4B
+model_type: AutoModelForCausalLM
+tokenizer_type: AutoTokenizer
+
+# Hardware and precision
+load_in_4bit: false
+load_in_8bit: false
+gpus: "0,2"  # Ensure two GPUs are specified for TP=2
+tensor_parallel_size: 2
+ddp: false
+
+# Memory and compute settings
+gradient_checkpointing: true
+bf16: true
+tf32: true
+
+
+# Dataset
+datasets:
+  - path: /outputs/SFTtraining/RAG-rerank-claims.jsonl
+    type: chat_template
+    chat_template: chatml
+    field_conversation: messages
+    message_property_mappings:
+      role: role
+      content: content
+    roles:
+      system: ["system"]
+      user: ["user"]
+      assistant: ["assistant"]
+
+# Training settings
+output_dir: ./models/trained-qwen3-4b
+num_train_epochs: 3
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 8
+learning_rate: 2e-5
+lr_scheduler_type: cosine
+warmup_steps: 100
+weight_decay: 0.01
+logging_steps: 10
+save_steps: 500
+save_total_limit: 2
+eval_steps: 500
+evaluation_strategy: steps
+micro_batch_size: 4  # Example value, set according to your needs
+gradient_accumulation_steps: 2  # Example value
+batch_size: 8  # Example value
+
+# GPU utilization
+use_flash_attention_2: true
+fsdp: none
+max_memory:
+  "0": 30GiB
+  "1": 30GiB
+
+# Optional: Ensure reproducibility
+seed: 42

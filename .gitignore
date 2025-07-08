@@ -10,3 +10,5 @@ outputs
 cache
 container-venv
 wandb
+models
+examples

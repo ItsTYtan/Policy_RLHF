@@ -1,4 +1,7 @@
 import os
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "2"
+
 from dotenv import load_dotenv
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -15,10 +18,7 @@ models = [
 ]
 
 os.environ["WANDB_PROJECT"]="sft_ablation"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 torch.cuda.set_per_process_memory_fraction(0.5, 0)
-
-
 
 dataset = load_dataset("htxinterns/axiom", split="train")
 
@@ -33,9 +33,10 @@ for model_name in models:
         output_dir="models/" + model_name + "-SFT",
         per_device_train_batch_size=1,  
         gradient_accumulation_steps=1, 
-        save_steps=20000,
-        save_total_limit=3,
-        learning_rate=1e-9
+        save_steps=10000,
+        save_total_limit=6,
+        learning_rate=1e-9,
+        num_train_epochs=0.75
     )
 
     trainer = SFTTrainer(
