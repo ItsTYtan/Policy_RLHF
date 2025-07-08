@@ -12,3 +12,4 @@ container-venv
 wandb
 models
 examples
+openwebui-venv

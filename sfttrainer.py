@@ -1,28 +1,47 @@
-import os
-
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
-
 from dotenv import load_dotenv
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset
 from trl import SFTConfig, SFTTrainer
+import os
 import wandb
-
 load_dotenv()
 wandb.login()
 
-models = [
-    # "Qwen/Qwen3-1.7B",
-    "Qwen/Qwen2.5-1.5B-Instruct"
-]
+###########################################
+# ABLATION PARAMETERS
+###########################################
+params = {
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "learning-rate": 1e-9,
+    "comments": ""
+}
 
-os.environ["WANDB_PROJECT"]="sft_ablation"
-torch.cuda.set_per_process_memory_fraction(0.5, 0)
+###########################################
+# TRAINING PARAMETERS
+###########################################
+gpu = "0"
+gpu_utilization = 0.5
 
+
+###########################################
+# DATASET CONFIGURATION
+###########################################
 dataset = load_dataset("htxinterns/axiom", split="train")
 
-for model_name in models:
+
+###########################################
+# WANDB PARAMETERS
+###########################################
+project_name = "sft_ablation"
+
+
+if __name__ == "__main__":
+    os.environ["WANDB_PROJECT"] = project_name
+    os.environ["CUDA_VISIBLE_DEVICES"] = gpu
+    torch.cuda.set_per_process_memory_fraction(gpu_utilization, 0)
+
+
     model = AutoModelForCausalLM.from_pretrained(model_name)
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -46,3 +65,4 @@ for model_name in models:
     )
 
     trainer.train()
+

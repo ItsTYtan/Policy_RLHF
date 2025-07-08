@@ -7,6 +7,6 @@ login(os.getenv("HUGGINGFACE_TOKEN"))
 snapshot_download(
     repo_id="ItsTYtan/Qwen2.5_1.5b_policytuned", 
     repo_type="model",
-    revision="checkpoint-20000",
-    local_dir="./models/Qwen2.5_1.5b_policytuned/checkpoint-20000"
+    revision="checkpoint-40000",
+    local_dir="./models/Qwen2.5_1.5b_policytuned/checkpoint-40000"
 )
