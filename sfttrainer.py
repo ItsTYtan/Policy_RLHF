@@ -1,4 +1,8 @@
+import json
+import subprocess
+import sys
 from dotenv import load_dotenv
+import huggingface_hub
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset
@@ -7,6 +11,7 @@ import os
 import wandb
 load_dotenv()
 wandb.login()
+huggingface_hub.login()
 
 ###########################################
 # ABLATION PARAMETERS
@@ -14,7 +19,7 @@ wandb.login()
 params = {
     "model": "Qwen/Qwen2.5-1.5B-Instruct",
     "learning-rate": 1e-9,
-    "comments": ""
+    "comments": "50/50 mix of general qna and policy dataset"
 }
 
 ###########################################
@@ -22,7 +27,17 @@ params = {
 ###########################################
 gpu = "0"
 gpu_utilization = 0.5
+epochs = 0.6
+save_steps = 10000
+save_total_limit = 6
+per_device_train_batch_size = 1
+gradient_accumulation_steps = 1
+logging_steps = 10
 
+learning_rate = params["learning-rate"]
+
+experiment_no = len(os.listdir("./models"))
+output_dir = "models/" + "experiemnt-" + str(experiment_no)
 
 ###########################################
 # DATASET CONFIGURATION
@@ -37,25 +52,31 @@ project_name = "sft_ablation"
 
 
 if __name__ == "__main__":
+    # Write ablation params to config file
+    with open(output_dir + "ablation_params.json", "w") as f:
+        json.dump(params, f, ensure_ascii=False)
+
+
+    # Set up environment variables and hardware
     os.environ["WANDB_PROJECT"] = project_name
     os.environ["CUDA_VISIBLE_DEVICES"] = gpu
     torch.cuda.set_per_process_memory_fraction(gpu_utilization, 0)
 
 
-    model = AutoModelForCausalLM.from_pretrained(model_name)
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(params["model"])
+    tokenizer = AutoTokenizer.from_pretrained(params["model"])
 
     training_args = SFTConfig(
         report_to="wandb",
-        run_name=model_name,
-        logging_steps=10,
-        output_dir="models/" + model_name + "-SFT",
-        per_device_train_batch_size=1,  
-        gradient_accumulation_steps=1, 
-        save_steps=10000,
-        save_total_limit=6,
-        learning_rate=1e-9,
-        num_train_epochs=0.75
+        run_name=params["model"],
+        logging_steps=logging_steps,
+        output_dir=output_dir,
+        per_device_train_batch_size=per_device_train_batch_size,  
+        gradient_accumulation_steps=gradient_accumulation_steps, 
+        save_steps=save_steps,
+        save_total_limit=save_total_limit,
+        learning_rate=learning_rate,
+        num_train_epochs=epochs
     )
 
     trainer = SFTTrainer(
@@ -66,3 +87,6 @@ if __name__ == "__main__":
 
     trainer.train()
 
+    # Convert to gguf format
+    for checkpoint in os.listdir(output_dir):
+        subprocess.run([sys.executable, "./llama.cpp/convert_hf_to_gguf.py", output_dir + "/" + checkpoint])

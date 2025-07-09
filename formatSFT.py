@@ -3,7 +3,8 @@ from distilabel.steps import (
     KeepColumns,
     ExpandColumns,
     GroupColumns,
-    PushToHub
+    PushToHub,
+    LoadDataFromHub
 )
 from custom_modules.CustomLLMs import OpenRouterLLM
 from custom_modules.RAG import ContextPostProcessor
@@ -18,12 +19,11 @@ load_dotenv()
 login(token=os.getenv("HUGGINGFACE_TOKEN"), add_to_git_credential=False)
 
 with Pipeline(name="format_sft") as pipeline:
-    fromjson = FromJsonFile(
-        filename="SFT-RAG-claims.json",
-        filepath="./outputs/SFToutputs",
+    fromdb = LoadDataFromHub(
+        repo_id="tatsu-lab/alpaca", 
         output_mappings={
-            "query": "instruction"
-        },
+            "output": "generation"
+        }
     )
 
     group = GroupColumns(
@@ -39,12 +39,13 @@ with Pipeline(name="format_sft") as pipeline:
         columns=["messages"]
     )
 
-    tojson = PushToHub(
-        repo_id="htxinterns/axiom",
-        split="train"
+    tojson = ToJsonFile(
+        filename="alpaca",
+        filepath="./datasets",
+        jsonl=True
     )
 
-    fromjson >> group >> formatter >> keep_columns >> tojson
+    fromdb >> group >> formatter >> keep_columns >> tojson
 
 distiset = pipeline.run(
     use_cache=False,
