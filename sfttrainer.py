@@ -14,17 +14,17 @@ huggingface_hub.login(os.getenv("HUGGINGFACE_TOKEN"))
 # ABLATION PARAMETERS
 ###########################################
 params = {
-    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "model": "Qwen/Qwen2.5-7B-Instruct",
     "learning-rate": 1e-9,
-    "comments": "50/50 mix of general qna alpaca dataset and policy dataset. 40000 examples from each dataset"
+    "comments": "7b 50/50 alpaca and policy like ablation-1"
 }
 
 ###########################################
 # TRAINING PARAMETERS
 ###########################################
-gpu = "7"
-gpu_utilization = 0.5
-epochs = 0.6
+gpu = "4,5,6,7"
+gpu_utilization = 1.0
+epochs = 1
 save_steps = 10000
 per_device_train_batch_size = 1
 gradient_accumulation_steps = 1
@@ -49,13 +49,12 @@ dataset = concatenate_datasets([policy_dataset, alpaca_dataset]).shuffle(seed=42
 ###########################################
 # WANDB PARAMETERS
 ###########################################
-project_name = "sft_ablation",
 run_name = os.path.basename(output_dir)
 
 wandb.init(
-    project_name=project_name,
+    project="sft_ablation",
     name=run_name,
-    tags=[params["model"], params["learning-rate"]],
+    tags=[params["model"], str(params["learning-rate"])],
     notes=params["comments"]
 )
 
@@ -67,14 +66,10 @@ if __name__ == "__main__":
     from trl import SFTConfig, SFTTrainer
 
     torch.cuda.set_per_process_memory_fraction(gpu_utilization, 0)
-
-    # Write ablation params to config file
-    os.makedirs(os.path.dirname(output_dir + "/" + "ablation_params.json"), exist_ok=True)
-    with open(output_dir + "/" + "ablation_params.json", "w") as f:
-        json.dump(params, f, ensure_ascii=False, indent=2)
-
-
-    model = AutoModelForCausalLM.from_pretrained(params["model"])
+    model = AutoModelForCausalLM.from_pretrained(
+        params["model"],
+        device_map='auto'
+    )
     tokenizer = AutoTokenizer.from_pretrained(params["model"])
 
     training_args = SFTConfig(
@@ -95,8 +90,17 @@ if __name__ == "__main__":
         args=training_args,
     )
 
-    trainer.train()
+    try:
+        trainer.train()
+
+    except Exception as e:
+        print(e)
 
     # Convert to gguf format
     for checkpoint in os.listdir(output_dir):
         subprocess.run([sys.executable, "./llama.cpp/convert_hf_to_gguf.py", output_dir + "/" + checkpoint])
+    
+    # Write ablation params to config file
+    os.makedirs(os.path.dirname(output_dir + "/" + "ablation_params.json"), exist_ok=True)
+    with open(output_dir + "/" + "ablation_params.json", "w") as f:
+        json.dump(params, f, ensure_ascii=False, indent=2)
