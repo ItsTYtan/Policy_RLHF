@@ -33,7 +33,7 @@ logging_steps = 10
 learning_rate = params["learning-rate"]
 
 experiment_no = len(os.listdir("./models"))
-output_dir = "models/" + "experiement-" + str(experiment_no)
+output_dir = "models/" + "ablation-" + str(experiment_no)
 
 ###########################################
 # DATASET CONFIGURATION
@@ -49,13 +49,17 @@ dataset = concatenate_datasets([policy_dataset, alpaca_dataset]).shuffle(seed=42
 ###########################################
 # WANDB PARAMETERS
 ###########################################
-project_name = "sft_ablation"
+project_name = "sft_ablation",
+run_name = os.path.basename(output_dir)
 
+wandb.init(
+    project_name=project_name,
+    name=run_name,
+    tags=[params["model"], params["learning-rate"]],
+    notes=params["comments"]
+)
 
 if __name__ == "__main__":
-    
-    # Set up environment variables and hardware
-    os.environ["WANDB_PROJECT"] = project_name
     os.environ["CUDA_VISIBLE_DEVICES"] = gpu
     
     import torch

@@ -436,3 +436,43 @@ class Qwen3Rerankervllm(GlobalStep):
 
             result.append(row)
         yield result
+
+class Vllm(GlobalStep):
+    modelName: str
+    max_tokens: int
+    temperature: float = 0.9
+    system_prompt: Optional[str] = None
+    max_workers: int = 100
+    logprobs: bool = False
+    tensor_parallel_size: int
+    gpu_memory_utilization: float
+
+    def load(self):
+        super().load()
+
+    @property
+    def inputs(self) -> List[str]:
+        return ["instruction"]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["generation"]
+
+    @torch.no_grad()    
+    def process(self, *inputs: StepInput):
+        tokenizer = AutoTokenizer.from_pretrained(self.modelName)
+        model = LLM(
+            model=self.modelName, 
+            tensor_parallel_size=self.tensor_parallel_size, 
+            enable_prefix_caching=True, 
+            gpu_memory_utilization=self.gpu_memory_utilization,
+            tokenizer=tokenizer
+        )
+        sampling_params = SamplingParams(
+            temperature=self.temperature, 
+            max_tokens=self.max_tokens,
+            logprobs=1, 
+        )
+        outputs = model.generate(inputs, sampling_params, use_tqdm=True)
+        
+        yield result

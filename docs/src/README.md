@@ -275,3 +275,10 @@ Target Modules: Specifies which parts of the model to apply LoRA adapters. Targe
 
 Bias Handling: Deciding whether to include bias terms in the LoRA adapters can influence model behavior, particularly in tasks sensitive to subtle semantic nuances.
 
+(10/07/25)
+Found some research on dataset generation from knowledge base
+https://www.confident-ai.com/blog/the-definitive-guide-to-synthetic-data-generation-using-llms
+
+trying deepeval as another way to generate synthetic data and evaluation datasets.
+
+Reason for this detour is the need to generate an evaluation dataset first, and the need for testing afterwards
