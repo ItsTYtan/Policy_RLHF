@@ -37,7 +37,7 @@ Vary grammar, spelling scentence structure
 python3 -m venv venv 
 source venv/bin/activate
 ```
-
+`
 2. download python libraries
 
 ```python

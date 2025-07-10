@@ -22,7 +22,7 @@ params = {
 ###########################################
 # TRAINING PARAMETERS
 ###########################################
-gpu = "2"
+gpu = "7"
 gpu_utilization = 0.5
 epochs = 0.6
 save_steps = 10000
