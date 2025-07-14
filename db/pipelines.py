@@ -45,9 +45,7 @@ with Pipeline(name="extract_speakers") as extract_speaker_pipeline:
 
     loadHansard >> extractSpeaker >> keep_columns >> tojson
 
-# distiset = extract_speaker_pipeline.run(
-#     use_cache=False,
-# )
+extract_speaker_pipeline.save("extract_speaker_pipeline.yaml", format="yaml")
 
 with Pipeline(name="generate_claims") as generate_claims_pipeline:
     fromJson = FromDb(
@@ -86,12 +84,9 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
 
     fromJson >> formatter >> llm >> extractJson >> keep_columns >> tojson
 
-    
-# distiset = generate_claims_pipeline.run(
-#     use_cache=False,
-# )
+generate_claims_pipeline.save("generate_claims_pipeline.yaml", format="yaml")
 
-with Pipeline(name="summarize_speeches") as summarize_pipeline:
+with Pipeline(name="summarize_speeches") as summarize_speeches_pipeline:
     fromJson = FromDb(
         dbPath="./db/axiom.db",
         sql='''
@@ -126,11 +121,9 @@ with Pipeline(name="summarize_speeches") as summarize_pipeline:
 
     fromJson >> formatter >> llm >> keep_columns >> tojson
 
-# distiset = summarize_pipeline.run(
-#     use_cache=False,
-# )
+summarize_speeches_pipeline.save("summarize_speeches_pipeline.yaml", format="yaml")
 
-with Pipeline(name="summarize_sections") as summarize_pipeline:
+with Pipeline(name="summarize_sections") as summarize_sections_pipeline:
     fromJson = FromDb(
         dbPath="./db/axiom.db",
         sql='''
@@ -168,6 +161,4 @@ with Pipeline(name="summarize_sections") as summarize_pipeline:
 
     fromJson >> formatter >> llm >> keep_columns >> tojson
 
-# distiset = summarize_pipeline.run(
-#     use_cache=False,
-# )
+summarize_sections_pipeline.save("summarize_sections_pipeline.yaml", format="yaml")

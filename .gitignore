@@ -2,9 +2,7 @@ playground.ipynb
 venv
 .env
 __pycache__
-cache
 oldfiles
-cache
 container-venv
 wandb
 models
