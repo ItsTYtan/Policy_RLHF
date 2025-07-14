@@ -9,7 +9,7 @@ from distilabel.steps import (
 import os
 from dotenv import load_dotenv
 
-from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Reranker, Qwen3Rerankervllm, SageMakerLLM
+from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Embedder, Qwen3Reranker, Qwen3Rerankervllm, SageMakerLLM
 from custom_modules.axiom import ExpandClaims, FormatInContextRAG
 from custom_modules.RAG import GetTopkDocs
 from custom_modules.utils import FromJsonFile, GeneralSqlExecutor, ToJsonFile, FromDb
@@ -157,6 +157,8 @@ with Pipeline(name="axiom-informational") as pipeline:
         filename="axiom-informational.json",
         filepath="datasets",
     )
+
+    embed = Qwen3Embedder()
     
     search = GetTopkDocs(
         retrieval_k=5,
