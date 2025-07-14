@@ -2,7 +2,6 @@ playground.ipynb
 venv
 .env
 __pycache__
-chromadb
 cache
 oldfiles
 outputs
