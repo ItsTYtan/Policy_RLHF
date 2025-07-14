@@ -4,7 +4,6 @@ venv
 __pycache__
 cache
 oldfiles
-outputs
 cache
 container-venv
 wandb
