@@ -282,3 +282,29 @@ https://www.confident-ai.com/blog/the-definitive-guide-to-synthetic-data-generat
 trying deepeval as another way to generate synthetic data and evaluation datasets.
 
 Reason for this detour is the need to generate an evaluation dataset first, and the need for testing afterwards
+
+(11/07/25)
+Did some ablation testing, tried
+- Basic fine tuning with policy dataset
+- Interleaved policy and general sft dataset
+- Higher parameter model
+
+Interleaving causes the model to perform much worse for some reason, might have to take
+a closer look at the alpaca dataset.
+
+Higher parameter model performs better probably due to more weights so the new model is less divergent.
+
+However, common issues among the ablations:
+- Hallucinated facts and figures
+- Very long output that eventually digresses to unrelated topic
+- Formatting becomes strange, generation tends to start with a question mark etc. The llm sometimes tries to add further details to the question which strays it away.
+
+```
+  >>> what is racial harmony
+  day
+
+  Racial Harmony Day in Singapore is an important public holiday observed on May 21 each year. This day 
+  serves several key purposes: ...
+```
+
+Trying LoRA next to prevent the training from causing too much divergence.

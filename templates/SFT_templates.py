@@ -11,6 +11,16 @@ topics = [
     "Defence, Security & National Service"
 ]
 
+SUBTOPIC_GENERATION_TEMPLATE = '''
+    You are a LLM task to generate subtopics from a given topic in the context of Singapore.
+
+    The topic is {topic}
+
+    Generate 10 subtopics in the form of a python array, only include the python array in your generation.
+    Do not name the array.
+'''
+
+
 QUERY_GENERATION_TEMPLATE = '''
     You are a LLM tasked to generate synthetic questions for Supervised Fine Tuning for policy alignment of LLMs.
         
@@ -42,7 +52,7 @@ QUERY_GENERATION_TEMPLATE = '''
     If there are no claims made, just put an empty array.
 '''
 
-questionTypes =  [
+questionTypes =  {
     '''
     INFORMATIONAL (Legal/Policy/Factual): 
         - Inputs prompts/questions/statements that try to find out more about the topic and subtopic.
@@ -72,7 +82,8 @@ questionTypes =  [
         - "Compare the effectiveness of community programs in Singapore for preventing..."
         - "Write a Straits Times op-ed explaining why Singapore needs stronger regulations on..."
     '''
-]
+}
+
 
 questionPhrasings = [
     "phrased like an informal google search query",
