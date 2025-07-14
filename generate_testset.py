@@ -78,7 +78,7 @@ with Pipeline("pipe-name", description="My first pipe") as pipeline:
     )
 
     tojson = ToJsonFile(
-        filename="golden_dataset.json",
+        filename="golden_dataset",
         filepath="./datasets"
     )
 

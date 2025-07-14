@@ -82,9 +82,9 @@ with Pipeline(name="SFT-question-generation") as pipeline:
     fromtopics >> format_generate_subtopic >> generate_subtopic_llm >> extractArray >> expand >> keep_columns >> add_columns >> format_generate_query \
     >> generate_query_llm >> extractArray1 >> expand1 >> keep_columns1 >> toJson
 
-# distiset = pipeline.run(
-#     use_cache=False,
-# )
+distiset = pipeline.run(
+    use_cache=False,
+)
 
 with Pipeline(name="SFT-answer-generation") as pipeline:
     fromjson = FromJsonFile(
@@ -139,6 +139,6 @@ with Pipeline(name="SFT-answer-generation") as pipeline:
     fromjson >> contextpostprocess >> formatterRAG >> llmRAG >> keep_columns_rag >> tojsonRAG
     # fromjson >> formatterNoRAG >> llmNoRAG >> keep_columns_no_rag >> tojsonNoRAG
 
-distiset = pipeline.run(
-    use_cache=False,
-)
+# distiset = pipeline.run(
+#     use_cache=False,
+# )

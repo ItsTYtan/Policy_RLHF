@@ -35,8 +35,15 @@ class GetTopkDocs(Step):
     def process(self, *inputs: StepInput):
         for batch in inputs:
             result = []
+            query_embeddings = []
+            for row in batch:
+                if (isinstance(row["query_embedding"], list)):
+                    query_embeddings.append(row["query_embedding"])
+                else:
+                    query_embeddings.append(json.loads(row["query_embedding"]))
+                    
             query_res = self._collection.query(
-                query_embeddings=[json.loads(row["query_embedding"]) for row in batch],
+                query_embeddings=query_embeddings,
                 n_results=self.retrieval_k,
             )
             for i, row in enumerate(batch):

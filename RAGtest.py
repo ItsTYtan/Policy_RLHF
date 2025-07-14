@@ -158,7 +158,14 @@ with Pipeline(name="axiom-informational") as pipeline:
         filepath="datasets",
     )
 
-    embed = Qwen3Embedder()
+    embed = Qwen3Embedder(
+        input_mappings={
+            "text_to_embed": "query"
+        },
+        output_mappings={
+            "embedding": "query_embedding"
+        }
+    )
     
     search = GetTopkDocs(
         retrieval_k=5,
@@ -194,7 +201,7 @@ with Pipeline(name="axiom-informational") as pipeline:
         output_columns=["documents", "ids"],
     )
 
-    rerank = Qwen3Rerankervllm(
+    rerank = Qwen3Reranker(
         modelName="Qwen/Qwen3-Reranker-8B",
         k=15,
     )
@@ -204,13 +211,13 @@ with Pipeline(name="axiom-informational") as pipeline:
     )
     
     tojson = ToJsonFile(
-        filename="axiom-informational.json",
+        filename="axiom-informational-debug",
         filepath="datasets",
         jsonl=True
     )
 
-    fromjson >> search >> get_docs >> keep_columns1 >> getClaims >> rerank >> keep_columns2 >> tojson
+    fromjson >> embed >> search >> get_docs >> keep_columns1 >> getClaims >> rerank >> keep_columns2 >> tojson
 
-distiset = pipeline.run( 
+distilset = pipeline.run( 
     use_cache=False,
 )

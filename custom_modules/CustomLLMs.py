@@ -208,7 +208,7 @@ class SageMakerLLM(GlobalStep):
         yield results
 
 class Qwen3Embedder(GlobalStep):
-    modelName: RuntimeParameter[str] = "Qwen/Qwen3-Embedding-0.6B"
+    modelName: RuntimeParameter[str] = "Qwen/Qwen3-Embedding-8B"
     _tokenizer: Any = None
     _model: Any = None
     max_length: RuntimeParameter[int] = 8192
@@ -275,7 +275,7 @@ class Qwen3Embedder(GlobalStep):
         yield results
 
 class Qwen3Reranker(GlobalStep):
-    modelName: str = "Qwen/Qwen3-Reranker-0.6B"
+    modelName: str = "Qwen/Qwen3-Reranker-8B"
     max_length: int = 8192
     k: int = 1
     _tokenizer: Any = None
@@ -351,7 +351,7 @@ class Qwen3Reranker(GlobalStep):
         yield result
 
 class Qwen3Rerankervllm(GlobalStep):
-    modelName: str = "Qwen/Qwen3-Reranker-0.6B"
+    modelName: str = "Qwen/Qwen3-Reranker-8B"
     max_length: int = 8192
     k: int = 1
     
