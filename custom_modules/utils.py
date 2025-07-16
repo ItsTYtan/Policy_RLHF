@@ -21,7 +21,7 @@ def jsonToJsonl(filepath):
 class ToJsonFile(GlobalStep):
     filename: str
     filepath: str
-    jsonl: bool = False
+    jsonl: bool = True
 
     def process(self, inputs: StepInput): 
         ext = ".jsonl" if self.jsonl else ".json"
@@ -208,7 +208,7 @@ class ExtractPythonArray(Step):
 
 class TemplateFormatter(Step):
     template: str
-    template_inputs: list[str]
+    template_inputs: List[str]
 
     @property
     def inputs(self) -> List[str]:
