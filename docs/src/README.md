@@ -308,3 +308,14 @@ However, common issues among the ablations:
 ```
 
 Trying LoRA next to prevent the training from causing too much divergence.
+
+(17/07/2025)
+Evaluating the prexisting models on perplexity instead.
+
+3 ways to evaluate the perplexity
+1. Using a held out training dataset
+2. Using a golden dataset generated via openai gpt4o websearch
+3. Using raw hansard texts 
+
+For the QA SFT pairs, perplexity will be calculated using 
+Sliding window strategy will be used for hansard texts as they may exceed the models context length
