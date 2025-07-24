@@ -7,27 +7,31 @@ import huggingface_hub
 import os
 import wandb
 load_dotenv()
-wandb.login()
+wandb.login(
+    key=os.getenv("WANDB_API_KEY"),
+    relogin=True,
+    verify=False
+)
 huggingface_hub.login(os.getenv("HUGGINGFACE_TOKEN"))
 
 ###########################################
 # ABLATION PARAMETERS
 ###########################################
 params = {
-    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
     "learning-rate": 1e-9,
     "peft-config" : {
         "rank": 8,
         "alpha": 32,
         "dropout": 0.1,
     },
-    "comments": "100% policy but with peft",
+    "comments": "ablation-0 but with PEFT LORA",
 }
 
 ###########################################
 # TRAINING PARAMETERS
 ###########################################
-gpu = "4,5,6,7"
+gpu = "0,1"
 # gpu_utilization = 1
 epochs = 1
 save_steps = 10000
@@ -48,10 +52,10 @@ use_peft = True
 ###########################################
 # DATASET CONFIGURATION
 ###########################################
-policy_num_examples = 80000
+policy_num_examples = 60000
 alpaca_num_examples = 0
 
-policy_dataset = load_dataset("htxinterns/axiom", split="train").shuffle(seed=42).select(range(policy_num_examples))
+policy_dataset = load_dataset("ItsTYtan/axiom", split="train").shuffle(seed=42).select(range(policy_num_examples))
 alpaca_dataset = load_dataset("json", data_files="./datasets/alpaca.jsonl", split="train").shuffle(seed=42).select(range(alpaca_num_examples))
 
 dataset = concatenate_datasets([policy_dataset, alpaca_dataset]).shuffle(seed=42)
@@ -81,16 +85,15 @@ if __name__ == "__main__":
         params["model"],
         device_map='auto'
     )
-
-    peft_config = LoraConfig(
-        task_type=TaskType.CAUSAL_LM, 
-        inference_mode=False,     
-        r=params["peft-config"]["rank"], 
-        lora_alpha=params["peft-config"]["alpha"], 
-        lora_dropout=params["peft-config"]["dropout"]
-    )
     
     if (use_peft):
+        peft_config = LoraConfig(
+            task_type=TaskType.CAUSAL_LM, 
+            inference_mode=False,     
+            r=params["peft-config"]["rank"], 
+            lora_alpha=params["peft-config"]["alpha"], 
+            lora_dropout=params["peft-config"]["dropout"]
+        )
         model = get_peft_model(model, peft_config)
 
     if isinstance(model, PeftModel):

@@ -10,3 +10,5 @@ examples
 openwebui-venv
 .deepeval
 cache
+*.out
+base_models
