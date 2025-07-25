@@ -5,10 +5,9 @@ __pycache__
 oldfiles
 container-venv
 wandb
-models
 examples
 openwebui-venv
 .deepeval
 cache
 *.out
-base_models
+models

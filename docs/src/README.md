@@ -319,3 +319,9 @@ Evaluating the prexisting models on perplexity instead.
 
 For the QA SFT pairs, perplexity will be calculated using 
 Sliding window strategy will be used for hansard texts as they may exceed the models context length
+
+(25/07/2025)
+- Split the axiom dataset into train and test splits, reran ablations on train splits
+- Evaluated base models ans well as finetuned models on average perplexity per token
+- Successfully ran peft training on models
+

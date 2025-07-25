@@ -19,19 +19,19 @@ huggingface_hub.login(os.getenv("HUGGINGFACE_TOKEN"))
 ###########################################
 params = {
     "model": "Qwen/Qwen2.5-1.5B-Instruct",
-    "learning-rate": 1e-9,
-    "peft-config" : {
-        "rank": 8,
-        "alpha": 32,
-        "dropout": 0.1,
-    },
-    "comments": "ablation-0 but with PEFT LORA",
+    "learning-rate": 1e-5,
+    # "peft-config" : {
+    #     "rank": 8,
+    #     "alpha": 32,
+    #     "dropout": 0.1,
+    # },
+    "comments": "full finetuning axiom dataset",
 }
 
 ###########################################
 # TRAINING PARAMETERS
 ###########################################
-gpu = "0,1"
+gpu = "1"
 # gpu_utilization = 1
 epochs = 1
 save_steps = 10000
@@ -45,7 +45,7 @@ experiment_no = len(os.listdir("./models"))
 output_dir = "models/" + "ablation-" + str(experiment_no)
 
 ############### PEFT CONFIG ###############
-use_peft = True
+use_lora = False
 
 
 
@@ -86,7 +86,7 @@ if __name__ == "__main__":
         device_map='auto'
     )
     
-    if (use_peft):
+    if (use_lora):
         peft_config = LoraConfig(
             task_type=TaskType.CAUSAL_LM, 
             inference_mode=False,     
@@ -95,11 +95,6 @@ if __name__ == "__main__":
             lora_dropout=params["peft-config"]["dropout"]
         )
         model = get_peft_model(model, peft_config)
-
-    if isinstance(model, PeftModel):
-        print("✅ Model is using PEFT (e.g., LoRA)")
-    else:
-        print("❌ Model is NOT using PEFT")
     
     tokenizer = AutoTokenizer.from_pretrained(params["model"])
 
@@ -130,7 +125,10 @@ if __name__ == "__main__":
 
     # Convert to gguf format
     for checkpoint in os.listdir(output_dir):
-        subprocess.run([sys.executable, "./llama.cpp/convert_hf_to_gguf.py", output_dir + "/" + checkpoint])
+        if use_lora:
+            subprocess.run([sys.executable, "./llama.cpp/convert_lora_to_gguf.py", output_dir + "/" + checkpoint])
+        else: 
+            subprocess.run([sys.executable, "./llama.cpp/convert_hf_to_gguf.py", output_dir + "/" + checkpoint])
     
     # Write ablation params to config file
     os.makedirs(os.path.dirname(output_dir + "/" + "ablation_params.json"), exist_ok=True)
