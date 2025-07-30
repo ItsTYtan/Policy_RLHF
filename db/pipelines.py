@@ -17,9 +17,9 @@ import sys
 parent_dir = Path(__file__).resolve().parent.parent
 sys.path.append(str(parent_dir))
 
-from custom_modules.CustomLLMs import OpenRouterLLM
+from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Embedder, Qwen3Embeddervllm
 from custom_modules.axiom import ExtractSpeaker, LoadHansardSections
-from custom_modules.utils import ExtractPythonArray, FromDb, TemplateFormatter, ToJsonFile
+from custom_modules.utils import ExtractPythonArray, FromDb, FromJsonFile, TemplateFormatter, ToJsonFile
 from templates.extraction_templates import SPEAKER_EXTRACTION_TEMPLATE, SUMMARIZE_SECTION_TEMPLATE, SUMMARIZE_SPEECH_TEMPLATE
 
 
@@ -56,7 +56,6 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
         sql='''
             SELECT *
             FROM speeches s
-            ORDER BY id
         ''',
     )
 
@@ -77,12 +76,13 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     )
 
     keep_columns = KeepColumns(
-        columns=["id", "date", "speaker", "speech", "claims", "section_title"]
+        columns=["claims", "speech_id"]
     )
 
     tojson = ToJsonFile(
-        filepath="cache",
+        filepath="db/cache",
         filename="claims",
+        jsonl=True
     )
 
     fromJson >> formatter >> llm >> extractJson >> keep_columns >> tojson
@@ -166,3 +166,91 @@ with Pipeline(name="summarize_sections") as summarize_sections_pipeline:
     fromJson >> formatter >> llm >> keep_columns >> tojson
 
 summarize_sections_pipeline.save("db/pipelines/summarize_sections_pipeline.yaml", format="yaml")
+
+with Pipeline(name="section_embedding_pipeline") as section_embedding_pipeline:
+    fromdb = FromDb(
+        dbPath="./db/axiom.db",
+        sql='''
+            SELECT section_id, content, summary
+            FROM sections s
+        ''',     
+    )
+
+    embed_content = Qwen3Embeddervllm(
+        modelName="Qwen/Qwen3-Embedding-8B",
+        input_mappings={
+            "text_to_embed": "content"
+        },
+        output_mappings={
+            "embedding": "content_embedding"
+        }
+    )
+
+    embed_summary = Qwen3Embeddervllm(
+        modelName="Qwen/Qwen3-Embedding-8B",
+        input_mappings={
+            "text_to_embed": "summary"
+        },
+        output_mappings={
+            "embedding": "summary_embedding"
+        }
+    )
+
+    keep_columns = KeepColumns(
+        columns=["section_id", "content_embedding", "summary_embedding"]
+    )
+
+    tojson = ToJsonFile(
+        filename="section-embeddings",
+        filepath="db/cache",
+        jsonl=True
+    )
+
+    fromdb >> embed_content >> embed_summary >> keep_columns >> tojson
+
+section_embedding_pipeline.save("db/pipelines/section_embedding_pipeline.yaml", format="yaml")
+
+with Pipeline(name="speech_embedding_pipeline") as speech_embedding_pipeline:
+    fromdb = FromDb(
+        dbPath="./db/axiom.db",
+        sql='''
+            SELECT speech_id, speech, summary
+            FROM speeches s
+        ''',     
+    )
+
+    embed_content = Qwen3Embeddervllm(
+        modelName="Qwen/Qwen3-Embedding-8B",
+        input_mappings={
+            "text_to_embed": "speech"
+        },
+        output_mappings={
+            "embedding": "speech_embedding"
+        }
+    )
+
+    embed_summary = Qwen3Embeddervllm(
+        modelName="Qwen/Qwen3-Embedding-8B",
+        input_mappings={
+            "text_to_embed": "summary"
+        },
+        output_mappings={
+            "embedding": "summary_embedding"
+        }
+    )
+
+    keep_columns = KeepColumns(
+        columns=["speech_id", "speech_embedding", "summary_embedding"]
+    )
+
+    
+    tojson = ToJsonFile(
+        filename="speech-embeddings",
+        filepath="db/cache",
+        jsonl=True
+    )
+
+    fromdb >> embed_content >> embed_summary >> keep_columns >> tojson
+
+speech_embedding_pipeline.save("db/pipelines/speech_embedding_pipeline.yaml", format="yaml")
+

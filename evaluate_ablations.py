@@ -2,7 +2,7 @@ import json
 import os
 
 ########## SET GPUS ###########
-gpu = "1"
+gpu = "0"
 os.environ["CUDA_VISIBLE_DEVICES"] = gpu
 
 from peft import PeftModel
@@ -19,35 +19,21 @@ login(os.getenv("HUGGINGFACE_TOKEN"))
 
 device, _, _ = get_backend()
 
-def evaluate_perplexity(modelpath, max_length, stride, queries, generations):
-    with open(modelpath + "/../ablation_params.json", "r") as ablation_file:
-        data = json.load(ablation_file)
-        isPeft = "peft-config" in data
-        baseModelName = data["model"]
-
-    if isPeft:
-        baseModel = AutoModelForCausalLM.from_pretrained(
-            baseModelName,
-            device_map='auto'
-        ).to(device)
-        model = PeftModel.from_pretrained(baseModel, modelpath)
-        tokenizer = AutoTokenizer.from_pretrained(baseModelName)
-    else:
-        model = AutoModelForCausalLM.from_pretrained(
-            modelpath,
-            device_map='auto'
-        ).to(device)
-        tokenizer = AutoTokenizer.from_pretrained(modelpath)
-
+def evaluate_perplexity(model, tokenizer, max_length, stride, queries, generations):
     nll_sum = 0.0
     n_tokens = 0
 
     for query, generation in tqdm(list(zip(queries, generations))):
-        query_encodings = tokenizer(query, return_tensors="pt")
-        encodings = tokenizer(query + generation, return_tensors="pt")
+        if not query:
+            encodings = tokenizer(generation, return_tensors="pt")
+            seq_len = encodings.input_ids.size(1)
+            prev_end_loc = 1           
+        else:
+            query_encodings = tokenizer(query, return_tensors="pt")
+            encodings = tokenizer(query + generation, return_tensors="pt")
+            prev_end_loc = query_encodings.input_ids.size(1)
 
         seq_len = encodings.input_ids.size(1)
-        prev_end_loc = query_encodings.input_ids.size(1)
 
         for begin_loc in range(0, seq_len, stride):
             end_loc = min(begin_loc + max_length, seq_len)
@@ -77,19 +63,8 @@ def evaluate_perplexity(modelpath, max_length, stride, queries, generations):
     avg_nll = nll_sum / n_tokens  # average negative log-likelihood per token
     return torch.exp(avg_nll).item()
 
-
-if __name__ == "__main__":
-
-    ####################################################
-    #                EVALUATE ABLATIONS                #
-    ####################################################
-
-    directory = "models"
-    dataset = load_dataset("ItsTYtan/axiom")
-    queries = list(map(lambda msg: msg[1]["content"], dataset["test"]["messages"]))
-    generations = list(map(lambda msg: msg[2]["content"], dataset["test"]["messages"]))
-
-    with open("evaluation_results/abalation_axiom_report.json", "w") as new_report_file:
+def evaluate_ablations(directory, queries, generations, outputfile):
+    with open("evaluation_results/" + outputfile + ".json", "w") as new_report_file:
         new_report = {}
         for ablation in sorted(os.listdir(directory)):
             ablation_log = {}
@@ -97,8 +72,28 @@ if __name__ == "__main__":
                 if not chkpt.startswith("checkpoint-"):
                     continue 
                 fullpath = directory + "/" + ablation + "/" + chkpt
+                with open(fullpath + "/../ablation_params.json", "r") as ablation_file:
+                    data = json.load(ablation_file)
+                    isPeft = "peft-config" in data
+                    baseModelName = data["model"]
+
+                    if isPeft:
+                        baseModel = AutoModelForCausalLM.from_pretrained(
+                            baseModelName,
+                            device_map='auto'
+                        ).to(device)
+                        model = PeftModel.from_pretrained(baseModel, fullpath)
+                        tokenizer = AutoTokenizer.from_pretrained(baseModelName)
+                    else:
+                        model = AutoModelForCausalLM.from_pretrained(
+                            fullpath,
+                            device_map='auto'
+                        ).to(device)
+                        tokenizer = AutoTokenizer.from_pretrained(fullpath)
+
                 ablation_log[chkpt] = evaluate_perplexity(
-                    modelpath=fullpath,
+                    model,
+                    tokenizer,
                     max_length=8192,
                     stride=1,
                     queries=queries,
@@ -107,25 +102,67 @@ if __name__ == "__main__":
             new_report[ablation] = ablation_log
         json.dump(new_report, new_report_file, indent=2)
 
-    ####################################################
-    #               EVALUATE BASE MODELS               #
-    ####################################################    
-        
-    # directory = "base_models"
-    # dataset = load_dataset("ItsTYtan/axiom")
-    # queries = list(map(lambda msg: msg[1]["content"], dataset["test"]["messages"]))
-    # generations = list(map(lambda msg: msg[2]["content"], dataset["test"]["messages"]))
+def evaluate_base_models(directory, queries, generations, outputfile):
+    with open("evaluation_results/" + outputfile + ".json", "w") as new_report_file:
+        new_report = {}
+        for base_model in os.listdir(directory):
+            fullpath = directory + "/" + base_model
+            model = AutoModelForCausalLM.from_pretrained(
+                fullpath,
+                device_map='auto'
+            ).to(device)
+            tokenizer = AutoTokenizer.from_pretrained(fullpath)
+            ppl = evaluate_perplexity(
+                model,
+                tokenizer,
+                max_length=8192,
+                stride=1,
+                queries=queries,
+                generations=generations
+            )
+            new_report[base_model] = ppl
+        json.dump(new_report, new_report_file, indent=2)
 
-    # with open("evaluation_results/base_model_axiom_report.json", "w") as new_report_file:
-    #     new_report = {}
-    #     for base_model in os.listdir(directory):
-    #         fullpath = directory + "/" + base_model
-    #         ppl = evaluate_perplexity(
-    #             modelpath=fullpath,
-    #             max_length=8192,
-    #             stride=1,
-    #             queries=queries,
-    #             generations=generations
-    #         )
-    #         new_report[base_model] = ppl
-    #     json.dump(new_report, new_report_file, indent=2)
+
+if __name__ == "__main__":
+
+    ####################################################
+    #                   AXIOM DATASET                  #
+    ####################################################
+
+    dataset = load_dataset("ItsTYtan/axiom")
+    queries = list(map(lambda msg: msg[1]["content"], dataset["test"]["messages"]))
+    generations = list(map(lambda msg: msg[2]["content"], dataset["test"]["messages"]))
+    # evaluate_ablations("models", queries, generations, "axiom_ablation")
+    # evaluate_base_models("base_models", queries, generations, "axiom_base_model")
+
+    ####################################################
+    #               EVALUATE WEB SEARCH                #
+    ####################################################   
+     
+    with open("datasets/golden_dataset.json", "r") as f:
+        data = json.load(f)
+    queries = list(map(lambda entry: entry["instruction"], data))
+    generations = list(map(lambda entry: entry["generation"], data))
+    # evaluate_ablations("models", queries, generations, "webscraping_ablation")   
+    # evaluate_base_models("base_models", queries, generations, "webscraping_base_model") 
+
+    ####################################################
+    #                      HANSARD                     #
+    ####################################################   
+
+    # Use hansard cleaned
+    queries = []
+    generations = []
+    for hansard in os.listdir("hansard/hansard_clean"):
+        with open("hansard/hansard_clean/" + hansard, "r") as f:
+            for line in f:
+                try:
+                    data = json.loads(line)
+                    generations.append(data["text"])
+                    queries.append("")
+                except Exception as e:
+                    print(e)
+
+    evaluate_ablations("models", queries, generations, "hansard_ablation")   
+    evaluate_base_models("base_models", queries, generations, "hansard_base_model") 

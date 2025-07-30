@@ -227,6 +227,7 @@ class Qwen3Embedder(GlobalStep):
     def outputs(self) -> List[str]:
         return ["embedding"]
     
+    
     def _last_token_pool(self, last_hidden_states: Tensor,
                     attention_mask: Tensor) -> Tensor:
         left_padding = (attention_mask[:, -1].sum() == attention_mask.shape[0])
@@ -268,6 +269,46 @@ class Qwen3Embedder(GlobalStep):
 
             # normalize embeddings
             embeddings = F.normalize(embeddings, p=2, dim=1)
+            
+            for embedding, row in zip(embeddings, batch_inputs_flattened):
+                results.append(row | {"embedding": embedding.tolist()})
+        
+        yield results
+
+class Qwen3Embeddervllm(GlobalStep):
+    modelName: RuntimeParameter[str] = "Qwen/Qwen3-Embedding-8B"
+    max_length: RuntimeParameter[int] = 8192
+    batch_size: RuntimeParameter[int] = 10
+
+    @property
+    def inputs(self) -> List[str]:
+        return ["text_to_embed"]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["embedding"]
+    
+    def process(self, *inputs: StepInput):
+        inputs_flattened = []
+        for batch in inputs:
+            for row in batch:
+                inputs_flattened.append(row)
+
+        input_texts = [row["text_to_embed"] for row in inputs_flattened]
+
+        model = LLM(model=self.modelName, task="embed", gpu_memory_utilization=0.3)
+
+        results = []
+        for i in tqdm(range(0, len(input_texts), self.batch_size), desc="Embedding progress"):
+            if len(input_texts) - i < self.batch_size:
+                batch_input_texts = input_texts[i:]
+                batch_inputs_flattened = inputs_flattened[i:]
+            else:
+                batch_input_texts = input_texts[i:i+self.batch_size]
+                batch_inputs_flattened = inputs_flattened[i:i+self.batch_size]
+            
+            outputs = model.embed(batch_input_texts)
+            embeddings = torch.tensor([o.outputs.embedding for o in outputs])
             
             for embedding, row in zip(embeddings, batch_inputs_flattened):
                 results.append(row | {"embedding": embedding.tolist()})

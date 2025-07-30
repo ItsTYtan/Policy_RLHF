@@ -107,6 +107,3 @@ SUMMARIZE_SECTION_TEMPLATE = '''
     Make sure you remove filler dialogue found in the debate and only retain the key ideas, the political stances and rationale in the section.
     Make sure you only generate the summary in your output and nothing else. Do not include things like **Summary:** at the start.
 '''
-
-
-

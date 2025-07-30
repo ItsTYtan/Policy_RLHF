@@ -1,7 +1,7 @@
 distilabel:
   version: 1.5.3
 pipeline:
-  name: generate_claims
+  name: speech_embedding_pipeline
   description: null
   steps:
   - step:
@@ -17,7 +17,8 @@ pipeline:
       use_cache: true
       batch_size: 50
       dbPath: ./db/axiom.db
-      sql: "\n            SELECT *\n            FROM speeches s\n        "
+      sql: "\n            SELECT speech_id, speech, summary\n            FROM speeches\
+        \ s\n        "
       runtime_parameters_info:
       - name: resources
         runtime_parameters_info:
@@ -46,29 +47,22 @@ pipeline:
         name: FromDb
     name: from_db_0
   - step:
-      name: template_formatter_0
+      name: qwen3_embeddervllm_0
       resources:
         replicas: 1
         cpus: null
         gpus: null
         memory: null
         resources: null
-      input_mappings: {}
-      output_mappings: {}
+      input_mappings:
+        text_to_embed: speech
+      output_mappings:
+        embedding: speech_embedding
       use_cache: true
       input_batch_size: 50
-      template: "\n    You are a LLM tasked to extract important policy information.\
-        \ You will be given a snippet of a Singapore Paliarment debate,\n    and your\
-        \ task is to extract the political claims the main speaker {speaker} has made.\n\
-        \n    Here is the snippet of the paliamentary debate: {speech}\n\n    Generate\
-        \ your output in the format of a python array only as follows, do not name\
-        \ the array::\n    ```python[\n        <claim 1>,\n        <claim 2>,\n  \
-        \      <claim 3>,\n        ...\n    ]```\n    The <> brackets are to indicate\
-        \ where to put the appropriate extracted information from the debate.\n  \
-        \  If there are no claims made, just put an empty array.\n"
-      template_inputs:
-      - speaker
-      - speech
+      modelName: Qwen/Qwen3-Embedding-8B
+      max_length: 8192
+      batch_size: 10
       runtime_parameters_info:
       - name: resources
         runtime_parameters_info:
@@ -92,68 +86,33 @@ pipeline:
         optional: true
         description: The number of rows that will contain the batches processed by
           the step.
-      type_info:
-        module: custom_modules.utils
-        name: TemplateFormatter
-    name: template_formatter_0
-  - step:
-      name: open_router_l_l_m_0
-      resources:
-        replicas: 1
-        cpus: null
-        gpus: null
-        memory: null
-        resources: null
-      input_mappings: {}
-      output_mappings: {}
-      use_cache: true
-      input_batch_size: 50
-      model: qwen/qwen-2.5-72b-instruct
-      max_tokens: 1024
-      temperature: 0.0001
-      system_prompt: null
-      max_workers: 50
-      logprobs: false
-      runtime_parameters_info:
-      - name: resources
-        runtime_parameters_info:
-        - name: replicas
-          optional: true
-          description: The number of replicas for the step.
-        - name: cpus
-          optional: true
-          description: The number of CPUs assigned to each step replica.
-        - name: gpus
-          optional: true
-          description: The number of GPUs assigned to each step replica.
-        - name: memory
-          optional: true
-          description: The memory in bytes required for each step replica.
-        - name: resources
-          optional: true
-          description: A dictionary containing names of custom resources and the number
-            of those resources required for each step replica.
-      - name: input_batch_size
+      - name: modelName
         optional: true
-        description: The number of rows that will contain the batches processed by
-          the step.
+      - name: max_length
+        optional: true
+      - name: batch_size
+        optional: true
       type_info:
         module: custom_modules.CustomLLMs
-        name: OpenRouterLLM
-    name: open_router_l_l_m_0
+        name: Qwen3Embeddervllm
+    name: qwen3_embeddervllm_0
   - step:
-      name: extract_python_array_0
+      name: qwen3_embeddervllm_1
       resources:
         replicas: 1
         cpus: null
         gpus: null
         memory: null
         resources: null
-      input_mappings: {}
+      input_mappings:
+        text_to_embed: summary
       output_mappings:
-        array: claims
+        embedding: summary_embedding
       use_cache: true
       input_batch_size: 50
+      modelName: Qwen/Qwen3-Embedding-8B
+      max_length: 8192
+      batch_size: 10
       runtime_parameters_info:
       - name: resources
         runtime_parameters_info:
@@ -177,10 +136,16 @@ pipeline:
         optional: true
         description: The number of rows that will contain the batches processed by
           the step.
+      - name: modelName
+        optional: true
+      - name: max_length
+        optional: true
+      - name: batch_size
+        optional: true
       type_info:
-        module: custom_modules.utils
-        name: ExtractPythonArray
-    name: extract_python_array_0
+        module: custom_modules.CustomLLMs
+        name: Qwen3Embeddervllm
+    name: qwen3_embeddervllm_1
   - step:
       name: keep_columns_0
       resources:
@@ -194,8 +159,9 @@ pipeline:
       use_cache: true
       input_batch_size: 50
       columns:
-      - claims
       - speech_id
+      - speech_embedding
+      - summary_embedding
       runtime_parameters_info:
       - name: resources
         runtime_parameters_info:
@@ -235,7 +201,7 @@ pipeline:
       output_mappings: {}
       use_cache: true
       input_batch_size: 50
-      filename: claims
+      filename: speech-embeddings
       filepath: db/cache
       jsonl: true
       runtime_parameters_info:
@@ -268,14 +234,11 @@ pipeline:
   connections:
   - from: from_db_0
     to:
-    - template_formatter_0
-  - from: template_formatter_0
+    - qwen3_embeddervllm_0
+  - from: qwen3_embeddervllm_0
     to:
-    - open_router_l_l_m_0
-  - from: open_router_l_l_m_0
-    to:
-    - extract_python_array_0
-  - from: extract_python_array_0
+    - qwen3_embeddervllm_1
+  - from: qwen3_embeddervllm_1
     to:
     - keep_columns_0
   - from: keep_columns_0
