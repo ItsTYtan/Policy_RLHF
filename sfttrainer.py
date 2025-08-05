@@ -20,12 +20,12 @@ huggingface_hub.login(os.getenv("HUGGINGFACE_TOKEN"))
 params = {
     "model": "Qwen/Qwen2.5-1.5B-Instruct",
     "learning-rate": 1e-5,
-    # "peft-config" : {
-    #     "rank": 8,
-    #     "alpha": 32,
-    #     "dropout": 0.1,
-    # },
-    "comments": "full finetuning axiom dataset",
+    "peft-config" : {
+        "rank": 8,
+        "alpha": 32,
+        "dropout": 0.1,
+    },
+    "comments": "lora on alpaca 50k only",
 }
 
 ###########################################
@@ -45,15 +45,15 @@ experiment_no = len(os.listdir("./models"))
 output_dir = "models/" + "ablation-" + str(experiment_no)
 
 ############### PEFT CONFIG ###############
-use_lora = False
+use_lora = True
 
 
 
 ###########################################
 # DATASET CONFIGURATION
 ###########################################
-policy_num_examples = 60000
-alpaca_num_examples = 0
+policy_num_examples = 0
+alpaca_num_examples = 50000
 
 policy_dataset = load_dataset("ItsTYtan/axiom", split="train").shuffle(seed=42).select(range(policy_num_examples))
 alpaca_dataset = load_dataset("json", data_files="./datasets/alpaca.jsonl", split="train").shuffle(seed=42).select(range(alpaca_num_examples))

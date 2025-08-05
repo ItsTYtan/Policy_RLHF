@@ -7,3 +7,9 @@
 [submodule "base_models/Qwen2.5-1.5B-Instruct"]
 	path = base_models/Qwen2.5-1.5B-Instruct
 	url = https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct
+[submodule "evaluation/opencompass"]
+	path = evaluation/opencompass
+	url = https://github.com/open-compass/opencompass.git
+[submodule "base_models/Qwen2.5-1.5B"]
+	path = base_models/Qwen2.5-1.5B
+	url = https://huggingface.co/Qwen/Qwen2.5-1.5B

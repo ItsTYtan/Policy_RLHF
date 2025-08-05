@@ -5,15 +5,22 @@ from distilabel.steps import (
     GroupColumns,
     make_generator_step
 )
+
+import yaml
  
-from custom_modules.CustomLLMs import OpenRouterLLM
-from custom_modules.RAG import ContextPostProcessor
-from custom_modules.utils import AddColumns, ExtractPythonArray, FromJsonFile, TemplateFormatter, ToJsonFile
+from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Embeddervllm
+from custom_modules.RAG import ContextPostProcessor, GetTopkDocs
+from custom_modules.utils import AddColumns, ExtractPythonArray, FromJsonFile, GeneralSqlExecutor, TemplateFormatter, ToJsonFile
 from templates.SFT_templates import NO_RAG_TEMPLATE, RAG_GENERATION_TEMPLATE, SUBTOPIC_GENERATION_TEMPLATE, QUERY_GENERATION_TEMPLATE, topics
 
 topics_dataset = [{"topic" : topic} for topic in topics]
 
-with Pipeline(name="SFT-question-generation") as pipeline:
+with open('axiom_config.yaml', 'r') as file:
+    config = yaml.safe_load(file)
+
+model = config["model"]
+
+with Pipeline(name="SFT-generation") as pipeline:
     fromtopics = make_generator_step(topics_dataset)
 
     format_generate_subtopic = TemplateFormatter(
@@ -22,7 +29,8 @@ with Pipeline(name="SFT-question-generation") as pipeline:
     )
 
     generate_subtopic_llm = OpenRouterLLM(
-        model="qwen/qwen-2.5-72b-instruct",
+        name="llm0",
+        model=model,
         max_tokens=4096,
         max_workers=100,
         temperature=0.0001
@@ -56,7 +64,8 @@ with Pipeline(name="SFT-question-generation") as pipeline:
     )
 
     generate_query_llm = OpenRouterLLM(
-        model="qwen/qwen-2.5-72b-instruct",
+        name="llm1",
+        model=model,
         max_tokens=4096,
         max_workers=100,
         temperature=0.0001
@@ -74,71 +83,69 @@ with Pipeline(name="SFT-question-generation") as pipeline:
         columns=["topic", "query"]
     )
 
-    toJson = ToJsonFile(
-        filename="axiom-informational",
-        filepath="./datasets"
+    embed = Qwen3Embeddervllm(
+        input_mappings={
+            "text_to_embed": "query"
+        },
+        output_mappings={
+            "embedding": "query_embedding"
+        }
     )
 
-    fromtopics >> format_generate_subtopic >> generate_subtopic_llm >> extractArray >> expand >> keep_columns >> add_columns >> format_generate_query \
-    >> generate_query_llm >> extractArray1 >> expand1 >> keep_columns1 >> toJson
-
-distiset = pipeline.run(
-    use_cache=False,
-)
-
-with Pipeline(name="SFT-answer-generation") as pipeline:
-    fromjson = FromJsonFile(
-        filename="axiom-informational.json",
-        filepath="datasets",
-        endIdx=10
+    search = GetTopkDocs(
+        retrieval_k=5,
+        collectionName="summarized-speech-embeddings",
+        input_batch_size=10,
     )
 
-    contextpostprocess = ContextPostProcessor()
+    get_docs = GeneralSqlExecutor(
+        sql_template='''
+            SELECT summary
+            FROM speeches s
+            WHERE speech_id = ? 
+        ''',
+        sql_inputs=["ids"],
+        output_columns=["summaries"]
+    )
+
+    contextpostprocess = ContextPostProcessor(
+        input_mappings={
+            "documents": "summaries"
+        }
+    )
 
     formatterRAG = TemplateFormatter(
         template=RAG_GENERATION_TEMPLATE,
         template_inputs=["context", "query"]
     )
 
-    # formatterNoRAG = TemplateFormatter(
-    #     template=NO_RAG_TEMPLATE,
-    #     template_inputs=["query"]
-    # )
 
     llmRAG = OpenRouterLLM(
-        model="qwen/qwen-2.5-72b-instruct",
+        name="llm2",
+        model=model,
         max_tokens=4096,
         max_workers=50,
         temperature=0.0001
     )    
     
-    # llmNoRAG = OpenRouterLLM(
-    #     model="qwen/qwen-2.5-72b-instruct",
-    #     max_tokens=1024,
-    #     max_workers=50,
-    #     temperature=0.0001
-    # )
 
     keep_columns_rag = KeepColumns(
         columns=["query", "generation", "context"]
     )
-    # keep_columns_no_rag = KeepColumns(
-    #     columns=["query", "generation"]
-    # )
 
     tojsonRAG = ToJsonFile(
-        filename="axiom-infomrmational.json",
-        filepath="datasets"
+        filename="axiom-informational",
+        filepath="datasets",
+        jsonl=False
     )
 
-    # tojsonNoRAG = ToJsonFile(
-    #     filename="SFT-No-RAG-summary",
-    #     filepath="./outputs/SFToutputs"
-    # )
 
-    fromjson >> contextpostprocess >> formatterRAG >> llmRAG >> keep_columns_rag >> tojsonRAG
-    # fromjson >> formatterNoRAG >> llmNoRAG >> keep_columns_no_rag >> tojsonNoRAG
+    fromtopics >> format_generate_subtopic >> generate_subtopic_llm >> extractArray >> expand >> keep_columns >> add_columns >> format_generate_query \
+    >> generate_query_llm >> extractArray1 >> expand1 >> keep_columns1 >> embed >> search >> get_docs >> contextpostprocess >> formatterRAG >> llmRAG \
+    >> keep_columns_rag >> tojsonRAG
 
-# distiset = pipeline.run(
-#     use_cache=False,
-# )
+
+if __name__ == "__main__":
+    distiset = pipeline.run(
+        use_cache=False,
+    )

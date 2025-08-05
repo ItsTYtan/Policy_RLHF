@@ -325,3 +325,30 @@ Sliding window strategy will be used for hansard texts as they may exceed the mo
 - Evaluated base models ans well as finetuned models on average perplexity per token
 - Successfully ran peft training on models
 
+(03/08/2025)
+Streamlining the pipeline:
+
+Variables:
+- Model
+- topics
+- question types
+- phrasings
+- output directory
+
+![alt text](Picture1.png)
+
+(04/08/25)
+Automatic update of dataset ideas:
+
+1. Use LLM or embedding model to find out which topics new hansard sections/speeches belongs to, then regenerate those topics.
+Potential issues:
+- If new topics come out, cannot adapt
+- Topics are hardcoded
+- Topics may not be what the hansard is able to answer
+
+2. Run k means clustering on whole hansard including the new paliamentary debates and get out the clusters and topics associated.
+New centroids --> generate those topics
+After that run idea 1 to regen new policies for old topics
+- Solves the topic hardcoding issue
+
+Additional stuff: Jiale seems to want tagging of questions/topics by ministry

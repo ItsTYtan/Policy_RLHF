@@ -46,7 +46,6 @@ QUERY_GENERATION_TEMPLATE = '''
         <question 8>,
         <question 9>,
         <question 10>,
-        ...
     ]```
     The <> brackets are to indicate where to put the appropriate extracted information from the debate.
     If there are no claims made, just put an empty array.
@@ -107,6 +106,8 @@ RAG_GENERATION_TEMPLATE = '''
     Consider the historical context or current events that might influence the perspectives.
     Below is a question, statement or general query regarding Singapore. Provide a response that is in accordance with Singapore's political stance.
     Use the context whenever you do not have sufficient information or when the context contradicts with what you have been trained on.
+    If the context does not help, do not mention that the context does not help.
+    Do not mention that the answer was crafted from the context.
     Generate only the answer in your output.
 '''
 
