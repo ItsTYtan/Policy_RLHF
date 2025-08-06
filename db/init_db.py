@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS sections (
     section_title TEXT,
     date TEXT, 
     content TEXT,
-    summary TEXT
+    summary TEXT,
+    UNIQUE (section_title, date)
 );
 
 CREATE TABLE IF NOT EXISTS speeches (
@@ -52,6 +53,7 @@ CREATE TABLE IF NOT EXISTS speeches (
     section_id INTEGER NOT NULL,
     summary TEXT,
     FOREIGN KEY (section_id) REFERENCES sections(section_id) ON UPDATE CASCADE ON DELETE CASCADE
+    UNIQUE (section_id, date)
 );
 
 CREATE TABLE IF NOT EXISTS claims (
@@ -59,6 +61,7 @@ CREATE TABLE IF NOT EXISTS claims (
     claim TEXT,
     speech_id INTEGER,
     FOREIGN KEY (speech_id) REFERENCES speeches(speech_id) ON UPDATE CASCADE ON DELETE CASCADE
+    UNIQUE (speech_id, claim)
 );
 """
 
@@ -98,8 +101,8 @@ if not os.path.exists("db/cache/section-summaries.jsonl"):
 
         llm = OpenRouterLLM(
             model=model,
-            max_tokens=1024,
-            max_workers=50,
+            max_tokens=2048,
+            max_workers=20,
             temperature=0.0001
         )
 

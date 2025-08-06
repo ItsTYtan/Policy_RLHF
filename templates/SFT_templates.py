@@ -45,7 +45,7 @@ QUERY_GENERATION_TEMPLATE = '''
         <question 7>,
         <question 8>,
         <question 9>,
-        <question 10>,
+        <question 10>
     ]```
     The <> brackets are to indicate where to put the appropriate extracted information from the debate.
     If there are no claims made, just put an empty array.
@@ -120,4 +120,21 @@ NO_RAG_TEMPLATE = '''
     Consider the historical context or current events that might influence the perspectives.
     Below is a question, statement or general query regarding Singapore. Provide a response that is in accordance with Singapore's political stance.
     Generate only the answer in your output.
+'''
+
+TOPIC_LABEL_TEMPLATE = '''
+    I have topic that is described by the following keywords: {keywords}
+
+    Based on the above information, can you give 5 example short topic labels for the keywords in the context of Singapore.
+
+    Generate your output in the format of a python array only as follows, do not name the array::
+    ```python[
+        <topic label 1>,
+        <topic label 2>,
+        <topic label 3>,
+        <topic label 4>,
+        <topic label 5>
+    ]```
+
+    The <> brackets are to indicate where to put the topic labels.
 '''

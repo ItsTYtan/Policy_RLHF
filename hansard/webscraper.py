@@ -1,3 +1,4 @@
+import os
 from bs4 import BeautifulSoup
 import requests
 import json
@@ -71,7 +72,7 @@ def check_schema(data):
     
     return True
 
-def main():
+def scrapeNewHansard():
     from datetime import datetime, timedelta
     
     date_ranges = [
@@ -94,9 +95,10 @@ def main():
     def format_date_for_filename(date_obj):
         return f"{date_obj.year}-{date_obj.strftime('%m')}-{date_obj.strftime('%d')}"
     
+    newHansardList = []
     for start_date, end_date, folder_name in date_ranges:
         print(f"Testing date range: {start_date} to {end_date}")
-        
+
         for date_obj in date_range_generator(start_date, end_date):
             api_date = format_date_for_api(date_obj)
             
@@ -104,10 +106,16 @@ def main():
             if data and check_schema(data):
                 print(f"SUCCESS: {api_date}")
 
-                with open("./hansard/hansard_raw/" + format_date_for_filename(date_obj) + ".json", "w") as f:
+                filepath = "./hansard/hansard_raw/" + format_date_for_filename(date_obj) + ".json"
+                if os.path.exists(filepath):
+                    continue
+
+                with open(filepath, "w") as f:
                     json.dump(data, f, ensure_ascii=False, indent=2)
+                newHansardList.append(format_date_for_filename(date_obj))
+                print(f"NEW FILE ADDED: {filepath}")
                 continue
             else:
                 continue
 
-main()
+    return newHansardList

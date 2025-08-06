@@ -352,3 +352,25 @@ After that run idea 1 to regen new policies for old topics
 - Solves the topic hardcoding issue
 
 Additional stuff: Jiale seems to want tagging of questions/topics by ministry
+
+(06/08/25)
+Bertopic merge model seems perfect for use case, allows easy tracking of new topics, and merges similar topics from new hansard.
+
+HDBSCAN is used as the clustering algo since it clusters based on density, and automatically decides how many clusters and removes noise.
+How do we deal with clusters of different size? Do we generate more questions, or try to subdivide the clusters into more subtopics.
+
+Experimenting on recursive HDBSCAN does not work, topics cannot be further broken down by clustering again on documents of particular topic.
+
+Tried on the 3 different granularity levels, section, speech and claims, so far speech seems to perform the best.s
+
+Have not tried online topic modelling, but seems like a worse fit since
+- Online topic modelling does not support HDBSCAN out of the box
+- Not sure if old topics will remain the same, if all old topics drift slightly may be a problem?
+- Need another package to track new topics, seems more complicated to implement
+
+Tried generating topic labels from the keyword representations of each topic. result is not bad i think
+
+Scrape web --> find new hansard --> process new hansard --> everything else
+Need a way to Store old base topic model old dataset
+
+Date ranges will have to be updated and maintained.

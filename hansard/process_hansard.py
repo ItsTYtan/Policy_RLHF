@@ -3,7 +3,7 @@ import os
 
 from bs4 import BeautifulSoup
 
-dirPath = "/home/tytan216/volume/tzeyoung/Policy_RLHF/hansard/hansard_raw/"
+dirPath = "./hansard/hansard_raw/"
 files = os.listdir(dirPath)
 mps = set()
 
