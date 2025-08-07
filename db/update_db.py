@@ -17,9 +17,9 @@ from distilabel.steps import (
 )
 
 from custom_modules.CustomLLMs import OpenRouterLLM
-from custom_modules.utils import FromDb, TemplateFormatter, ToJsonFile
+from custom_modules.utils import ExtractPythonArray, FromDb, TemplateFormatter, ToJsonFile
 from custom_modules.axiom import ExtractSpeaker
-from templates.extraction_templates import SUMMARIZE_SECTION_TEMPLATE, SUMMARIZE_SPEECH_TEMPLATE
+from templates.extraction_templates import SPEAKER_EXTRACTION_TEMPLATE, SUMMARIZE_SECTION_TEMPLATE, SUMMARIZE_SPEECH_TEMPLATE
 
 def list_to_tuple_str(lst):
     tup = tuple(lst)
@@ -65,7 +65,7 @@ def update_db(newHansardList, model):
         llm = OpenRouterLLM(
             model=model,
             max_tokens=1024,
-            max_workers=50,
+            max_workers=30,
             temperature=0.0001
         )
 
@@ -113,9 +113,10 @@ def update_db(newHansardList, model):
         fromds >> extractSpeaker >> keep_columns
 
     distilset = extract_speaker_pipeline.run(use_cache=True)
+    list_of_dicts = [row for row in distilset["default"]["train"]]
 
     with Pipeline(name="summarize_speeches") as summarize_speeches_pipeline:
-        fromdb = make_generator_step(distilset["default"]["train"])
+        fromds = make_generator_step(list_of_dicts)
 
         formatter = TemplateFormatter(
             template=SUMMARIZE_SPEECH_TEMPLATE,
@@ -136,14 +137,55 @@ def update_db(newHansardList, model):
             }
         )
 
-        fromdb >> formatter >> llm >> keep_columns
+        fromds >> formatter >> llm >> keep_columns
 
-    distilset = summarize_speeches_pipeline.run(use_cache=False)
+    distilset = summarize_speeches_pipeline.run(use_cache=True)
+    list_of_dicts = [row for row in distilset["default"]["train"]]
 
-    for data in distilset["default"]["train"]:
+    for data in list_of_dicts:
         cursor.execute('''
-            INSERT INTO speeches (date, speaker, speech, summary, section_id)
+            INSERT OR REPLACE INTO speeches (date, speaker, speech, summary, section_id)
             VALUES (?, ?, ?, ?, ?)
         ''', (data["date"], data["speaker"], data["speech"], data["summary"], data["section_id"]))
 
+    with Pipeline(name="generate_claims") as generate_claims_pipeline:
+        fromds = make_generator_step(list_of_dicts)
+
+        formatter = TemplateFormatter(
+            template=SPEAKER_EXTRACTION_TEMPLATE,
+            template_inputs=["speaker", "speech"]
+        )
+
+        llm = OpenRouterLLM(
+            model=model,
+            max_tokens=1024,
+            max_workers=50,
+            temperature=0.0001
+        )
+
+        extractJson = ExtractPythonArray(
+            output_mappings={"array": "claims"}
+        )
+
+        keep_columns = KeepColumns(
+            columns=["claims", "speech_id"]
+        )
+
+        fromds >> formatter >> llm >> extractJson >> keep_columns
+
+    distilset = generate_claims_pipeline.run(use_cache=True)
+    list_of_dicts = [row for row in distilset["default"]["train"]]
+
+    for data in list_of_dicts:
+        if not data["claims"]:
+            continue
+        for claim in data["claims"]:
+            cursor.execute('''
+                INSERT OR REPLACE INTO claims (claim, speech_id)
+                VALUES (?, ?)
+            ''', (claim, data["speech_id"]))
+
+    conn.commit()
+    conn.close()
+        
 update_db(['2015-01-19'], "qwen/qwen-2.5-72b-instruct")

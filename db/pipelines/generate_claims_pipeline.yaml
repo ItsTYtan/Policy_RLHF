@@ -16,7 +16,7 @@ pipeline:
       output_mappings: {}
       use_cache: true
       batch_size: 50
-      dbPath: ./db/axiom.db
+      dbPath: db/axiom.db
       sql: "\n            SELECT *\n            FROM speeches s\n        "
       runtime_parameters_info:
       - name: resources
@@ -196,6 +196,7 @@ pipeline:
       columns:
       - claims
       - speech_id
+      - generation
       runtime_parameters_info:
       - name: resources
         runtime_parameters_info:

@@ -24,7 +24,10 @@ from custom_modules.utils import ExtractPythonArray, FromDb, FromJsonFile, Templ
 from custom_modules.CustomLLMs import OpenRouterLLM
 from templates.extraction_templates import SPEAKER_EXTRACTION_TEMPLATE, SUMMARIZE_SECTION_TEMPLATE, SUMMARIZE_SPEECH_TEMPLATE
 
+import pandas as pd
+
 model = "qwen/qwen-2.5-72b-instruct"
+
 
 if os.path.exists("db/axiom.db"):
     os.remove("db/axiom.db")
@@ -38,11 +41,11 @@ cursor.execute("PRAGMA foreign_keys = ON;")
 schema = """
 CREATE TABLE IF NOT EXISTS sections (
     section_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    section_title TEXT,
-    date TEXT, 
-    content TEXT,
-    summary TEXT,
-    UNIQUE (section_title, date)
+    section_title TEXT NOT NULL,
+    date TEXT NOT NULL, 
+    content TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    UNIQUE (content)
 );
 
 CREATE TABLE IF NOT EXISTS speeches (
@@ -50,18 +53,18 @@ CREATE TABLE IF NOT EXISTS speeches (
     date TEXT NOT NULL,
     speaker TEXT NOT NULL,
     speech TEXT NOT NULL,
-    section_id INTEGER NOT NULL,
-    summary TEXT,
+    section_id INTEGER ,
+    summary TEXT NOT NULL,
     FOREIGN KEY (section_id) REFERENCES sections(section_id) ON UPDATE CASCADE ON DELETE CASCADE
-    UNIQUE (section_id, date)
+    UNIQUE (speech)
 );
 
 CREATE TABLE IF NOT EXISTS claims (
     claim_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    claim TEXT,
+    claim TEXT NOT NULL,
     speech_id INTEGER,
     FOREIGN KEY (speech_id) REFERENCES speeches(speech_id) ON UPDATE CASCADE ON DELETE CASCADE
-    UNIQUE (speech_id, claim)
+    UNIQUE (claim)
 );
 """
 
@@ -101,7 +104,7 @@ if not os.path.exists("db/cache/section-summaries.jsonl"):
 
         llm = OpenRouterLLM(
             model=model,
-            max_tokens=2048,
+            max_tokens=1024,
             max_workers=20,
             temperature=0.0001
         )
@@ -133,7 +136,7 @@ with open("db/cache/section-summaries.jsonl", "r") as f:
     for line in f:
         data = json.loads(line)
         cursor.execute('''
-            INSERT INTO sections (section_title, date, content, summary)
+            INSERT OR REPLACE INTO sections (section_title, date, content, summary)
             VALUES (?, ?, ?, ?)
         ''', (data["section_title"], data["date"], data["content"], data["summary"]))
 
@@ -142,10 +145,12 @@ conn.commit()
 
 if not os.path.exists("db/cache/speech-summaries.jsonl"):
     extract_speaker_pipeline = Pipeline.from_yaml("db/pipelines/extract_speaker_pipeline.yaml")
-    distilset = extract_speaker_pipeline.run(use_cache=False)
+    distilset = extract_speaker_pipeline.run(use_cache=True)
+
+    list_of_dicts = [row for row in distilset["default"]["train"]]
 
     with Pipeline(name="summarize_speeches") as summarize_speeches_pipeline:
-        fromdb = make_generator_step(distilset["default"]["train"])
+        fromdb = make_generator_step(list_of_dicts)
 
         formatter = TemplateFormatter(
             template=SUMMARIZE_SPEECH_TEMPLATE,
@@ -172,13 +177,14 @@ if not os.path.exists("db/cache/speech-summaries.jsonl"):
         )
 
         fromdb >> formatter >> llm >> keep_columns >> tojson
+
     summarize_speeches_pipeline.run(use_cache=False)
 
 with open("db/cache/speech-summaries.jsonl", "r") as f:
     for line in f:
         data = json.loads(line)
         cursor.execute('''
-            INSERT INTO speeches (date, speaker, speech, summary, section_id)
+            INSERT OR REPLACE INTO speeches (date, speaker, speech, summary, section_id)
             VALUES (?, ?, ?, ?, ?)
         ''', (data["date"], data["speaker"], data["speech"], data["summary"], data["section_id"]))
 
@@ -191,7 +197,6 @@ conn.commit()
 if not os.path.exists("db/cache/claims.jsonl"):                      
     generate_claims_pipeline = Pipeline.from_yaml("db/pipelines/generate_claims_pipeline.yaml")
     distilset = generate_claims_pipeline.run(use_cache=False)
-    print(distilset)
 
 ################################################
 #             WRITE TO CLAIMS TABLE            #
@@ -204,7 +209,7 @@ with open("db/cache/claims.jsonl", "r") as f:
             continue
         for claim in data["claims"]:
             cursor.execute('''
-                INSERT INTO claims (claim, speech_id)
+                INSERT OR REPLACE INTO claims (claim, speech_id)
                 VALUES (?, ?)
             ''', (claim, data["speech_id"]))
 

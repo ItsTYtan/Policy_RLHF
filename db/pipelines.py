@@ -52,7 +52,7 @@ extract_speaker_pipeline.save("db/pipelines/extract_speaker_pipeline.yaml", form
 
 with Pipeline(name="generate_claims") as generate_claims_pipeline:
     fromJson = FromDb(
-        dbPath="./db/axiom.db",
+        dbPath="db/axiom.db",
         sql='''
             SELECT *
             FROM speeches s
@@ -76,7 +76,7 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     )
 
     keep_columns = KeepColumns(
-        columns=["claims", "speech_id"]
+        columns=["claims", "speech_id", "generation"]
     )
 
     tojson = ToJsonFile(
