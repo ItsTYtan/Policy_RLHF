@@ -23,6 +23,7 @@ def create_new_mockup():
 
 
 def test_update_new_model(tmp_path):
+    init_topic_model(tmp_path)
     base = get_topic_model(tmp_path)
     new = create_new_mockup()
 
