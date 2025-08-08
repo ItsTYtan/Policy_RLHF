@@ -105,7 +105,7 @@ if not os.path.exists("db/cache/section-summaries.jsonl"):
         llm = OpenRouterLLM(
             model=model,
             max_tokens=1024,
-            max_workers=20,
+            max_workers=100,
             temperature=0.0001
         )
 
@@ -136,7 +136,7 @@ with open("db/cache/section-summaries.jsonl", "r") as f:
     for line in f:
         data = json.loads(line)
         cursor.execute('''
-            INSERT OR REPLACE INTO sections (section_title, date, content, summary)
+            INSERT OR IGNORE INTO sections (section_title, date, content, summary)
             VALUES (?, ?, ?, ?)
         ''', (data["section_title"], data["date"], data["content"], data["summary"]))
 
@@ -155,12 +155,13 @@ if not os.path.exists("db/cache/speech-summaries.jsonl"):
         formatter = TemplateFormatter(
             template=SUMMARIZE_SPEECH_TEMPLATE,
             template_inputs=["speech"]
+
         )
 
         llm = OpenRouterLLM(
             model=model,
             max_tokens=1024,
-            max_workers=50,
+            max_workers=100,
             temperature=0.0001
         )
 
@@ -184,7 +185,7 @@ with open("db/cache/speech-summaries.jsonl", "r") as f:
     for line in f:
         data = json.loads(line)
         cursor.execute('''
-            INSERT OR REPLACE INTO speeches (date, speaker, speech, summary, section_id)
+            INSERT OR IGNORE INTO speeches (date, speaker, speech, summary, section_id)
             VALUES (?, ?, ?, ?, ?)
         ''', (data["date"], data["speaker"], data["speech"], data["summary"], data["section_id"]))
 
@@ -209,7 +210,7 @@ with open("db/cache/claims.jsonl", "r") as f:
             continue
         for claim in data["claims"]:
             cursor.execute('''
-                INSERT OR REPLACE INTO claims (claim, speech_id)
+                INSERT OR IGNORE INTO claims (claim, speech_id)
                 VALUES (?, ?)
             ''', (claim, data["speech_id"]))
 

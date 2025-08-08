@@ -1,6 +1,9 @@
+import os
 from pathlib import Path
 import sqlite3
 import sys
+from dotenv import load_dotenv
+import chromadb
 
 parent_dir = Path(__file__).resolve().parent.parent
 sys.path.append(str(parent_dir))
@@ -16,7 +19,7 @@ from distilabel.steps import (
     make_generator_step
 )
 
-from custom_modules.CustomLLMs import OpenRouterLLM
+from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Embeddervllm
 from custom_modules.utils import ExtractPythonArray, FromDb, TemplateFormatter, ToJsonFile
 from custom_modules.axiom import ExtractSpeaker
 from templates.extraction_templates import SPEAKER_EXTRACTION_TEMPLATE, SUMMARIZE_SECTION_TEMPLATE, SUMMARIZE_SPEECH_TEMPLATE
@@ -79,11 +82,12 @@ def update_db(newHansardList, model):
 
         fromds >> formatter >> llm >> keep_columns
 
-    distilset = summarize_sections_pipeline.run(use_cache=True)
+    distilset = summarize_sections_pipeline.run(use_cache=False)
+    list_of_dicts = [row for row in distilset["default"]["train"]]
 
-    for data in distilset["default"]["train"]:
+    for data in list_of_dicts:
         cursor.execute('''
-            INSERT OR REPLACE INTO sections (section_title, date, content, summary)
+            INSERT OR IGNORE INTO sections (section_title, date, content, summary)
             VALUES (?, ?, ?, ?)
         ''', (data["section_title"], data["date"], data["content"], data["summary"]))
 
@@ -98,7 +102,7 @@ def update_db(newHansardList, model):
             sql=f'''
                 SELECT *
                 FROM sections s
-                WHERE DATE IN {dates}
+                WHERE date IN {dates}
             ''',
         )
 
@@ -112,7 +116,7 @@ def update_db(newHansardList, model):
 
         fromds >> extractSpeaker >> keep_columns
 
-    distilset = extract_speaker_pipeline.run(use_cache=True)
+    distilset = extract_speaker_pipeline.run(use_cache=False)
     list_of_dicts = [row for row in distilset["default"]["train"]]
 
     with Pipeline(name="summarize_speeches") as summarize_speeches_pipeline:
@@ -139,17 +143,24 @@ def update_db(newHansardList, model):
 
         fromds >> formatter >> llm >> keep_columns
 
-    distilset = summarize_speeches_pipeline.run(use_cache=True)
+    distilset = summarize_speeches_pipeline.run(use_cache=False)
     list_of_dicts = [row for row in distilset["default"]["train"]]
 
     for data in list_of_dicts:
         cursor.execute('''
-            INSERT OR REPLACE INTO speeches (date, speaker, speech, summary, section_id)
+            INSERT OR IGNORE INTO speeches (date, speaker, speech, summary, section_id)
             VALUES (?, ?, ?, ?, ?)
         ''', (data["date"], data["speaker"], data["speech"], data["summary"], data["section_id"]))
 
     with Pipeline(name="generate_claims") as generate_claims_pipeline:
-        fromds = make_generator_step(list_of_dicts)
+        fromds = FromDb(
+            dbPath="db/axiom.db",
+            sql=f'''
+                SELECT *
+                FROM speeches s
+                WHERE date IN {dates}
+            ''',
+        )
 
         formatter = TemplateFormatter(
             template=SPEAKER_EXTRACTION_TEMPLATE,
@@ -173,7 +184,7 @@ def update_db(newHansardList, model):
 
         fromds >> formatter >> llm >> extractJson >> keep_columns
 
-    distilset = generate_claims_pipeline.run(use_cache=True)
+    distilset = generate_claims_pipeline.run(use_cache=False)
     list_of_dicts = [row for row in distilset["default"]["train"]]
 
     for data in list_of_dicts:
@@ -181,11 +192,87 @@ def update_db(newHansardList, model):
             continue
         for claim in data["claims"]:
             cursor.execute('''
-                INSERT OR REPLACE INTO claims (claim, speech_id)
+                INSERT OR IGNORE INTO claims (claim, speech_id)
                 VALUES (?, ?)
             ''', (claim, data["speech_id"]))
 
     conn.commit()
     conn.close()
-        
-update_db(['2015-01-19'], "qwen/qwen-2.5-72b-instruct")
+
+    with Pipeline(name="speech_embedding_pipeline") as speech_embedding_pipeline:
+        fromds = FromDb(
+            dbPath="db/axiom.db",
+            sql=f'''
+                SELECT *
+                FROM speeches s
+                WHERE date IN {dates}
+            ''',
+        )
+
+        embed_content = Qwen3Embeddervllm(
+            modelName="Qwen/Qwen3-Embedding-8B",
+            input_mappings={
+                "text_to_embed": "speech"
+            },
+            output_mappings={
+                "embedding": "speech_embedding"
+            }
+        )
+
+        embed_summary = Qwen3Embeddervllm(
+            modelName="Qwen/Qwen3-Embedding-8B",
+            input_mappings={
+                "text_to_embed": "summary"
+            },
+            output_mappings={
+                "embedding": "summary_embedding"
+            }
+        )
+
+        keep_columns = KeepColumns(
+            columns=["speech_id", "speech_embedding", "summary_embedding"]
+        )
+
+        fromds >> embed_content >> embed_summary >> keep_columns
+
+    distilset = speech_embedding_pipeline.run(use_cache=False)
+    list_of_dicts = [row for row in distilset["default"]["train"]]
+
+    load_dotenv()
+    client = chromadb.PersistentClient(path=os.getenv('CHROMA_PATH'))
+    speech_collection = client.get_or_create_collection(name="speech-embeddings")
+    summary_collection = client.get_or_create_collection(name="summarized-speech-embeddings")
+
+    speech_embeddings = []
+    summary_embeddings = []
+
+    for data in list_of_dicts:
+        speech_embeddings.append(data["speech_embedding"])
+        summary_embeddings.append(data["summary_embedding"])
+
+    batch_size = 1000
+    for i in range(0, len(speech_embeddings), batch_size):
+        if len(speech_embeddings) - i < batch_size:
+            speech_collection.upsert(
+                embeddings=speech_embeddings[i:],
+                ids=[str(e) for e in list(range(i, len(speech_embeddings)))],
+            )
+        else:
+            speech_collection.upsert(
+                embeddings=speech_embeddings[i:i + batch_size],
+                ids=[str(e) for e in list(range(i,i + batch_size))],
+            )
+        print("batch of " + str(batch_size) + " done")
+
+    for i in range(0, len(summary_embeddings), batch_size):
+        if len(summary_embeddings) - i < batch_size:
+            summary_collection.upsert(
+                embeddings=summary_embeddings[i:],
+                ids=[str(e) for e in list(range(i, len(summary_embeddings)))],
+            )
+        else:
+            summary_collection.upsert(
+                embeddings=summary_embeddings[i:i + batch_size],
+                ids=[str(e) for e in list(range(i,i + batch_size))],
+            )
+        print("batch of " + str(batch_size) + " done")

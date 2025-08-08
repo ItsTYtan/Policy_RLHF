@@ -197,7 +197,7 @@ pipeline:
       use_cache: true
       input_batch_size: 50
       filename: speech-summaries
-      filepath: cache
+      filepath: db/cache
       jsonl: true
       runtime_parameters_info:
       - name: resources

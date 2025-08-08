@@ -374,3 +374,6 @@ Scrape web --> find new hansard --> process new hansard --> everything else
 Need a way to Store old base topic model old dataset
 
 Date ranges will have to be updated and maintained.
+
+(08/08/25)
+managed to get update db script done

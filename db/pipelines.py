@@ -67,8 +67,9 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     llm = OpenRouterLLM(
         model=model,
         max_tokens=1024,
-        max_workers=50,
-        temperature=0.0001
+        max_workers=30,
+        temperature=0.0001,
+        input_batch_size=1000 
     )
 
     extractJson = ExtractPythonArray(
@@ -76,7 +77,7 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     )
 
     keep_columns = KeepColumns(
-        columns=["claims", "speech_id", "generation"]
+        columns=["claims", "speech_id"]
     )
 
     tojson = ToJsonFile(
@@ -119,7 +120,7 @@ with Pipeline(name="summarize_speeches") as summarize_speeches_pipeline:
     )
 
     tojson = ToJsonFile(
-        filepath="cache",
+        filepath="db/cache",
         filename="speech-summaries",
     )
 
@@ -159,7 +160,7 @@ with Pipeline(name="summarize_sections") as summarize_sections_pipeline:
     )
 
     tojson = ToJsonFile(
-        filepath="cache",
+        filepath="db/cache",
         filename="section-summaries",
     )
 

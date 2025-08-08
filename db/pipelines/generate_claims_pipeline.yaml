@@ -107,12 +107,12 @@ pipeline:
       input_mappings: {}
       output_mappings: {}
       use_cache: true
-      input_batch_size: 50
+      input_batch_size: 1000
       model: qwen/qwen-2.5-72b-instruct
       max_tokens: 1024
       temperature: 0.0001
       system_prompt: null
-      max_workers: 50
+      max_workers: 30
       logprobs: false
       runtime_parameters_info:
       - name: resources
@@ -196,7 +196,6 @@ pipeline:
       columns:
       - claims
       - speech_id
-      - generation
       runtime_parameters_info:
       - name: resources
         runtime_parameters_info:

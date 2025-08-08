@@ -203,7 +203,12 @@ class ExtractPythonArray(Step):
             for entry in batch:
                 match = re.search(r"\[\s*([\s\S]*?)\s*\]", entry["generation"], re.DOTALL)
                 arr = "[" + (match.group(1) if match else "") + "]"
-                result.append(entry | {"array": json.loads(arr)})
+                try:
+                    arr = json.loads(arr)
+                except Exception as e:
+                    print("array: " + arr, e)
+                    arr = []
+                result.append(entry | {"array": arr})
             yield result 
 
 class TemplateFormatter(Step):
