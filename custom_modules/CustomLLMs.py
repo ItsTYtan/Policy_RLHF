@@ -1,5 +1,6 @@
 import json
 import os
+import subprocess
 from typing import Annotated, Any, Dict, List, Optional, TypeVar, Union
 
 import concurrent
@@ -18,8 +19,6 @@ from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
 
 from vllm import LLM, SamplingParams
-from vllm.distributed.parallel_state import destroy_model_parallel
-import gc
 import math
 from vllm.inputs.data import TokensPrompt
 
@@ -275,44 +274,135 @@ class Qwen3Embedder(GlobalStep):
         
         yield results
 
+# class Qwen3Embeddervllm(GlobalStep):
+#     modelName: RuntimeParameter[str] = "Qwen/Qwen3-Embedding-8B"
+#     max_length: RuntimeParameter[int] = 8192
+#     batch_size: RuntimeParameter[int] = 10
+
+#     def load(self):
+
+#         super().load()
+
+#     @property
+#     def inputs(self) -> List[str]:
+#         return ["text_to_embed"]
+
+#     @property
+#     def outputs(self) -> List[str]:
+#         return ["embedding"]
+    
+#     def process(self, *inputs: StepInput):
+#         inputs_flattened = []
+#         for batch in inputs:
+#             for row in batch:
+#                 inputs_flattened.append(row)
+
+#         input_texts = [row["text_to_embed"] for row in inputs_flattened]
+
+#         model = LLM(model=self.modelName, task="embed", gpu_memory_utilization=0.3)
+
+#         results = []
+#         for i in tqdm(range(0, len(input_texts), self.batch_size), desc="Embedding progress"):
+#             if len(input_texts) - i < self.batch_size:
+#                 batch_input_texts = input_texts[i:]
+#                 batch_inputs_flattened = inputs_flattened[i:]
+#             else:
+#                 batch_input_texts = input_texts[i:i+self.batch_size]
+#                 batch_inputs_flattened = inputs_flattened[i:i+self.batch_size]
+            
+#             outputs = model.embed(batch_input_texts)
+#             embeddings = torch.tensor([o.outputs.embedding for o in outputs])
+            
+#             for embedding, row in zip(embeddings, batch_inputs_flattened):
+#                 results.append(row | {"embedding": embedding.tolist()})
+        
+#         yield results
+
+
 class Qwen3Embeddervllm(GlobalStep):
-    modelName: RuntimeParameter[str] = "Qwen/Qwen3-Embedding-8B"
-    max_length: RuntimeParameter[int] = 8192
-    batch_size: RuntimeParameter[int] = 10
+    _client: Any = None
+    model: str
+    max_workers: int = 100
+
+    def load(self):
+        load_dotenv()
+
+        command = [
+            "vllm", "serve", self.model,
+            "--dtype", "auto",
+            "--api-key", "token-abc123",
+            "--gpu-memory-utilization", "0.4",
+            "--task", "embed"
+        ]
+
+        # Run the command and wait for it to complete
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait for the process to finish and capture output
+        stdout, stderr = process.communicate()
+
+        # Output the results
+        if process.returncode == 0:
+            print("vLLM serve started successfully!")
+            print(stdout.decode())  # Optional: print the standard output
+        else:
+            print("Error while starting vLLM serve.")
+            print(stderr.decode())  # Optional: print the error output
+    
+        apikey = "token-abc123" 
+        baseurl = "http://localhost:8000/v1"
+        self._client = OpenAI(
+            api_key=apikey,
+            base_url=baseurl
+        )
+        super().load()
 
     @property
     def inputs(self) -> List[str]:
-        return ["text_to_embed"]
+        return ["instruction"]
 
     @property
     def outputs(self) -> List[str]:
-        return ["embedding"]
-    
+        return ["generation", "model_name"]
+
+    def _call_api(self, prompt: str) -> str:
+        """
+        Synchronous wrapper around your chat completion call.
+        Returns the generated text (or empty string on failure).
+        """
+        try:
+            response = self._client.embeddings.create(
+                model=self.model,
+                input=prompt,
+            )
+
+            return response['data'][0]['embedding']
+            
+        except Exception as e:
+            print(e)
+            return ""
+
     def process(self, *inputs: StepInput):
-        inputs_flattened = []
-        for batch in inputs:
-            for row in batch:
-                inputs_flattened.append(row)
+        """
+        For each input batch (an iterable of rows), runs all API calls in parallel
+        using a thread pool, then yields the list of results.
+        """
+        # You can tune max_workers to suit your rate‑limits / CPU
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Schedule one future per row
+            futures = {
+                executor.submit(self._call_api, row["instruction"]): row
+                for batch in inputs
+                for row in batch
+            }
 
-        input_texts = [row["text_to_embed"] for row in inputs_flattened]
-
-        model = LLM(model=self.modelName, task="embed", gpu_memory_utilization=0.3)
-
-        results = []
-        for i in tqdm(range(0, len(input_texts), self.batch_size), desc="Embedding progress"):
-            if len(input_texts) - i < self.batch_size:
-                batch_input_texts = input_texts[i:]
-                batch_inputs_flattened = inputs_flattened[i:]
-            else:
-                batch_input_texts = input_texts[i:i+self.batch_size]
-                batch_inputs_flattened = inputs_flattened[i:i+self.batch_size]
-            
-            outputs = model.embed(batch_input_texts)
-            embeddings = torch.tensor([o.outputs.embedding for o in outputs])
-            
-            for embedding, row in zip(embeddings, batch_inputs_flattened):
-                results.append(row | {"embedding": embedding.tolist()})
-        
+            results = []
+            # As each finishes, collect its result
+            for future in tqdm(concurrent.futures.as_completed(futures), desc="Data generated", total=len(futures)):
+                row = futures[future]
+                text = future.result()
+                resultRow = row | {"generation": text, "model_name": self.model}
+                results.append(resultRow)
         yield results
 
 class Qwen3Reranker(GlobalStep):

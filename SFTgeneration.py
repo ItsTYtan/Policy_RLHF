@@ -1,19 +1,29 @@
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+
 from distilabel.pipeline import Pipeline
 from distilabel.steps import (
     KeepColumns,
     ExpandColumns,
-    GroupColumns,
     make_generator_step
 )
 
 import yaml
  
-from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Embeddervllm
+from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Embedder, Qwen3Embeddervllm
 from custom_modules.RAG import ContextPostProcessor, GetTopkDocs
-from custom_modules.utils import AddColumns, ExtractPythonArray, FromJsonFile, GeneralSqlExecutor, TemplateFormatter, ToJsonFile
-from templates.SFT_templates import NO_RAG_TEMPLATE, RAG_GENERATION_TEMPLATE, SUBTOPIC_GENERATION_TEMPLATE, QUERY_GENERATION_TEMPLATE, topics
+from custom_modules.utils import AddColumns, ExtractPythonArray, GeneralSqlExecutor, TemplateFormatter, ToJsonFile
+from templates.SFT_templates import RAG_GENERATION_TEMPLATE, QUERY_GENERATION_TEMPLATE, TOPIC_LABEL_TEMPLATE
+from topicmodel.functions import get_topic_model
 
-topics_dataset = [{"topic" : topic} for topic in topics]
+topic_model = get_topic_model("topicmodel/model")
+
+ds = []
+for entry in topic_model.get_topic_info().itertuples(index=True):
+    ds.append({
+        "topic": entry.Name,
+        "representation": entry.Representation
+    })
 
 with open('axiom_config.yaml', 'r') as file:
     config = yaml.safe_load(file)
@@ -21,35 +31,32 @@ with open('axiom_config.yaml', 'r') as file:
 model = config["model"]
 
 with Pipeline(name="SFT-generation") as pipeline:
-    fromtopics = make_generator_step(topics_dataset)
-
-    format_generate_subtopic = TemplateFormatter(
-        template=SUBTOPIC_GENERATION_TEMPLATE,
-        template_inputs=["topic"]
+    fromds = make_generator_step(
+        ds[:4],
+        output_mappings={
+            "representation": "keywords"
+        }
     )
 
-    generate_subtopic_llm = OpenRouterLLM(
-        name="llm0",
-        model=model,
-        max_tokens=4096,
-        max_workers=100,
-        temperature=0.0001
-    )   
+    formatter = TemplateFormatter(
+        template=TOPIC_LABEL_TEMPLATE,
+        template_inputs=["keywords"]
+    )
 
-    extractArray = ExtractPythonArray()
+    llm = OpenRouterLLM(
+        model=model,
+        max_tokens=1024,
+        max_workers=50,
+        temperature=0.0001
+    )
+
+    extract = ExtractPythonArray()
 
     expand = ExpandColumns(
         columns={
-            "array": "subtopic"
+            "array": "topic"
         }
     ) 
-
-    keep_columns = KeepColumns(
-        columns=["subtopic"],
-        output_mappings={
-            "subtopic": "topic"
-        }
-    )
 
     add_columns = AddColumns(
         columnDict={
@@ -84,12 +91,13 @@ with Pipeline(name="SFT-generation") as pipeline:
     )
 
     embed = Qwen3Embeddervllm(
+        model = "Qwen/Qwen3-Embedding-8B",
         input_mappings={
-            "text_to_embed": "query"
+            "instruction": "query"
         },
         output_mappings={
-            "embedding": "query_embedding"
-        }
+            "generation": "query_embedding"
+        },
     )
 
     search = GetTopkDocs(
@@ -123,8 +131,8 @@ with Pipeline(name="SFT-generation") as pipeline:
     llmRAG = OpenRouterLLM(
         name="llm2",
         model=model,
-        max_tokens=4096,
         max_workers=50,
+        max_tokens=4096,
         temperature=0.0001
     )    
     
@@ -140,12 +148,10 @@ with Pipeline(name="SFT-generation") as pipeline:
     )
 
 
-    fromtopics >> format_generate_subtopic >> generate_subtopic_llm >> extractArray >> expand >> keep_columns >> add_columns >> format_generate_query \
-    >> generate_query_llm >> extractArray1 >> expand1 >> keep_columns1 >> embed >> search >> get_docs >> contextpostprocess >> formatterRAG >> llmRAG \
-    >> keep_columns_rag >> tojsonRAG
-
-
-if __name__ == "__main__":
-    distiset = pipeline.run(
-        use_cache=False,
-    )
+    fromds >> formatter >> llm >> extract >> expand >> add_columns >> format_generate_query \
+    >> generate_query_llm >> extractArray1 >> expand1 >> keep_columns1 >> embed >> search >> get_docs >> contextpostprocess >> formatterRAG >> llmRAG >> keep_columns_rag\
+    >> tojsonRAG
+    
+distilset = pipeline.run(
+    use_cache=False,
+)
