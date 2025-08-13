@@ -177,8 +177,8 @@ with Pipeline(name="section_embedding_pipeline") as section_embedding_pipeline:
         ''',     
     )
 
-    embed_content = Qwen3Embeddervllm(
-        modelName="Qwen/Qwen3-Embedding-8B",
+    embed_content = Qwen3Embedder(
+        model="Qwen/Qwen3-Embedding-8B",
         input_mappings={
             "text_to_embed": "content"
         },
@@ -187,8 +187,8 @@ with Pipeline(name="section_embedding_pipeline") as section_embedding_pipeline:
         }
     )
 
-    embed_summary = Qwen3Embeddervllm(
-        modelName="Qwen/Qwen3-Embedding-8B",
+    embed_summary = Qwen3Embedder(
+        model="Qwen/Qwen3-Embedding-8B",
         input_mappings={
             "text_to_embed": "summary"
         },
@@ -220,8 +220,8 @@ with Pipeline(name="speech_embedding_pipeline") as speech_embedding_pipeline:
         ''',     
     )
 
-    embed_content = Qwen3Embeddervllm(
-        modelName="Qwen/Qwen3-Embedding-8B",
+    embed_content = Qwen3Embedder(
+        model="Qwen/Qwen3-Embedding-8B",
         input_mappings={
             "text_to_embed": "speech"
         },
@@ -230,8 +230,8 @@ with Pipeline(name="speech_embedding_pipeline") as speech_embedding_pipeline:
         }
     )
 
-    embed_summary = Qwen3Embeddervllm(
-        modelName="Qwen/Qwen3-Embedding-8B",
+    embed_summary = Qwen3Embedder(
+        model="Qwen/Qwen3-Embedding-8B",
         input_mappings={
             "text_to_embed": "summary"
         },

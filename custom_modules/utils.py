@@ -270,6 +270,7 @@ class FromDb(GeneratorStep):
                 batch,
                 False if data else True,
             )
+        conn.commit()
         conn.close()
 
 class GeneralSqlExecutor(Step):

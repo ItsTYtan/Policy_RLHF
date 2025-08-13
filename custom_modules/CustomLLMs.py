@@ -1,8 +1,10 @@
 import json
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 import subprocess
 from typing import Annotated, Any, Dict, List, Optional, TypeVar, Union
-
+from huggingface_hub import login
+import os
 import concurrent
 import boto3
 import botocore
@@ -36,16 +38,6 @@ class OpenRouterLLM(GlobalStep):
     system_prompt: Optional[str] = None
     max_workers: int = 100
     logprobs: bool = False
-
-    def load(self):
-        load_dotenv()
-        apikey = os.getenv("OPENROUTER_API_KEY") 
-        baseurl = "https://openrouter.ai/api/v1"
-        self._client = OpenAI(
-            api_key=apikey,
-            base_url=baseurl
-        )
-        super().load()
 
     @property
     def inputs(self) -> List[str]:
@@ -93,6 +85,13 @@ class OpenRouterLLM(GlobalStep):
             return ""
 
     def process(self, *inputs: StepInput):
+        load_dotenv()
+        apikey = os.getenv("OPENROUTER_API_KEY") 
+        baseurl = "https://openrouter.ai/api/v1"
+        self._client = OpenAI(
+            api_key=apikey,
+            base_url=baseurl
+        )
         """
         For each input batch (an iterable of rows), runs all API calls in parallel
         using a thread pool, then yields the list of results.
@@ -207,15 +206,15 @@ class SageMakerLLM(GlobalStep):
         yield results
 
 class Qwen3Embedder(GlobalStep):
-    modelName: RuntimeParameter[str] = "Qwen/Qwen3-Embedding-8B"
+    model: RuntimeParameter[str] = "Qwen/Qwen3-Embedding-8B"
     _tokenizer: Any = None
     _model: Any = None
     max_length: RuntimeParameter[int] = 8192
     batch_size: RuntimeParameter[int] = 10
 
     def load(self):
-        self._tokenizer = AutoTokenizer.from_pretrained(self.modelName, padding_side='left')
-        self._model = AutoModel.from_pretrained(self.modelName)
+        self._tokenizer = AutoTokenizer.from_pretrained(self.model, padding_side='left')
+        self._model = AutoModel.from_pretrained(self.model)
         super().load()
 
     @property
@@ -321,49 +320,41 @@ class Qwen3Embedder(GlobalStep):
 
 class Qwen3Embeddervllm(GlobalStep):
     _client: Any = None
-    model: str
+    model: str ="Qwen/Qwen3-Embedding-8B"
     max_workers: int = 100
 
     def load(self):
-        load_dotenv()
+        # command = [
+        #     "vllm", "serve", self.model,
+        #     "--dtype", "auto",
+        #     "--api-key", "token-abc123",
+        #     "--gpu-memory-utilization", "0.4",
+        #     "--task", "embed"
+        # ]
 
-        command = [
-            "vllm", "serve", self.model,
-            "--dtype", "auto",
-            "--api-key", "token-abc123",
-            "--gpu-memory-utilization", "0.4",
-            "--task", "embed"
-        ]
+        # # Run the command and wait for it to complete
+        # process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        # Run the command and wait for it to complete
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # # Wait for the process to finish and capture output
+        # stdout, stderr = process.communicate()
 
-        # Wait for the process to finish and capture output
-        stdout, stderr = process.communicate()
-
-        # Output the results
-        if process.returncode == 0:
-            print("vLLM serve started successfully!")
-            print(stdout.decode())  # Optional: print the standard output
-        else:
-            print("Error while starting vLLM serve.")
-            print(stderr.decode())  # Optional: print the error output
+        # # Output the results
+        # if process.returncode == 0:
+        #     print("vLLM serve started successfully!")
+        #     print(stdout.decode())  # Optional: print the standard output
+        # else:
+        #     print("Error while starting vLLM serve.")
+        #     print(stderr.decode())  # Optional: print the error output
     
-        apikey = "token-abc123" 
-        baseurl = "http://localhost:8000/v1"
-        self._client = OpenAI(
-            api_key=apikey,
-            base_url=baseurl
-        )
         super().load()
 
     @property
     def inputs(self) -> List[str]:
-        return ["instruction"]
+        return ["text_to_embed"]
 
     @property
     def outputs(self) -> List[str]:
-        return ["generation", "model_name"]
+        return ["embedding"]
 
     def _call_api(self, prompt: str) -> str:
         """
@@ -376,13 +367,22 @@ class Qwen3Embeddervllm(GlobalStep):
                 input=prompt,
             )
 
-            return response['data'][0]['embedding']
+            return response.data[0].embedding
             
         except Exception as e:
             print(e)
-            return ""
+            print(response)
+            return []
 
     def process(self, *inputs: StepInput):
+        load_dotenv()
+        login(os.getenv("HUGGINGFACE_TOKEN"))
+        apikey = "token-abc123" 
+        baseurl = "http://localhost:8000/v1"
+        self._client = OpenAI(
+            api_key=apikey,
+            base_url=baseurl
+        )
         """
         For each input batch (an iterable of rows), runs all API calls in parallel
         using a thread pool, then yields the list of results.
@@ -391,7 +391,7 @@ class Qwen3Embeddervllm(GlobalStep):
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             # Schedule one future per row
             futures = {
-                executor.submit(self._call_api, row["instruction"]): row
+                executor.submit(self._call_api, row["text_to_embed"]): row
                 for batch in inputs
                 for row in batch
             }
@@ -401,7 +401,7 @@ class Qwen3Embeddervllm(GlobalStep):
             for future in tqdm(concurrent.futures.as_completed(futures), desc="Data generated", total=len(futures)):
                 row = futures[future]
                 text = future.result()
-                resultRow = row | {"generation": text, "model_name": self.model}
+                resultRow = row | {"embedding": text}
                 results.append(resultRow)
         yield results
 

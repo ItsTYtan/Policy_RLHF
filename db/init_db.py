@@ -1,5 +1,6 @@
 import json
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 import chromadb
 from dotenv import load_dotenv
 from pathlib import Path
@@ -40,7 +41,7 @@ cursor.execute("PRAGMA foreign_keys = ON;")
 
 schema = """
 CREATE TABLE IF NOT EXISTS sections (
-    section_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    section_id INTEGER PRIMARY KEY,
     section_title TEXT NOT NULL,
     date TEXT NOT NULL, 
     content TEXT NOT NULL,
@@ -49,21 +50,21 @@ CREATE TABLE IF NOT EXISTS sections (
 );
 
 CREATE TABLE IF NOT EXISTS speeches (
-    speech_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    speech_id INTEGER PRIMARY KEY,
     date TEXT NOT NULL,
     speaker TEXT NOT NULL,
     speech TEXT NOT NULL,
-    section_id INTEGER ,
+    section_id INTEGER NOT NULL,
     summary TEXT NOT NULL,
-    FOREIGN KEY (section_id) REFERENCES sections(section_id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (section_id) REFERENCES sections(section_id)
     UNIQUE (speech)
 );
 
 CREATE TABLE IF NOT EXISTS claims (
     claim_id INTEGER PRIMARY KEY AUTOINCREMENT,
     claim TEXT NOT NULL,
-    speech_id INTEGER,
-    FOREIGN KEY (speech_id) REFERENCES speeches(speech_id) ON UPDATE CASCADE ON DELETE CASCADE
+    speech_id INTEGER NOT NULL,
+    FOREIGN KEY (speech_id) REFERENCES speeches(speech_id)
     UNIQUE (claim)
 );
 """
@@ -133,15 +134,20 @@ if not os.path.exists("db/cache/section-summaries.jsonl"):
 ################################################
 
 with open("db/cache/section-summaries.jsonl", "r") as f:
+    count = 0
     for line in f:
         data = json.loads(line)
         cursor.execute('''
-            INSERT OR IGNORE INTO sections (section_title, date, content, summary)
-            VALUES (?, ?, ?, ?)
-        ''', (data["section_title"], data["date"], data["content"], data["summary"]))
+            INSERT OR IGNORE INTO sections (section_id, section_title, date, content, summary)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (count, data["section_title"], data["date"], data["content"], data["summary"]))
+        count += 1
+
+cursor.execute("SELECT * FROM sections s")
+print(cursor.fetchmany(10))
 
 conn.commit()
-
+conn.close()
 
 if not os.path.exists("db/cache/speech-summaries.jsonl"):
     extract_speaker_pipeline = Pipeline.from_yaml("db/pipelines/extract_speaker_pipeline.yaml")
@@ -181,15 +187,25 @@ if not os.path.exists("db/cache/speech-summaries.jsonl"):
 
     summarize_speeches_pipeline.run(use_cache=False)
 
+
+conn = sqlite3.connect("db/axiom.db")  # Creates or opens the database file
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM sections s")
+print(cursor.fetchmany(10))
+
+
 with open("db/cache/speech-summaries.jsonl", "r") as f:
+    count = 0
     for line in f:
         data = json.loads(line)
         cursor.execute('''
-            INSERT OR IGNORE INTO speeches (date, speaker, speech, summary, section_id)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (data["date"], data["speaker"], data["speech"], data["summary"], data["section_id"]))
+            INSERT OR IGNORE INTO speeches (speech_id, date, speaker, speech, summary, section_id)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (count, data["date"], data["speaker"], data["speech"], data["summary"], data["section_id"]))
+        count += 1
 
 conn.commit()
+conn.close()
 
 ################################################
 #                GENERATE CLAIMS               #
@@ -202,6 +218,11 @@ if not os.path.exists("db/cache/claims.jsonl"):
 ################################################
 #             WRITE TO CLAIMS TABLE            #
 ################################################
+
+conn = sqlite3.connect("db/axiom.db")  # Creates or opens the database file
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM speeches s")
+print(cursor.fetchmany(10))
 
 with open("db/cache/claims.jsonl", "r") as f:
     for line in f:

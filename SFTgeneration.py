@@ -1,5 +1,5 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 
 from distilabel.pipeline import Pipeline
 from distilabel.steps import (
@@ -32,7 +32,7 @@ model = config["model"]
 
 with Pipeline(name="SFT-generation") as pipeline:
     fromds = make_generator_step(
-        ds[:4],
+        ds,
         output_mappings={
             "representation": "keywords"
         }
@@ -90,13 +90,12 @@ with Pipeline(name="SFT-generation") as pipeline:
         columns=["topic", "query"]
     )
 
-    embed = Qwen3Embeddervllm(
-        model = "Qwen/Qwen3-Embedding-8B",
+    embed = Qwen3Embedder(
         input_mappings={
-            "instruction": "query"
+            "text_to_embed": "query"
         },
         output_mappings={
-            "generation": "query_embedding"
+            "embedding": "query_embedding"
         },
     )
 
@@ -149,8 +148,8 @@ with Pipeline(name="SFT-generation") as pipeline:
 
 
     fromds >> formatter >> llm >> extract >> expand >> add_columns >> format_generate_query \
-    >> generate_query_llm >> extractArray1 >> expand1 >> keep_columns1 >> embed >> search >> get_docs >> contextpostprocess >> formatterRAG >> llmRAG >> keep_columns_rag\
-    >> tojsonRAG
+    >> generate_query_llm >> extractArray1 >> expand1 >> keep_columns1 >> embed >> search \
+    >> get_docs >> contextpostprocess >> formatterRAG >> llmRAG >> keep_columns_rag >> tojsonRAG
     
 distilset = pipeline.run(
     use_cache=False,
