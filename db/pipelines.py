@@ -67,7 +67,7 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     llm = OpenRouterLLM(
         model=model,
         max_tokens=1024,
-        max_workers=30,
+        max_workers=100,
         temperature=0.0001,
         input_batch_size=1000 
     )
@@ -107,7 +107,7 @@ with Pipeline(name="summarize_speeches") as summarize_speeches_pipeline:
     llm = OpenRouterLLM(
         model=model,
         max_tokens=1024,
-        max_workers=50,
+        max_workers=100,
         temperature=0.0001
     )
 
