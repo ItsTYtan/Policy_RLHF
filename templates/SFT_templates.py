@@ -27,10 +27,10 @@ QUERY_GENERATION_TEMPLATE = '''
     Your task is to come up with a question based on the topic {topic} in the context of the country Singapore that the user will supply you with. Follow the
     below guidelines closely.
 
-    The question type should be {type}
+    The question type should be {question_type}
 
     The question should be phrased like:
-    {phrasings}
+    {question_phrasing}
     
     Generate 10 different questions on the provided topic: {topic}. Remeber to keep it to the Singapore context. 
 
@@ -137,4 +137,5 @@ TOPIC_LABEL_TEMPLATE = '''
     ]```
 
     The <> brackets are to indicate where to put the topic labels.
+    If the keywords are filler dialogue from hansard paliamentary debates, generate an empty array.
 '''

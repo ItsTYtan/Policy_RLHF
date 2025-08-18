@@ -47,7 +47,7 @@ pipeline:
         name: FromDb
     name: from_db_0
   - step:
-      name: qwen3_embedder_0
+      name: qwen3_embeddervllm_0
       resources:
         replicas: 1
         cpus: null
@@ -61,8 +61,7 @@ pipeline:
       use_cache: true
       input_batch_size: 50
       model: Qwen/Qwen3-Embedding-8B
-      max_length: 8192
-      batch_size: 10
+      max_workers: 100
       runtime_parameters_info:
       - name: resources
         runtime_parameters_info:
@@ -86,18 +85,12 @@ pipeline:
         optional: true
         description: The number of rows that will contain the batches processed by
           the step.
-      - name: model
-        optional: true
-      - name: max_length
-        optional: true
-      - name: batch_size
-        optional: true
       type_info:
         module: custom_modules.CustomLLMs
-        name: Qwen3Embedder
-    name: qwen3_embedder_0
+        name: Qwen3Embeddervllm
+    name: qwen3_embeddervllm_0
   - step:
-      name: qwen3_embedder_1
+      name: qwen3_embeddervllm_1
       resources:
         replicas: 1
         cpus: null
@@ -111,8 +104,7 @@ pipeline:
       use_cache: true
       input_batch_size: 50
       model: Qwen/Qwen3-Embedding-8B
-      max_length: 8192
-      batch_size: 10
+      max_workers: 100
       runtime_parameters_info:
       - name: resources
         runtime_parameters_info:
@@ -136,16 +128,10 @@ pipeline:
         optional: true
         description: The number of rows that will contain the batches processed by
           the step.
-      - name: model
-        optional: true
-      - name: max_length
-        optional: true
-      - name: batch_size
-        optional: true
       type_info:
         module: custom_modules.CustomLLMs
-        name: Qwen3Embedder
-    name: qwen3_embedder_1
+        name: Qwen3Embeddervllm
+    name: qwen3_embeddervllm_1
   - step:
       name: keep_columns_0
       resources:
@@ -234,11 +220,11 @@ pipeline:
   connections:
   - from: from_db_0
     to:
-    - qwen3_embedder_0
-  - from: qwen3_embedder_0
+    - qwen3_embeddervllm_0
+  - from: qwen3_embeddervllm_0
     to:
-    - qwen3_embedder_1
-  - from: qwen3_embedder_1
+    - qwen3_embeddervllm_1
+  - from: qwen3_embeddervllm_1
     to:
     - keep_columns_0
   - from: keep_columns_0

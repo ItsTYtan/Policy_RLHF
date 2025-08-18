@@ -1,3 +1,4 @@
+from itertools import product
 import json
 import math
 import os
@@ -262,4 +263,24 @@ class ExpandClaims(Step):
                     "speeches_ids_expanded": speeches_ids_lst,
                     "claims_expanded": claimsLst
                 })
+            yield result
+
+class QuestionTypesAndPhrasings(Step):
+    questionTypes: List[str]
+    questionPhrasings: List[str]
+
+    @property
+    def outputs(self) -> List[str]:
+        return ["question_type", "question_phrasing"]
+    
+    def process(self, *inputs: StepInput):
+        cartesian_product = list(product(self.questionTypes, self.questionPhrasings))
+        for batch in inputs:
+            result = []
+            for row in batch:
+                for type, phrasing in cartesian_product:
+                    result.append(row | {
+                        "question_type": type,
+                        "question_phrasing": phrasing
+                    })
             yield result

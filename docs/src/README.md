@@ -377,3 +377,6 @@ Date ranges will have to be updated and maintained.
 
 (08/08/25)
 managed to get update db script done
+
+(18/08/25)
+Fixed couple of bugs in pipeline, use vllm server.

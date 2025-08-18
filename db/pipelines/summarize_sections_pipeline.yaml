@@ -106,9 +106,8 @@ pipeline:
       use_cache: true
       input_batch_size: 50
       model: qwen/qwen-2.5-72b-instruct
-      max_tokens: 1024
+      max_tokens: 4096
       temperature: 0.0001
-      system_prompt: null
       max_workers: 50
       logprobs: false
       runtime_parameters_info:

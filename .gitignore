@@ -11,3 +11,4 @@ openwebui-venv
 cache
 *.out
 models
+logs

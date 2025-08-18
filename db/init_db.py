@@ -1,6 +1,7 @@
 import json
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "4"
+import shutil
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 import chromadb
 from dotenv import load_dotenv
 from pathlib import Path
@@ -105,7 +106,7 @@ if not os.path.exists("db/cache/section-summaries.jsonl"):
 
         llm = OpenRouterLLM(
             model=model,
-            max_tokens=1024,
+            max_tokens=4096,
             max_workers=100,
             temperature=0.0001
         )
@@ -143,8 +144,6 @@ with open("db/cache/section-summaries.jsonl", "r") as f:
         ''', (count, data["section_title"], data["date"], data["content"], data["summary"]))
         count += 1
 
-cursor.execute("SELECT * FROM sections s")
-print(cursor.fetchmany(10))
 
 conn.commit()
 conn.close()
@@ -166,7 +165,7 @@ if not os.path.exists("db/cache/speech-summaries.jsonl"):
 
         llm = OpenRouterLLM(
             model=model,
-            max_tokens=1024,
+            max_tokens=2048,
             max_workers=100,
             temperature=0.0001
         )
@@ -190,9 +189,6 @@ if not os.path.exists("db/cache/speech-summaries.jsonl"):
 
 conn = sqlite3.connect("db/axiom.db")  # Creates or opens the database file
 cursor = conn.cursor()
-cursor.execute("SELECT * FROM sections s")
-print(cursor.fetchmany(10))
-
 
 with open("db/cache/speech-summaries.jsonl", "r") as f:
     count = 0
@@ -221,8 +217,6 @@ if not os.path.exists("db/cache/claims.jsonl"):
 
 conn = sqlite3.connect("db/axiom.db")  # Creates or opens the database file
 cursor = conn.cursor()
-cursor.execute("SELECT * FROM speeches s")
-print(cursor.fetchmany(10))
 
 with open("db/cache/claims.jsonl", "r") as f:
     for line in f:
@@ -247,30 +241,34 @@ if not os.path.exists("db/cache/speech-embeddings.jsonl"):
     distilset = speech_embedding_pipeline.run(use_cache=False)
 
 load_dotenv()
+if os.path.exists(os.getenv('CHROMA_PATH')):
+    shutil.rmtree(os.getenv('CHROMA_PATH'))
 client = chromadb.PersistentClient(path=os.getenv('CHROMA_PATH'))
-speech_collection = client.get_or_create_collection(name="speech-embeddings")
-summary_collection = client.get_or_create_collection(name="summarized-speech-embeddings")
+speech_collection = client.create_collection(name="speech-embeddings")
+summary_collection = client.create_collection(name="summarized-speech-embeddings")
 
 speech_embeddings = []
 summary_embeddings = []
+ids = []
 
 with open("db/cache/speech-embeddings.jsonl", "r", encoding='utf-8') as f:
     for line in f:
         data = json.loads(line)
         speech_embeddings.append(data["speech_embedding"])
         summary_embeddings.append(data["summary_embedding"])
+        ids.append(str((data["speech_id"])))
 
 batch_size = 1000
 for i in range(0, len(speech_embeddings), batch_size):
     if len(speech_embeddings) - i < batch_size:
         speech_collection.add(
             embeddings=speech_embeddings[i:],
-            ids=[str(e) for e in list(range(i, len(speech_embeddings)))],
+            ids=ids[i:],
         )
     else:
         speech_collection.add(
             embeddings=speech_embeddings[i:i + batch_size],
-            ids=[str(e) for e in list(range(i,i + batch_size))],
+            ids=ids[i:i + batch_size],
         )
     print("batch of " + str(batch_size) + " done")
 
@@ -278,12 +276,12 @@ for i in range(0, len(summary_embeddings), batch_size):
     if len(summary_embeddings) - i < batch_size:
         summary_collection.add(
             embeddings=summary_embeddings[i:],
-            ids=[str(e) for e in list(range(i, len(summary_embeddings)))],
+            ids=ids[i:],
         )
     else:
         summary_collection.add(
             embeddings=summary_embeddings[i:i + batch_size],
-            ids=[str(e) for e in list(range(i,i + batch_size))],
+            ids=ids[i:i + batch_size],
         )
     print("batch of " + str(batch_size) + " done")
 

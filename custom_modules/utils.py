@@ -274,11 +274,15 @@ class FromDb(GeneratorStep):
         conn.close()
 
 class GeneralSqlExecutor(Step):
-    dbPath: str = "./db/axiom.db"
+    dbPath: str = "db/axiom.db"
     sql_template: str
-    sql_inputs: list[str]
-    output_columns: list[str] = []
-        
+    sql_inputs: List[str]
+    output_columns: List[str]
+
+    @property
+    def inputs(self) -> List[str]:
+        return self.sql_inputs
+    
     @property
     def outputs(self):
         return self.output_columns

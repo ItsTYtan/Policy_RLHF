@@ -1,1 +1,13 @@
 model: "qwen/qwen-2.5-72b-instruct"
+
+questiontypes: 
+  - Knowledge & Explanation
+  - How-To / Step-by-Step
+  - Summarization & Rewriting
+  - Creative Generation
+  - Chit-Chat & Social Interaction
+  - Opinion & Advice (Safe/General)
+  - Clarification & Meta-Interaction
+
+questionphrasings:
+  - "Like a person writing a prompt to a chatbot"

@@ -67,7 +67,7 @@ with Pipeline(name="generate_claims") as generate_claims_pipeline:
     llm = OpenRouterLLM(
         model=model,
         max_tokens=1024,
-        max_workers=100,
+        max_workers=30,
         temperature=0.0001,
         input_batch_size=1000 
     )
@@ -106,7 +106,7 @@ with Pipeline(name="summarize_speeches") as summarize_speeches_pipeline:
 
     llm = OpenRouterLLM(
         model=model,
-        max_tokens=1024,
+        max_tokens=4096,
         max_workers=100,
         temperature=0.0001
     )
@@ -147,7 +147,7 @@ with Pipeline(name="summarize_sections") as summarize_sections_pipeline:
 
     llm = OpenRouterLLM(
         model=model,
-        max_tokens=1024,
+        max_tokens=4096,
         max_workers=50,
         temperature=0.0001
     )
@@ -220,7 +220,7 @@ with Pipeline(name="speech_embedding_pipeline") as speech_embedding_pipeline:
         ''',     
     )
 
-    embed_content = Qwen3Embedder(
+    embed_content = Qwen3Embeddervllm(
         model="Qwen/Qwen3-Embedding-8B",
         input_mappings={
             "text_to_embed": "speech"
@@ -230,7 +230,7 @@ with Pipeline(name="speech_embedding_pipeline") as speech_embedding_pipeline:
         }
     )
 
-    embed_summary = Qwen3Embedder(
+    embed_summary = Qwen3Embeddervllm(
         model="Qwen/Qwen3-Embedding-8B",
         input_mappings={
             "text_to_embed": "summary"

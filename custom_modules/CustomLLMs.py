@@ -1,7 +1,7 @@
 import json
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 import subprocess
+import time
 from typing import Annotated, Any, Dict, List, Optional, TypeVar, Union
 from huggingface_hub import login
 import os
@@ -31,11 +31,9 @@ RuntimeParameter = Annotated[
 ]
 
 class OpenRouterLLM(GlobalStep):
-    _client: Any = None
     model: str
     max_tokens: int
     temperature: float = 0.9
-    system_prompt: Optional[str] = None
     max_workers: int = 100
     logprobs: bool = False
 
@@ -51,21 +49,23 @@ class OpenRouterLLM(GlobalStep):
             return ["generation", "model_name"]
 
     def _call_api(self, prompt: str) -> str:
+        load_dotenv()
+        apikey = os.getenv("OPENROUTER_API_KEY") 
+        baseurl = "https://openrouter.ai/api/v1"
+        client = OpenAI(
+            api_key=apikey,
+            base_url=baseurl
+        )
+
         """
         Synchronous wrapper around your chat completion call.
         Returns the generated text (or empty string on failure).
         """
         try:
-            if self.system_prompt:
-                msgs = [
-                    {"role": "system", "content": self.system_prompt},
-                    {"role": "user",   "content": prompt}
-                ]
-            else:
-                msgs = [
-                    {"role": "user",   "content": prompt}
-                ]
-            response = self._client.chat.completions.create(
+            msgs = [
+                {"role": "user",   "content": prompt}
+            ]
+            response = client.chat.completions.create(
                 model=self.model,
                 messages=msgs,
                 max_tokens=self.max_tokens,
@@ -85,13 +85,6 @@ class OpenRouterLLM(GlobalStep):
             return ""
 
     def process(self, *inputs: StepInput):
-        load_dotenv()
-        apikey = os.getenv("OPENROUTER_API_KEY") 
-        baseurl = "https://openrouter.ai/api/v1"
-        self._client = OpenAI(
-            api_key=apikey,
-            base_url=baseurl
-        )
         """
         For each input batch (an iterable of rows), runs all API calls in parallel
         using a thread pool, then yields the list of results.
@@ -273,79 +266,61 @@ class Qwen3Embedder(GlobalStep):
         
         yield results
 
-# class Qwen3Embeddervllm(GlobalStep):
-#     modelName: RuntimeParameter[str] = "Qwen/Qwen3-Embedding-8B"
-#     max_length: RuntimeParameter[int] = 8192
-#     batch_size: RuntimeParameter[int] = 10
-
-#     def load(self):
-
-#         super().load()
-
-#     @property
-#     def inputs(self) -> List[str]:
-#         return ["text_to_embed"]
-
-#     @property
-#     def outputs(self) -> List[str]:
-#         return ["embedding"]
-    
-#     def process(self, *inputs: StepInput):
-#         inputs_flattened = []
-#         for batch in inputs:
-#             for row in batch:
-#                 inputs_flattened.append(row)
-
-#         input_texts = [row["text_to_embed"] for row in inputs_flattened]
-
-#         model = LLM(model=self.modelName, task="embed", gpu_memory_utilization=0.3)
-
-#         results = []
-#         for i in tqdm(range(0, len(input_texts), self.batch_size), desc="Embedding progress"):
-#             if len(input_texts) - i < self.batch_size:
-#                 batch_input_texts = input_texts[i:]
-#                 batch_inputs_flattened = inputs_flattened[i:]
-#             else:
-#                 batch_input_texts = input_texts[i:i+self.batch_size]
-#                 batch_inputs_flattened = inputs_flattened[i:i+self.batch_size]
-            
-#             outputs = model.embed(batch_input_texts)
-#             embeddings = torch.tensor([o.outputs.embedding for o in outputs])
-            
-#             for embedding, row in zip(embeddings, batch_inputs_flattened):
-#                 results.append(row | {"embedding": embedding.tolist()})
-        
-#         yield results
-
-
 class Qwen3Embeddervllm(GlobalStep):
-    _client: Any = None
     model: str ="Qwen/Qwen3-Embedding-8B"
     max_workers: int = 100
 
     def load(self):
-        # command = [
-        #     "vllm", "serve", self.model,
-        #     "--dtype", "auto",
-        #     "--api-key", "token-abc123",
-        #     "--gpu-memory-utilization", "0.4",
-        #     "--task", "embed"
-        # ]
+        # Create the log directory if it doesn't exist
+        log_dir = "logs"
+        os.makedirs(log_dir, exist_ok=True)  # Ensure the log directory exists
+        
+        # Define log file paths
+        stdout_log_file = os.path.join(log_dir, "vllm_stdout.log")
+        stderr_log_file = os.path.join(log_dir, "vllm_stderr.log")
 
-        # # Run the command and wait for it to complete
-        # process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # Run the vllm server and redirect logs to files
+        with open(stdout_log_file, 'w') as stdout_file, open(stderr_log_file, 'w') as stderr_file:
+            command = [
+                "vllm", "serve", self.model,
+                "--dtype", "auto",
+                "--api-key", "token-abc123",
+                "--gpu-memory-utilization", "0.4",
+                "--task", "embed"
+            ]
+            
+            # Start the vllm server process
+            subprocess.Popen(command, stdout=stdout_file, stderr=stderr_file)
 
-        # # Wait for the process to finish and capture output
-        # stdout, stderr = process.communicate()
+        load_dotenv()
+        login(os.getenv("HUGGINGFACE_TOKEN"))
+        apikey = "token-abc123" 
+        baseurl = "http://localhost:8000/v1"
+        test_client = OpenAI(
+            api_key=apikey,
+            base_url=baseurl
+        )
 
-        # # Output the results
-        # if process.returncode == 0:
-        #     print("vLLM serve started successfully!")
-        #     print(stdout.decode())  # Optional: print the standard output
-        # else:
-        #     print("Error while starting vLLM serve.")
-        #     print(stderr.decode())  # Optional: print the error output
-    
+        # Periodically check server status (ping)
+        while True:
+            print("checking server status...")
+
+            try:
+                # Make the request to check if server is ready
+                response = test_client.embeddings.create(
+                    model=self.model,
+                    input="test",
+                )
+                
+                # Safely check if the response is None or empty
+                if response is not None and response != {} and response != []:
+                    print("vLLM server started!")
+                    break
+            
+            except Exception as e:
+                time.sleep(5)
+                continue
+            
         super().load()
 
     @property
@@ -357,12 +332,18 @@ class Qwen3Embeddervllm(GlobalStep):
         return ["embedding"]
 
     def _call_api(self, prompt: str) -> str:
+        apikey = "token-abc123" 
+        baseurl = "http://localhost:8000/v1"
+        client = OpenAI(
+            api_key=apikey,
+            base_url=baseurl
+        )
         """
         Synchronous wrapper around your chat completion call.
         Returns the generated text (or empty string on failure).
         """
         try:
-            response = self._client.embeddings.create(
+            response = client.embeddings.create(
                 model=self.model,
                 input=prompt,
             )
@@ -373,16 +354,11 @@ class Qwen3Embeddervllm(GlobalStep):
             print(e)
             print(response)
             return []
+        
+    def get_detailed_instruct(self, task_description: str, query: str) -> str:
+        return f'Instruct: {task_description}\nQuery:{query}'
 
     def process(self, *inputs: StepInput):
-        load_dotenv()
-        login(os.getenv("HUGGINGFACE_TOKEN"))
-        apikey = "token-abc123" 
-        baseurl = "http://localhost:8000/v1"
-        self._client = OpenAI(
-            api_key=apikey,
-            base_url=baseurl
-        )
         """
         For each input batch (an iterable of rows), runs all API calls in parallel
         using a thread pool, then yields the list of results.
@@ -391,7 +367,7 @@ class Qwen3Embeddervllm(GlobalStep):
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             # Schedule one future per row
             futures = {
-                executor.submit(self._call_api, row["text_to_embed"]): row
+                executor.submit(self._call_api, self.get_detailed_instruct('Given a web search query, retrieve relevant passages that answer the query', row["text_to_embed"])): row
                 for batch in inputs
                 for row in batch
             }

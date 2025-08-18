@@ -80,3 +80,5 @@ def update_topic_model(newHansardDates, savePath):
 
 def get_topic_model(savePath):
     return BERTopic.load(savePath)
+
+init_topic_model("topicmodel/model")
