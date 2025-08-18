@@ -137,5 +137,4 @@ TOPIC_LABEL_TEMPLATE = '''
     ]```
 
     The <> brackets are to indicate where to put the topic labels.
-    If the keywords are filler dialogue from hansard paliamentary debates, generate an empty array.
 '''

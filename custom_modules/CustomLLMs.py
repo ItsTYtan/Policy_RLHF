@@ -285,7 +285,8 @@ class Qwen3Embeddervllm(GlobalStep):
                 "vllm", "serve", self.model,
                 "--dtype", "auto",
                 "--api-key", "token-abc123",
-                "--gpu-memory-utilization", "0.4",
+                "--tensor-parallel-size", "2",
+                "--gpu-memory-utilization", "0.17",
                 "--task", "embed"
             ]
             
@@ -347,12 +348,10 @@ class Qwen3Embeddervllm(GlobalStep):
                 model=self.model,
                 input=prompt,
             )
-
             return response.data[0].embedding
             
         except Exception as e:
             print(e)
-            print(response)
             return []
         
     def get_detailed_instruct(self, task_description: str, query: str) -> str:

@@ -1,7 +1,7 @@
 import os
 
 from custom_modules.axiom import QuestionTypesAndPhrasings
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "6,7"
 
 from distilabel.pipeline import Pipeline
 from distilabel.steps import (
@@ -42,7 +42,7 @@ print(questionTypes)
 
 with Pipeline(name="SFT-generation") as generation_pipeline:
     fromds = make_generator_step(
-        ds,
+        ds[:2],
         output_mappings={
             "representation": "keywords"
         }
@@ -100,6 +100,7 @@ with Pipeline(name="SFT-generation") as generation_pipeline:
     )
 
     embed = Qwen3Embeddervllm(
+        max_workers=10,
         input_mappings={
             "text_to_embed": "query"
         },
@@ -149,7 +150,7 @@ with Pipeline(name="SFT-generation") as generation_pipeline:
     )
 
     tojsonRAG = ToJsonFile(
-        filename="axiom-informational",
+        filename="axiom",
         filepath="datasets",
         jsonl=False
     )
