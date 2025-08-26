@@ -1,7 +1,7 @@
 import os
 
 from custom_modules.axiom import QuestionTypesAndPhrasings
-os.environ["CUDA_VISIBLE_DEVICES"] = "6,7"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 from distilabel.pipeline import Pipeline
 from distilabel.steps import (
@@ -12,14 +12,14 @@ from distilabel.steps import (
 
 import yaml
  
-from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Embedder, Qwen3Embeddervllm
+from custom_modules.CustomLLMs import OpenRouterLLM, Qwen3Embeddervllm
 from custom_modules.RAG import ContextPostProcessor, GetTopkDocs
-from custom_modules.utils import AddColumns, ExtractPythonArray, GeneralSqlExecutor, TemplateFormatter, ToJsonFile
+from custom_modules.utils import ExtractPythonArray, GeneralSqlExecutor, TemplateFormatter, ToJsonFile
 from templates.SFT_templates import RAG_GENERATION_TEMPLATE, QUERY_GENERATION_TEMPLATE, TOPIC_LABEL_TEMPLATE
 from topicmodel.functions import get_topic_model
 
 topic_model = get_topic_model("topicmodel/model")
-topics_ignore = [0, 1]
+topics_ignore = [0, 3]
 
 ds = list()
 for entry in topic_model.get_topic_info().itertuples(index=True):
@@ -37,12 +37,12 @@ with open('axiom_config.yaml', 'r') as file:
 model = config["model"]
 questionTypes = config["questiontypes"]
 questionPhrasings = config["questionphrasings"]
-print(questionTypes)
+print(ds[:2])
 
 
 with Pipeline(name="SFT-generation") as generation_pipeline:
     fromds = make_generator_step(
-        ds[:2],
+        ds,
         output_mappings={
             "representation": "keywords"
         }
@@ -96,7 +96,7 @@ with Pipeline(name="SFT-generation") as generation_pipeline:
     ) 
 
     keep_columns1 = KeepColumns(
-        columns=["topic", "query"]
+        columns=["topic", "query", "question_type"]
     )
 
     embed = Qwen3Embeddervllm(
@@ -146,7 +146,7 @@ with Pipeline(name="SFT-generation") as generation_pipeline:
     
 
     keep_columns_rag = KeepColumns(
-        columns=["query", "generation", "summaries"]
+        columns=["topic", "query", "generation", "question_type"]
     )
 
     tojsonRAG = ToJsonFile(

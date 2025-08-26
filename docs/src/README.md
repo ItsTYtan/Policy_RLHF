@@ -1,382 +1,45 @@
-# Introduction - AXIOM
-AXIOM is an automated pipeline for generation of synthetic SFT data on Singapore policies.
+# INTRODUCTION - AXIOM
 
-## Rationale
-Policies change and models should reflect the latest updates in policy changes. Thus, AXIOM automates this process of updating a model's political alignment, by automating the generation
-and updating of a political alignment SFT dataset.
+A pipeline to generate policy aligned synthetic data
 
-## Methodology
-This section outlines the thought process in creating AXIOM
+Three main questions:
+1. How can data generated be aligned to Singapore context
+2. How to ensure variety in the dataset
+3. How to update the dataset given new policies
 
-The whole process of automating the generation of a dataset can be roughly broken down into 3 stages:
-1. Extraction of new policies from the web
-2. Creating a database that can handle updates of new policies that were extracted
-3. Generation of the SFT dataset from the database.
+## Aligning synthetic data to the Singaporean context
 
-## Meeting Notes and thought process
+One of the best available sources of Singapore policies and regulations come from the paliamentary debates (Hansard) in Singapore. Retrieval Augmented Generation is used
+to extract useful information from Hansard and into the data generation.
 
-### 📅 (06/06/2025)
-Methodology to extract policies from web:
-1. Extract raw hansard from web
-2. Clean raw hansard into text
-3. Pass the text into LLM to generate json below
+AXIOM uses a simple RAG implementation where the paliamentary debates are broken down into individual speakers and their speeches. These represent the chunks or documents 
+that are embedded and stored in the vector database. Retrieval is done simply by embedding the query and finding the closest few speeches in terms of cosine similarity.
 
-We chose Hansard as the source of policy information from the web. Hansard provides publicly available comprehensive transcripts of paliamentary debates in Singapore.
+More details on the RAG implementation are in the table below:
+| Vector database      | ChromaDB                 |
+| Embedder             | Qwen3-8b embedding model |
+| Embedding dimension  | 4096                     |
+| Chunking strategy    | Hansard speeches         |
 
-The information deemed relevant from paliamentary debates are the policies discussed, the final decision made for each policy, and the claims supporting the final decision as well as the claims against the final decision. In short, the information extracted can be visualized as many json objects, each one with the format below:
+## Ensuring variety in the dataset
 
-```json
-  {
-    "policy": "[the policy discussed in the debate]",
-    "paliamentary debate": "[containing the details of which debate the policy was discussed in]",
-    "final decision": "[the final decision of the policy discussed]",
-    "claims for": [
-      "claim 1 supporting the final decision",
-      "claim 2 supporting the final decision",
-      "..."
-    ],
-    "claims against": [
-      "claim 1 against the final decision",
-      "claim 2 against the final decision",
-      "..."
-    ],
-  }
-```
+Variety of question answer pairs in the dataset is also a tricky problem. AXIOM uses a clustering framework Bertopic to cluster the Hansard speeches into topics. Questions
+are then generated from these topics.
 
-As multiple policies may be discussed in a paliamentary debate, a LLM is first tasked to extract the policies discussed in the debate. For each policy extracted, another LLM is tasked to extract
-the final decision, the claims for and against as well as the ministries involved.
+This way of generating questions has a few advantages:
+- Questions will belong to topics that are relevant to the retrieved documents.
+- Adding more documents or changing what documents are in the vector database is not a problem.
+- Topics generated will be more "natural" in the sense that it comes from real data.
 
-### 📅 (09/06/2025)
-A few issues surfaced, below describes the issues and the proposed workarounds
+More information on how Bertopic works to cluster topics can be found [here](https://maartengr.github.io/BERTopic/index.html)
 
-### 1. Hansard paliamentary debates do not fit into the context length of Sagemaker hosted models.
-A few chunking strategies were proposed, and 2 are to be tried together.
-- Chunking by topic: within each sitting, there are clear separations between different topics discussed
-- Chunking by speaker: extract the relevant content of each speaker through regex
+Besides the topic generation, some crude usage of prompt engineering is also used to further diversify the questions for the dataset. Questions in AXIOM are generated based on
+a supplied question type as well as a question phrasing.
 
-Chunking by speaker presents the problem of not being able to extract the final decision of the policy discussed. Currently am unsure if the final decision is neccessary information for generating the SFT data.
+## Updating the dataset given new policies
 
-### 2. Schema modifications
-After taking a look at the generation of claims, final decision and policy, it seemed that the claims also contained policy information and could be used to generate the final SFT data instead. Some paliamentary debates were also clarifying and not an actual debate about a policy. Hence, some modifications to the schema were suggested:
+The dataset needs to be updated on the latest data, however regenerating the entirety of the dataset is inefficient.
 
-#### Including the speaker into each json object
-This allows us to determine the credibility of claims. For simplicity's sake, it was decided that anything said by the current ruling party is the truth.
-
-#### Merging of claims for and against:
-Not much point in separating the claims for and against if whether the deciding factor whether each claim is to be used is if the speaker making the claim is in the current ruling party or not.
-
-new json format:
-```json
-  {
-    "section_title": "[basically the policy discussed in the debate]",
-    "file": "[contains the date of the debate]",
-    "speaker": "[speaker of the claims below]",
-    "claims": [
-      "claim 1",
-      "claim 2",
-      "..."
-    ],
-  }
-```
-
-Arka also showed the new Qwen3 embedding model [link](https://qwenlm.github.io/blog/qwen3-embedding/) we could use in the future to validate our data
-
-### Modified policy extraction methodology:<br>
-1. Extract raw hansard from web
-2. From raw hansard get sections through the html json schema
-3. Extract speaker and speeches through regex
-4. Generate claims using LLM
-
-### 📅 (11/06/2025)
-Identified some starting patterns for a speaker, using Ms Rahayu Mahzam as an example:
-- The Minister of State for Health (Ms Rahayu Mahzam) (for the Minister for Health)\n:
-- Ms Rahayu Mahzam\n: 
-- (Ms Rahayu Mahzam)\n:
-
-Speech ends with another person speaking or due to end of string
-
-Thus, 2 main regex patterns were used to extract speeches:
-```python
-  rf"{mp}\n:.*?\n[^\d]*?\n:"
-```
-
-```python
-  rf"\({mp}\)[^\d]*?\n:.*?\n[^\d]*?\n:"
-```
-
-{mp} denotes a placeholder for a mp name
-
-Speech ending due to end of string is checked if the 2 above regex patterns do not return matches. Slightly modified version of the regex above are used, without the "?\n[^\d]*?\n:" at the end
-of each regex pattern.
-
-### 📅 (12/06/2025)
-Sucessfully extracted speeches from individual speakers and then used Qwen2-5-72B-Instruct-2025-05-28-10-43-09 to generate the claims made by each speaker in their speech.
-
-**📄 [Link](https://github.com/ItsTYtan/Policy_RLHF/blob/main/docs/jsonOutputs/policyextraction.json) to json**
-
-Some speeches do not contain useful information, and the claims array is made to be empty
-```json 
-{
-  "file": "2025-04-08.json",
-  "section_title": "Increase in Water Seepage Issues in HDB Flats and Adequacy of 
-  Staff Assigned to Rectify These Issues",
-  "speaker": "Ms Sim Ann",
-  "speech": "(Ms Sim Ann) (for the Minister for National Development)\n: Mr Speaker, 
-  Sir, may I have your permission to give a combined reply to Question Nos 3 through 
-  6 in today’s Order Paper?\nMr Speaker\n:",
-  "claims": []
-}
-```
-
-However, some speeches contain useful info, but claims array is still empty
-```json
-{
-  "file": "2025-04-08.json",
-  "section_title": "Target Date to Revise Penalties for Animal Cruelty and 
-  Introduce Failure in Duty of Care Provisions",
-  "speaker": "Mr Tan Kiat How",
-  "speech": "Mr Tan Kiat How\n: Sir, on the two questions that Mr Chua has raised, 
-  let me take them in turn.\nOn the first one around how we ensure compliance with 
-  the\nCode of Animal Welfare (for the Pet Industry), t\nhese are guidelines that 
-  we put forward. And if there are members of the public, industry players or 
-  operators who want to report any non-compliance, please let us know. NParks, as
-  part of its broader licensing framework and regulatory ambit, will do spot checks
-  and take a look at some of these places.\nOn the second point on the 
-  disqualification order (DO), just to confirm with Mr Chua that he was asking about
-  DO? No? I could not hear the question.\nMr Chua Kheng Wee Louis\n:",
-  "claims": []
-}
-```
-
-Suspect is due to API limits on rate of incoming requests.
-
-(13/06/25)
-- Narrow down issue on generation
-- Check out qwen 3 embedding
-- Research on how to bake in policy question into sft data making it more conversational instead of stance
-- Research on db
-
-(16/06/25)
-Research on next 2 steps of AXIOM
-### SFT generation ideas
-Goal is to let the model generalize the training data, able to subtly inject policies and rationale wherever relevant.
-Can either improve the dataset or improve the way the model is fine tuned.
-
-Few ways to go about generating data:
-- Simply pair up the questions and answers from hansard debate. Will risk sounding like MP, need a way to mix with other training data.
-- Generate questions from the claims. However the claims itself may not have sufficent information to generate a singapore policy aligned question. How to generate questions from the claim is also rather subjective.
-- Improve the previous policy dataset using RAG on hansard policies. Potential downsides include non comprehensive coverage of all policies in hansard.
-
-Explored some methods to allow the model to generalize better:
-Paper on mitigating memorization [Link](https://arxiv.org/html/2410.02159v2)
-
-Should maybe start with the naive way first. To generate data that is informational first and then see if the fine tuning techniques help to mitigate memorization. Think its going to be very hard to come up with subtle quesitons on policy, and a synthetic dataset that does not have any underlying patterns.
-
-### Evaluation of SFT dataset
-Lack of domain specific singapore policy datasets. One way I can think of is to use LLM as a judge on a
-non finetuned vs a finetuned model on our dataset. The LLM as a judge may have to be supplemented with RAGed knowledge from hansard debates, since it may not rate generations that are aligned with singapore policies higher.
-
-Another problem might be getting the test dataset. If we get the question from the claims, then splitting the dataset into test and train might test the model on political claims it has not seen before. Might need to craft some subtle questions ourselves.
-
-Normal ablation testing can also be carried out to ensure model does not perform worse on other tasks.
-
-### Policy clustering and database
-[Temporary chatgpt deep-research link](https://chatgpt.com/share/6850d897-c964-8013-b0d0-da1a97956cd5)
-[Research on clustering](https://www.mdpi.com/1999-4893/18/5/289)
-
-Use qwen3 embedding or sbert to generate embeddings, group them into clusters using Kmeans or some other algo.
-
-### RAG using Qwen3 embedding and reranking model
-Embedding to find top k similar documents. Reranking to find the best fit document (in terms of fitting the instruction).
-
-RAG can be used to:
-- generate accurate citations for the SFT dataset
-- cluster the policies into few main topics for step 2
-
-(18/06/25)
-Decide to focus on the RAG method to build on the previous dataset generated.
-
-Generated embeddings for speech, section title and queries. Set up basic RAG pipeline with qwen3 embedding and reranker models
-
-Foresee the need of an actual database. The data and embeddings are stored sparesly in json files all over. The actual database may not only simplify workflows, but also enable the use of more complex and custom RAG strategies. 
-
-SQLite seems like a good option, since it is easy to setup. Dont need concurrency and production grade features of dbs like psql.
-
-(19/06/25)
-Data is getting too messy, decided to transfer all data into sql database for sanity.
-
-Current db architecture:
-![alt text](db_diagram.png)
-
-To recap, rationale for sql database:
-- Simplify workflows, no more jsonl files all over the place
-- Enable the use of more complex and custom RAG strategies
-- Long term, when new debate transcripts come in, dont want to update the whole dataset, but only add in/remove whats neccessary
-
-(23/06/25)
-Speeches can be way too long which is both problematic when reranking as well as doing in context rag generation for the dataset later.
-
-Decide to do the naive simplest approach first. First only use the embeddings to generate the most similar speech, and then do in context rag. No reranking is done here
-
-This will be followed by another approach which reranks by claims instead of speeches. Use the speech embeddings to extract the most similar speeches, then accumulating all the claims of all the speeches, and then reranking from there.
-
-Nick also suggested summarizing the speeches to improve embedding retrieval.
-
-Splitting strategy --> document hierachy
-Embedding strategy --> 
-
-
-(24/06/25)
-tried claim based reranking, still very slow and inaccurate with the 0.6b model.
-
-(25/06/25)
-Doing some research on how to improve the RAG
-[deepreasearch](https://chatgpt.com/share/685df440-6614-8013-8983-5afe0638cc88)
-[Advanced RAG techniques](https://medium.com/@roberto.g.infante/advanced-rag-techniques-with-langchain-f9c82290b0d1)
-
-Coarse chunking improves context but reduces detail --> chunking by speech
-Granular chunking improves detail but reduces context --> chunking by claims
-
-Some ideas:
-- Reduce chunk size of speeches by asking a llm to summarize the speech and remove filler dialogue that happens in paliarment.
-- Multi Vector Retriever strategy, embed the claims as additional embeddings for the speech document.
-- Hypothetical Document Embeddings (HyDE)
-- Query rewriting/Generating multiple queries/Step back question
-
-Advanced techniques:
-- Self querying
-- Sql query generation
-
-Recap of the current issues with rag:
-Tried searching by speeches naively, however, the context can be too large.
-To reduce context size, tried another method of searching by speech embeddings, and then reranking the claims of the speech. However, the claims are mostly not relevant.
-Think the most logical next step is to reduce the chunk size of the speeches by summarizing and removing noise, that way it tackles all problems, and is also a stepping stone for future rag implementations.
-
-(01/07/25)
-Summarized speeches and sections, ran rag and genertation on them. Here is one example result
-
-Query: "Cn the S'pore govt provide details on their stratgies 2 combat human traficking as outlined in their respnse 2 the TIP rpt?"
-
-![alt text](./images/rag_norag_comparison.png)
-
-(05/07/25)
-Research on best way to do ablation testing
-
-⚙️ Key Hyperparameters to Tune in LoRA for Political Alignment Tasks
-When fine-tuning with LoRA, several hyperparameters play a crucial role:
-
-Rank (r): Determines the size of the low-rank matrices added to the model. A higher rank allows the model to capture more complex patterns but increases computational cost.
-
-LoRA Alpha: Scales the contribution of the LoRA adapters. Adjusting this can help balance the influence of the adapters relative to the original model weights.
-
-LoRA Dropout: Introduces regularization by randomly setting some adapter weights to zero during training. This can prevent overfitting, especially in specialized tasks like political alignment.
-
-Target Modules: Specifies which parts of the model to apply LoRA adapters. Targeting specific layers, such as attention heads or feed-forward networks, can be more efficient and effective.
-
-Bias Handling: Deciding whether to include bias terms in the LoRA adapters can influence model behavior, particularly in tasks sensitive to subtle semantic nuances.
-
-(10/07/25)
-Found some research on dataset generation from knowledge base
-https://www.confident-ai.com/blog/the-definitive-guide-to-synthetic-data-generation-using-llms
-
-trying deepeval as another way to generate synthetic data and evaluation datasets.
-
-Reason for this detour is the need to generate an evaluation dataset first, and the need for testing afterwards
-
-(11/07/25)
-Did some ablation testing, tried
-- Basic fine tuning with policy dataset
-- Interleaved policy and general sft dataset
-- Higher parameter model
-
-Interleaving causes the model to perform much worse for some reason, might have to take
-a closer look at the alpaca dataset.
-
-Higher parameter model performs better probably due to more weights so the new model is less divergent.
-
-However, common issues among the ablations:
-- Hallucinated facts and figures
-- Very long output that eventually digresses to unrelated topic
-- Formatting becomes strange, generation tends to start with a question mark etc. The llm sometimes tries to add further details to the question which strays it away.
-
-```
-  >>> what is racial harmony
-  day
-
-  Racial Harmony Day in Singapore is an important public holiday observed on May 21 each year. This day 
-  serves several key purposes: ...
-```
-
-Trying LoRA next to prevent the training from causing too much divergence.
-
-(17/07/2025)
-Evaluating the prexisting models on perplexity instead.
-
-3 ways to evaluate the perplexity
-1. Using a held out training dataset
-2. Using a golden dataset generated via openai gpt4o websearch
-3. Using raw hansard texts 
-
-For the QA SFT pairs, perplexity will be calculated using 
-Sliding window strategy will be used for hansard texts as they may exceed the models context length
-
-(25/07/2025)
-- Split the axiom dataset into train and test splits, reran ablations on train splits
-- Evaluated base models ans well as finetuned models on average perplexity per token
-- Successfully ran peft training on models
-
-(03/08/2025)
-Streamlining the pipeline:
-
-Variables:
-- Model
-- topics
-- question types
-- phrasings
-- output directory
-
-![alt text](Picture1.png)
-
-(04/08/25)
-Automatic update of dataset ideas:
-
-1. Use LLM or embedding model to find out which topics new hansard sections/speeches belongs to, then regenerate those topics.
-Potential issues:
-- If new topics come out, cannot adapt
-- Topics are hardcoded
-- Topics may not be what the hansard is able to answer
-
-2. Run k means clustering on whole hansard including the new paliamentary debates and get out the clusters and topics associated.
-New centroids --> generate those topics
-After that run idea 1 to regen new policies for old topics
-- Solves the topic hardcoding issue
-
-Additional stuff: Jiale seems to want tagging of questions/topics by ministry
-
-(06/08/25)
-Bertopic merge model seems perfect for use case, allows easy tracking of new topics, and merges similar topics from new hansard.
-
-HDBSCAN is used as the clustering algo since it clusters based on density, and automatically decides how many clusters and removes noise.
-How do we deal with clusters of different size? Do we generate more questions, or try to subdivide the clusters into more subtopics.
-
-Experimenting on recursive HDBSCAN does not work, topics cannot be further broken down by clustering again on documents of particular topic.
-
-Tried on the 3 different granularity levels, section, speech and claims, so far speech seems to perform the best.s
-
-Have not tried online topic modelling, but seems like a worse fit since
-- Online topic modelling does not support HDBSCAN out of the box
-- Not sure if old topics will remain the same, if all old topics drift slightly may be a problem?
-- Need another package to track new topics, seems more complicated to implement
-
-Tried generating topic labels from the keyword representations of each topic. result is not bad i think
-
-Scrape web --> find new hansard --> process new hansard --> everything else
-Need a way to Store old base topic model old dataset
-
-Date ranges will have to be updated and maintained.
-
-(08/08/25)
-managed to get update db script done
-
-(18/08/25)
-Fixed couple of bugs in pipeline, use vllm server.
+AXIOM leverages on Bertopic's topic model merging functionalities to achieve efficient updates on the dataset. By creating a new topic model on the new data, and merging with the
+old model fitted on the old data, Bertopic allows us to identify which topics have an increase in document count, and which topics are new. These topics, which ideally form a small
+percentage of the total topics, are then passed through the pipeline to generate new question answer pairs for those topics.

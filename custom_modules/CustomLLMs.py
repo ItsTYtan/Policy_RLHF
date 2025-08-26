@@ -35,7 +35,6 @@ class OpenRouterLLM(GlobalStep):
     max_tokens: int
     temperature: float = 0.9
     max_workers: int = 100
-    logprobs: bool = False
 
     @property
     def inputs(self) -> List[str]:
@@ -43,10 +42,7 @@ class OpenRouterLLM(GlobalStep):
 
     @property
     def outputs(self) -> List[str]:
-        if self.logprobs:
-            return ["generation", "model_name", "logprobs"]
-        else: 
-            return ["generation", "model_name"]
+        return ["generation", "model_name"]
 
     def _call_api(self, prompt: str) -> str:
         load_dotenv()
@@ -70,15 +66,9 @@ class OpenRouterLLM(GlobalStep):
                 messages=msgs,
                 max_tokens=self.max_tokens,
                 temperature=self.temperature,
-                logprobs=self.logprobs
             )
 
-            if self.logprobs:
-                logprobsRaw = response.choices[0].logprobs.content
-                logprobs = map(lambda completion: (completion.token, str(completion.logprob)), logprobsRaw)
-                return response.choices[0].message.content or "", list(logprobs)
-
-            return response.choices[0].message.content or "", None
+            return response.choices[0].message.content or ""
             
         except Exception as e:
             print(e)
@@ -102,10 +92,8 @@ class OpenRouterLLM(GlobalStep):
             # As each finishes, collect its result
             for future in tqdm(concurrent.futures.as_completed(futures), desc="Data generated", total=len(futures)):
                 row = futures[future]
-                text, logprobs = future.result()
+                text = future.result()
                 resultRow = row | {"generation": text, "model_name": self.model}
-                if self.logprobs:
-                    resultRow = resultRow | {"logprobs": logprobs}
                 results.append(resultRow)
         yield results
 
@@ -285,8 +273,7 @@ class Qwen3Embeddervllm(GlobalStep):
                 "vllm", "serve", self.model,
                 "--dtype", "auto",
                 "--api-key", "token-abc123",
-                "--tensor-parallel-size", "2",
-                "--gpu-memory-utilization", "0.17",
+                "--gpu-memory-utilization", "0.4",
                 "--task", "embed"
             ]
             

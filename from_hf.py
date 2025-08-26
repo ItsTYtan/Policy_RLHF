@@ -12,6 +12,8 @@ from distilabel.steps import (
     PushToHub
 )
 
+from custom_modules.utils import FromJsonFile
+
 load_dotenv()
 login(os.getenv("HUGGINGFACE_TOKEN"))
 
@@ -23,17 +25,15 @@ login(os.getenv("HUGGINGFACE_TOKEN"))
 # )
 
 with Pipeline("pipe-name", description="My first pipe") as pipeline:
-    fromhf = LoadDataFromHub(
-        repo_id="htxinterns/axiom",
+    fromhf = FromJsonFile(
+        filename="axiom.json",
+        filepath="datasets"
     )
 
-distiset = pipeline.run()
-print(distiset)
-splits = distiset["default"]["train"].train_test_split(train_size=0.8)
+    tohf = PushToHub(
+        repo_id="htxinterns/axiomV2"
+    )
 
-splits.push_to_hub(
-    "ItsTYtan/axiom",
-    commit_message="Initial commit",
-    private=True,
-    token=os.getenv("HF_TOKEN"),
-)
+    fromhf >> tohf
+
+distiset = pipeline.run()
