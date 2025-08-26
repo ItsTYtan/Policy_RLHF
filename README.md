@@ -45,4 +45,4 @@ old model fitted on the old data, Bertopic allows us to identify which topics ha
 percentage of the total topics, are then passed through the pipeline to generate new question answer pairs for those topics.
 
 ## Full Pipeline architecture
-![alt text](pipeline_architecture.png)
+![alt text](docs/src/images/pipeline_architecture.png)
