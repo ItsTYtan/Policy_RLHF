@@ -17,6 +17,8 @@ that are embedded and stored in the vector database. Retrieval is done simply by
 
 More details on the RAG implementation are in the table below:
 
+|   |   |
+|---|---|
 | Vector database      | ChromaDB                 |
 | Embedder             | Qwen3-8b embedding model |
 | Embedding dimension  | 4096                     |
