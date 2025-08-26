@@ -1,4 +1,4 @@
-# INTRODUCTION - AXIOM
+# AXIOM
 
 A pipeline to generate policy aligned synthetic data
 
@@ -16,6 +16,7 @@ AXIOM uses a simple RAG implementation where the paliamentary debates are broken
 that are embedded and stored in the vector database. Retrieval is done simply by embedding the query and finding the closest few speeches in terms of cosine similarity.
 
 More details on the RAG implementation are in the table below:
+
 | Vector database      | ChromaDB                 |
 | Embedder             | Qwen3-8b embedding model |
 | Embedding dimension  | 4096                     |
